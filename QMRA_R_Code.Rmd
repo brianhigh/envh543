@@ -2,9 +2,11 @@
 title: "QMRA R Code"
 output:
   html_document:
+    fig_caption: no
     theme: united
     toc: yes
   pdf_document:
+    fig_caption: no
     toc: yes
 ---
 
@@ -33,7 +35,7 @@ result as PDF.
 
 These `bash` commands will extract the R code from the PDF and list the figures. 
 
-```{r engine='bash', eval=FALSE}
+```{r pdf-conversion, engine='bash', eval=FALSE}
 pdftotext \
     "Quantitative Microbial Risk Assessment.pdf" \
     "Quantitative Microbial Risk Assessment.txt"
@@ -56,7 +58,7 @@ After that, any extra text may be removed using a text editor.
 
 ## Clear the workspace
 
-```{r}
+```{r clear-workspace}
 # Clear the workspace, unless you are running in knitr context.
 if (!isTRUE(getOption('knitr.in.progress'))) {
     closeAllConnections()
@@ -68,7 +70,7 @@ if (!isTRUE(getOption('knitr.in.progress'))) {
 
 Define a function to auto-install and load required packages.
 
-```{r}
+```{r load-packages-function}
 # Load one or more packages into memory, installing as needed.
 load.pkgs <- function(pkgs, repos = "http://cran.r-project.org") {
     result <- sapply(pkgs, function(pkg) { 
@@ -80,7 +82,7 @@ load.pkgs <- function(pkgs, repos = "http://cran.r-project.org") {
 
 Use the this function to load the packages we will need.
 
-```{r message=FALSE, warning=FALSE}
+```{r load-packages, message=FALSE, warning=FALSE}
 # Load packages, installing as needed.
 load.pkgs(c("deSolve", "boot", "cubature", "lattice"))
 ```
@@ -91,7 +93,7 @@ From: CHAPTER 6 EXPOSURE ASSESSMENT, p. 228
 
 Figure 6.17 R functions for solution of Example 6.9.
 
-```{r}
+```{r figure-0617}
 volume <- c(0.032, 0.026, 0.021, 0.018, 0.016, 0.011, 0.005)
 n <- c(29, 30, 28, 30, 29, 25, 30)
 p <- c(7, 4, 3, 4, 2, 2, 2)
@@ -121,7 +123,7 @@ From: TYPES OF GROWTH PROCESSES, p. 251
 
 Figure 7.10 R code to compute generalized logistic growth equation.
 
-```{r}
+```{r figure-0710}
 library("deSolve")
 genlogist <- function(t, N, params) {
     # Generalized logistic with zero, one, two and three parameters
@@ -165,13 +167,13 @@ From: TYPES OF GROWTH PROCESSES, p. 253
 
 Figure 7.11 R listing for fitting Listeria data.
 
-```{r message=FALSE, warning=FALSE, results='hide', eval=TRUE}
-# fit listeria data - 1.5o skim milk
+```{r figure-0711, warning=FALSE, results='hide', eval=TRUE, cache=TRUE}
+# Fit listeria data - 1.5o skim milk
 # Xanthiakos, K., D. Simos, A. S. Angelidis, G. J. Nychas and K. Koutsoumanis (2006).
 # "Dynamic modeling of Listeria monocytogenes growth in pasteurized milk."
 # Journal of Applied Microbiology 100(6): 1289-1298.
 
-# time in hours
+# Time in hours
 time <-
     c(0, 143.39622, 260.37735, 383.01886, 500, 598.11322, 696.22644, 
       792.45282, 884.90564, 1052.8302, 1205.6604, 1371.69812)
@@ -187,7 +189,7 @@ attach(A)
 
 #---------------------------------------------
 ObjFunc<-function(paramsin){
-    #computes ESS
+    # Computes ESS
     if (modell==0){
        paramsin["theta1"] <- 1
        paramsin["theta2"] <- 1
@@ -237,7 +239,7 @@ dev.off()
 
 ![](best.png)
 
-```{r}
+```{r figure-0711a}
 print(best)
 print(working)
 ```
@@ -248,7 +250,7 @@ From APPENDIX, p. 315
 
 Figure 8.14 Program listing in R to compute best-fit parameters.
 
-```{r}
+```{r figure-0814}
 dose <- c(90000, 9000, 900, 90, 9, 0.9, 0.09, 0.009)
 total <- c(3, 7, 8, 9, 11, 7, 7, 7)
 positives <- c(3, 5, 7, 8, 8, 1, 0, 0)
@@ -292,7 +294,7 @@ From: APPLICATIONS, p. 333
 
 Figure 9.5 R code for bootstrap analysis of mean density for data in Table 6.5.
 
-```{r}
+```{r figure-0905}
 library(boot) # Requires the bootstrap package
 oocysts <-
   c(
@@ -329,8 +331,8 @@ From: CHAPTER 9 UNCERTAINTY, p. 334
 
 Figure 9.7 R code for determining the posterior distribution for the negative binomial
 
-```{r eval=TRUE}
-require(cubature) # numerical integration package (needs to be installed)
+```{r figure-0907, eval=TRUE}
+require(cubature) # Numerical integration package (needs to be installed)
 require(lattice)  # for contour plotting
 
 # Note the global assignment operator
@@ -398,7 +400,7 @@ From: CHAPTER 6 EXPOSURE ASSESSMENT, p. 337
 
 Figure 9.9 Code snippet for generating samples from posterior for negative binomial
 
-```{r}
+```{r figure-0909}
 muMC <- c()
 kMC <- c()
 neededlength <- 2000
@@ -409,7 +411,7 @@ while (length(kMC) < neededlength){
     ktrial <- runif(1, 0.01, 20)
     ztrial <- runif(1, 0, .008)
     
-    #keep track of number of random draws
+    # Keep track of number of random draws
     draws <- draws + 1
     
     PosteriorTrial <- Integrand(c(mutrial, ktrial)) / I$integral
