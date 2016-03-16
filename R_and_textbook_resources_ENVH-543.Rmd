@@ -2,7 +2,9 @@
 title: "R and textbook resources for ENV H 543"
 author: "Brian High"
 date: "3/10/2016"
-output: html_document
+output: 
+    html_document:
+        toc: yes
 ---
 
 ## RStudio Server: "Phage"
@@ -30,7 +32,7 @@ and identify the best policies and practices to protect public health and safety
 - Techniques use to develop risk models for drinking water, groundwater, 
 recreational water, food and pathogens in the indoor environment
 
-[Quantitative microbial risk assessment](http://alliance-primo.hosted.exlibrisgroup.com/primo_library/libweb/action/display.do?fn=search&doc=CP51230982940001451), Charles N. Haas Joan B. Rose; Charles P. Gerba. 2014  Hoboken, New Jersey: Wiley.
+[Quantitative microbial risk assessment](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP51230982940001451), Charles N. Haas Joan B. Rose; Charles P. Gerba. 2014  Hoboken, New Jersey: Wiley.
 
 ### EnvStats
 
@@ -53,10 +55,13 @@ statistical analyses of environmental data.
 
 ### R for Stata Users
 
-> [R for Stata users](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71161669170001451)
-> Robert A. Muenchen Joseph M. Hilbe, 1944-
-> ©2010 New York : Springer
+- This book shows you how to extend the power of Stata through the use of R. 
+- It introduces R using Stata terminology with which you are already familiar. 
+- It steps through more than 30 programs written in both languages, comparing and contrasting the two packages' different approaches. 
+- When finished, you will be able to use R in conjunction with Stata, or separately, to import data, manage and transform it, create publication quality graphics, and perform basic statistical analyses.
 
+[R for Stata users](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71161669170001451)
+Robert A. Muenchen, Joseph M. Hilbe. 2010 New York : Springer.
 
 ## R Resources
 
