@@ -51,6 +51,13 @@ statistical analyses of environmental data.
 
 [Beginning Data Science with R](http://alliance-primo.hosted.exlibrisgroup.com/primo_library/libweb/action/dlDisplay.do?vid=UW&search_scope=all&docId=dedupmrg490691634&fn=permalink), Manas A. Pathak. 2014 Cham: Springer International Publishing.
 
+### R for Stata Users
+
+> [R for Stata users](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71161669170001451)
+> Robert A. Muenchen Joseph M. Hilbe, 1944-
+> ©2010 New York : Springer
+
+
 ## R Resources
 
 - [Cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
