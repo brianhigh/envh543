@@ -48,13 +48,13 @@ After that, any extra text may be removed using a text editor.
 
 ## Code listings in the text
 
-- Figure 6.17 R functions for solution of Example 6.9.
-- Figure 7.10 R code to compute generalized logistic growth equation.
-- Figure 7.11 R listing for fitting Listeria data.
-- Figure 8.14 Program listing in R to compute best-fit parameters.
-- Figure 9.5 R code for bootstrap analysis of mean density for data in Table 6.5.
-- Figure 9.7 R code for determining the posterior distribution for the negative binomial
-- Figure 9.9 Code snippet for generating samples from posterior for negative binomial
+- Figure 6.17 R functions for solution of Example 6.9. (p. 228)
+- Figure 7.10 R code to compute generalized logistic growth equation. (p. 251)
+- Figure 7.11 R listing for fitting Listeria data. (p. 253)
+- Figure 8.14 Program listing in R to compute best-fit parameters. (p. 315)
+- Figure 9.5 R code for bootstrap analysis of mean density for data in Table 6.5. (p. 333)
+- Figure 9.7 R code for determining the posterior distribution for the negative binomial. (p. 334)
+- Figure 9.9 Code snippet for generating samples from posterior for negative binomial. (p. 337)
 
 ## Clear the workspace
 
