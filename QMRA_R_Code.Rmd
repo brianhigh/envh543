@@ -3,6 +3,7 @@ title: "QMRA R Code"
 output:
   html_document:
     fig_caption: no
+    keep_md: yes
     theme: united
     toc: yes
   pdf_document:
@@ -21,6 +22,23 @@ This is the copyright statement for the book:
 
 > © Haas, Charles N.; Rose, Joan B.; Gerba, Charles P., Jun 02, 2014, 
 > Quantitative Microbial Risk Assessment Wiley, Somerset, ISBN: 9781118910528
+
+We have been licensed by Wiley to post the R-code "figures" from the book
+on [https://github.com/brianhigh/envh543](https://github.com/brianhigh/envh543).
+
+Here is our [RightsLink](http://www.copyright.com/) license number:
+
+```
+License Date: Mar 18, 2016
+License Number: 3831970414111
+Type Of Use: Website
+```
+
+The R-code has been modified so that it will run and will be more readable. The 
+original code snippets published in the book were generally too buggy to use 
+without these modifications. The most common error was to use `< -` for
+assignment instead of `<-`. These issues resulted in unrecoverable errors. These
+and other errors have been fixed in the code below.
 
 ## Extract the code from the PDF
 
@@ -94,6 +112,9 @@ From: CHAPTER 6 EXPOSURE ASSESSMENT, p. 228
 Figure 6.17 R functions for solution of Example 6.9.
 
 ```{r figure-0617}
+# © Haas, Charles N.; Rose, Joan B.; Gerba, Charles P., Jun 02, 2014, 
+# Quantitative Microbial Risk Assessment Wiley, Somerset, ISBN: 9781118910528
+
 volume <- c(0.032, 0.026, 0.021, 0.018, 0.016, 0.011, 0.005)
 n <- c(29, 30, 28, 30, 29, 25, 30)
 p <- c(7, 4, 3, 4, 2, 2, 2)
@@ -124,6 +145,9 @@ From: TYPES OF GROWTH PROCESSES, p. 251
 Figure 7.10 R code to compute generalized logistic growth equation.
 
 ```{r figure-0710}
+# © Haas, Charles N.; Rose, Joan B.; Gerba, Charles P., Jun 02, 2014, 
+# Quantitative Microbial Risk Assessment Wiley, Somerset, ISBN: 9781118910528
+
 library("deSolve")
 genlogist <- function(t, N, params) {
     # Generalized logistic with zero, one, two and three parameters
@@ -168,6 +192,9 @@ From: TYPES OF GROWTH PROCESSES, p. 253
 Figure 7.11 R listing for fitting Listeria data.
 
 ```{r figure-0711, warning=FALSE, results='hide', eval=TRUE, cache=TRUE}
+# © Haas, Charles N.; Rose, Joan B.; Gerba, Charles P., Jun 02, 2014, 
+# Quantitative Microbial Risk Assessment Wiley, Somerset, ISBN: 9781118910528
+
 # Fit listeria data - 1.5o skim milk
 # Xanthiakos, K., D. Simos, A. S. Angelidis, G. J. Nychas and K. Koutsoumanis (2006).
 # "Dynamic modeling of Listeria monocytogenes growth in pasteurized milk."
@@ -251,6 +278,9 @@ From APPENDIX, p. 315
 Figure 8.14 Program listing in R to compute best-fit parameters.
 
 ```{r figure-0814}
+# © Haas, Charles N.; Rose, Joan B.; Gerba, Charles P., Jun 02, 2014, 
+# Quantitative Microbial Risk Assessment Wiley, Somerset, ISBN: 9781118910528
+
 dose <- c(90000, 9000, 900, 90, 9, 0.9, 0.09, 0.009)
 total <- c(3, 7, 8, 9, 11, 7, 7, 7)
 positives <- c(3, 5, 7, 8, 8, 1, 0, 0)
@@ -295,6 +325,9 @@ From: APPLICATIONS, p. 333
 Figure 9.5 R code for bootstrap analysis of mean density for data in Table 6.5.
 
 ```{r figure-0905}
+# © Haas, Charles N.; Rose, Joan B.; Gerba, Charles P., Jun 02, 2014, 
+# Quantitative Microbial Risk Assessment Wiley, Somerset, ISBN: 9781118910528
+
 library(boot) # Requires the bootstrap package
 oocysts <-
   c(
@@ -332,6 +365,9 @@ From: CHAPTER 9 UNCERTAINTY, p. 334
 Figure 9.7 R code for determining the posterior distribution for the negative binomial
 
 ```{r figure-0907, eval=TRUE}
+# © Haas, Charles N.; Rose, Joan B.; Gerba, Charles P., Jun 02, 2014, 
+# Quantitative Microbial Risk Assessment Wiley, Somerset, ISBN: 9781118910528
+
 require(cubature) # Numerical integration package (needs to be installed)
 require(lattice)  # for contour plotting
 
@@ -401,6 +437,9 @@ From: CHAPTER 6 EXPOSURE ASSESSMENT, p. 337
 Figure 9.9 Code snippet for generating samples from posterior for negative binomial
 
 ```{r figure-0909}
+# © Haas, Charles N.; Rose, Joan B.; Gerba, Charles P., Jun 02, 2014, 
+# Quantitative Microbial Risk Assessment Wiley, Somerset, ISBN: 9781118910528
+
 muMC <- c()
 kMC <- c()
 neededlength <- 2000

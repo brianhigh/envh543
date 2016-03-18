@@ -2,9 +2,12 @@
 title: "R and textbook resources for ENV H 543"
 author: "Brian High"
 date: "3/10/2016"
-output: 
-    html_document:
-        toc: yes
+output:
+  html_document:
+    keep_md: yes
+    toc: yes
+  pdf_document:
+    toc: yes
 ---
 
 ## RStudio Server: "Phage"
@@ -49,7 +52,7 @@ statistical analyses of environmental data.
 
 - Introduces fundamental data science methodologies using the R programming language
 - Covers concepts through real-world datasets and case studies
--Examines cutting edge topics in both research and commercial applications
+- Examines cutting edge topics in both research and commercial applications
 
 [Beginning Data Science with R](http://alliance-primo.hosted.exlibrisgroup.com/primo_library/libweb/action/dlDisplay.do?vid=UW&search_scope=all&docId=dedupmrg490691634&fn=permalink), Manas A. Pathak. 2014 Cham: Springer International Publishing.
 
