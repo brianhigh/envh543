@@ -351,18 +351,18 @@ attach(A)
 
 ```r
 #---------------------------------------------
-ObjFunc<-function(paramsin){
+ObjFunc<-function(paramsin) {
     # Computes ESS
-    if (modell==0){
+    if (modell==0) {
        paramsin["theta1"] <- 1
        paramsin["theta2"] <- 1
        paramsin["theta3"] <- 1}
 
-    if (modell==1){
+    if (modell==1) {
        paramsin["theta2"] <- 1
        paramsin["theta3"] <- 1}
 
-    if (modell==2){
+    if (modell==2) {
        paramsin["theta3"] <- 1}
 
     params <-
@@ -618,7 +618,7 @@ require(lattice)  # for contour plotting
 observations <<- c(27,30,60,60,70,70,74,80,81,82,84,84,93,98,98,101,105,110)
 
 #----------- Prior Distribution of Parameters --------
-prior <- function(mu, k){
+prior <- function(mu, k) {
     pmu <- ((mu > 1) & (mu < 500)) / 499
     pk <- ((k > 0.01) & (k < 20)) / 19.99
     A <- pmu * pk
@@ -626,7 +626,7 @@ prior <- function(mu, k){
 }
 
 #------------- Neg Binomial Distribution -------------
-NB <- function(mu, k, x){
+NB <- function(mu, k, x) {
     A <-gamma(x + k) / (gamma(k) * factorial(x))
     B <-(mu / (k + mu))^x
     C <-((k + mu) / k)^(-k)
@@ -634,7 +634,7 @@ NB <- function(mu, k, x){
 }
 
 #------------Likelihood Function --------------------
- Likelihood <- function(mu, k, data){
+ Likelihood <- function(mu, k, data) {
     L <- NB(mu, k, data)
     Lik <- prod(L)
     return(Lik)
@@ -663,7 +663,7 @@ mu <- seq(from=60, to=102, by=1)
 k <- seq(from=4, to=20, by=.1)
 values <- expand.grid(mu=mu, k=k)
 posterior <- vector(mode="numeric", length=dim(values)[1])
-for (i in 1:dim(values)[1]){
+for (i in 1:dim(values)[1]) {
     posterior[i] <- Integrand(c(values[i, 1], values[i, 2]))
     posterior[i] <- posterior[i] / I$integral
 }
@@ -691,7 +691,7 @@ kMC <- c()
 neededlength <- 2000
 draws <- 0
 
-while (length(kMC) < neededlength){
+while (length(kMC) < neededlength) {
     mutrial <- runif(1, 1, 500)
     ktrial <- runif(1, 0.01, 20)
     ztrial <- runif(1, 0, .008)
@@ -700,7 +700,7 @@ while (length(kMC) < neededlength){
     draws <- draws + 1
     
     PosteriorTrial <- Integrand(c(mutrial, ktrial)) / I$integral
-    if (PosteriorTrial > ztrial){
+    if (PosteriorTrial > ztrial) {
         muMC <- c(muMC, mutrial)
         kMC <- c(kMC, ktrial)
     }
