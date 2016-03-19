@@ -121,7 +121,7 @@ p <- c(7, 4, 3, 4, 2, 2, 2)
 mu_i <- -(1 / volume) * log((n - p) / n)
 data <- data.frame(volume, n, p, mu_i)
 
-LnL <- function(guess,data) {
+LnL <- function(guess, data) {
     tmp <- volume * (guess - mu_i) * (n - p) - p * 
         log((1 - exp(-guess * volume)) / (1 - exp(-mu_i * volume)))
     sum(tmp)
@@ -234,7 +234,7 @@ ObjFunc<-function(paramsin) {
           paramsin["theta2"], paramsin["theta3"], modell)
 
     y <- ode(N0, timepoints, genlogist, params, method="daspk")
-    pred <- y[,"1"]
+    pred <- y[, "1"]
     ESS <- log(obsN) - log(pred)
 
     A <- c(ESS^2)
@@ -295,7 +295,7 @@ pred.betaPoisson <- function(alpha, N50, data) {
 
 #--------------------------------------------------------------
 # Function to Return Deviance
-deviance <- function(params,data) {
+deviance <- function(params, data) {
     alpha = params[1]
     N50 = params[2]
     fpred <- pred.betaPoisson(alpha, N50, data)
