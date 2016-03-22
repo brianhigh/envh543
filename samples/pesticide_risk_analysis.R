@@ -50,31 +50,26 @@ load.pkgs(c("mc2d", "fitdistrplus", "STAND", "ggplot2"))
 #:-----------------------------------------------------------------------------:
 
 # Import of exposure datasets
-ocap <- read.delim(file.path(data.dir, 'ocapd.txt'))
-dfml <- read.delim(file.path(data.dir, 'dfmld.txt'))
+ocap <- read.delim(file.path('data', 'ocapd.txt'))
+dfml <- read.delim(file.path('data', 'dfmld.txt'))
 
 #:-----------------------------------------------------------------------------:
 # Normalize by dividing by weight
 #:-----------------------------------------------------------------------------:
 
-dfml$normlowa <- dfml$lowarmug/dfml$ailbs
-dfml$normupa <- dfml$uparmug/dfml$ailbs
-dfml$normchest <- dfml$chestug/dfml$ailbs
-dfml$normback <- dfml$backug/dfml$ailbs
-dfml$normlowl <- dfml$lowlegug/dfml$ailbs
-dfml$normupl <- dfml$uplegug/dfml$ailbs
-dfml$normhead <- dfml$faceug/dfml$ailbs
-dfml$normhand <- dfml$handug/dfml$ailbs
-ocap$normlowl <- ocap$lowlegug/ocap$ailbs
-ocap$normupl <- ocap$uplegug/ocap$ailbs
-ocap$normchest <- ocap$chestug/ocap$ailbs
-ocap$normback <- ocap$backug/ocap$ailbs
-ocap$normupa <- ocap$uparmug/ocap$ailbs
-ocap$normlowa <- ocap$lowarmug/ocap$ailbs
-ocap$normhand <- ocap$handug/ocap$ailbs
-ocap$normhead <- ocap$headug/ocap$ailbs
-ocap$normface <- ocap$faceug/ocap$ailbs
-ocap$normCRhead <- ocap$CRheadug/ocap$ailbs
+dfml.norm <- data.frame(sapply(names(dfml)[5:12],
+                               function(x) dfml[[x]]/dfml$ailbs))
+names(dfml.norm) <- c('normlowa', 'normupa', 'normchest', 'normback', 
+                      'normlowl', 'normupl', 'normhead', 'normhand')
+dfml <- cbind(dfml, dfml.norm)
+
+ocap.norm <- data.frame(sapply(names(ocap)[c(4:12, 14)],
+                               function(x) ocap[[x]]/ocap$ailbs))
+names(ocap.norm) <- c('normlowa', 'normupa', 'normchest', 'normback', 
+                      'normlowl', 'normupl', 'normface', 'normhand', 
+                      'normCRhead', 'normhead')
+ocap <- cbind(ocap, ocap.norm)
+
 
 #:-----------------------------------------------------------------------------:
 # Fit Inhalation Distributions
