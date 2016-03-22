@@ -1,7 +1,7 @@
 #:-----------------------------------------------------------------------------:
 # Pesticide Risk Analysis Example
 # 
-# License: MIT License
+# MIT License
 #
 # Copyright (c) 2016 Jane G. Pouzou and Brian High
 # 
