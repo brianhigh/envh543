@@ -608,10 +608,7 @@ cornode(nmcbackdistoc, nmcCRheaddistoc, target= 0.49)
 
 cornode(nmcheaddistoc, nmchanddistoc, target=0.46)
 cornode(nmcheaddistoc, nmcfacedistoc, target= 0.48)
-
-# cornode(nmcheaddistoc, nmcCRheaddistoc, target= 1)
-## Error in chol.default(target) : 
-##     the leading minor of order 2 is not positive definite
+cornode(nmcheaddistoc, nmcCRheaddistoc, target= 0.99)
 
 cornode(nmchanddistoc, nmcfacedistoc, target=0.45 )
 cornode(nmchanddistoc, nmcCRheaddistoc, target=0.46 )
