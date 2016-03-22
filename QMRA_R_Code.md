@@ -115,7 +115,7 @@ p <- c(7, 4, 3, 4, 2, 2, 2)
 mu_i <- -(1 / volume) * log((n - p) / n)
 data <- data.frame(volume, n, p, mu_i)
 
-LnL <- function(guess,data) {
+LnL <- function(guess, data) {
     tmp <- volume * (guess - mu_i) * (n - p) - p * 
         log((1 - exp(-guess * volume)) / (1 - exp(-mu_i * volume)))
     sum(tmp)
@@ -220,7 +220,7 @@ y <- ode(N0, times, genlogist, params, method = 'adams')
 plot(y, log = "y")
 ```
 
-![](QMRA_R_Code_files/figure-html/figure-0710-1.png)
+![](QMRA_R_Code_files/figure-html/figure-0710-1.png) 
 
 ```r
 print(y)
@@ -370,7 +370,7 @@ ObjFunc<-function(paramsin) {
           paramsin["theta2"], paramsin["theta3"], modell)
 
     y <- ode(N0, timepoints, genlogist, params, method="daspk")
-    pred <- y[,"1"]
+    pred <- y[, "1"]
     ESS <- log(obsN) - log(pred)
 
     A <- c(ESS^2)
@@ -410,17 +410,17 @@ print(best)
 ```
 ## $par
 ##          lnk          lnK       theta1       theta2       theta3 
-##  -4.75387114  33.66206091   0.06180266   3.71374598 105.27707773 
+##  -4.75387059  33.66206072   0.06180266   3.71374578 105.27706373 
 ## 
 ## $value
 ## [1] 1.172276
 ## 
 ## $counts
 ## function gradient 
-##      951       NA 
+##      633       NA 
 ## 
 ## $convergence
-## [1] 10
+## [1] 0
 ## 
 ## $message
 ## NULL
@@ -436,14 +436,14 @@ print(working)
 ## 2   143.3962     5972.003     6143.760
 ## 3   260.3773     4536.490     7532.750
 ## 4   383.0189     4859.258     9810.019
-## 5   500.0000    12719.792    13583.700
-## 6   598.1132    12719.792    19515.141
-## 7   696.2264    31084.222    32271.285
-## 8   792.4528    84211.228    68389.882
-## 9   884.9056   300337.803   230430.195
-## 10 1052.8302  4859258.466  6315294.051
-## 11 1205.6604 25292397.580 25791994.529
-## 12 1371.6981 61807332.420 49686290.127
+## 5   500.0000    12719.792    13583.701
+## 6   598.1132    12719.792    19515.143
+## 7   696.2264    31084.222    32271.287
+## 8   792.4528    84211.228    68389.885
+## 9   884.9056   300337.803   230430.160
+## 10 1052.8302  4859258.466  6315291.322
+## 11 1205.6604 25292397.580 25791991.676
+## 12 1371.6981 61807332.420 49686292.102
 ```
 
 ## Figure 8.14
@@ -471,7 +471,7 @@ pred.betaPoisson <- function(alpha, N50, data) {
 
 #--------------------------------------------------------------
 # Function to Return Deviance
-deviance <- function(params,data) {
+deviance <- function(params, data) {
     alpha = params[1]
     N50 = params[2]
     fpred <- pred.betaPoisson(alpha, N50, data)
@@ -598,7 +598,7 @@ plot(fig, xlab = "mean density #/L", ylab = 'cumulative<=',
      main = '10,000 bootstrap replicates')
 ```
 
-![](QMRA_R_Code_files/figure-html/figure-0905-1.png)
+![](QMRA_R_Code_files/figure-html/figure-0905-1.png) 
 
 ## Figure 9.7
 
@@ -673,7 +673,7 @@ contourplot(posterior ~ mu * k, data=tableau, cuts=12, xlim=c(62, 97),
             ylim=c(4.0, 20), label.style='align', font=2, ps=17)
 ```
 
-![](QMRA_R_Code_files/figure-html/figure-0907-1.png)
+![](QMRA_R_Code_files/figure-html/figure-0907-1.png) 
 
 ## Figure 9.9
 
@@ -710,4 +710,4 @@ plot.new()
 plot(muMC, kMC, type="p", xlab="mu", ylab="k")
 ```
 
-![](QMRA_R_Code_files/figure-html/figure-0909-1.png)
+![](QMRA_R_Code_files/figure-html/figure-0909-1.png) 
