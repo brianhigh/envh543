@@ -718,28 +718,30 @@ cornode(nmcfacedistoc, nmcCRheaddistoc, target=0.48)
 embrate <- mcstoc(rtriang, type="V", min=0.003, max=0.015, mode=0.015)
 
 # Application rates with uncertainty
-embfinappr <- embrate - (embrate*apprerr)
+embfinappr <- embrate - (embrate * apprerr)
 
 # Dermal absorption (based on registrant studies)
 emabdermabs <- mcstoc(rnorm, type="U", mean=0.017776, sd=0.014668, rtrunc=TRUE, 
                       linf=0)
 
-embinhdose <- ((nmcairdistdf*mlbrrate*embfinappr*acredis*1000/60) + 
-                   (nmcairdistoc*applbrrate*embfinappr*acredis*1000/60))/(bodyweight*1000)
+embinhdose <- ((nmcairdistdf * mlbrrate * embfinappr * acredis * 1000/60) + 
+                   (nmcairdistoc * applbrrate * embfinappr * acredis * 1000/60)) / 
+    (bodyweight * 1000)
 
 # Emamben ppe: cloth on body, gloves on hands, goggles on face
 emamlderm <- (nmclowldistdf + nmcupldistdf + nmcchestdistdf + nmcbackdistdf + 
               nmcupadistdf + nmclowadistdf + 
-                  nmcheaddistdf*(headnecksa/facefnecksa) - 
-                  nmcheaddistdf*.1 + nmchanddistdf)
+                  nmcheaddistdf * (headnecksa/facefnecksa) - 
+                  nmcheaddistdf * .1 + nmchanddistdf)
 emaocderm <- (nmclowldistoc + nmcupldistoc + nmcchestdistoc + nmcbackdistoc + 
-              nmcupadistoc + nmclowadistoc + (nmcheaddistoc 
-                                              - nmcfacedistoc*.1) + nmchanddistoc)
+              nmcupadistoc + nmclowadistoc + 
+                  (nmcheaddistoc - nmcfacedistoc * .1) + nmchanddistoc)
 emaocderm <- ifelse(emaocderm>0, emaocderm, 0)
 emamlderm <- ifelse(emamlderm>0, emamlderm, 0)
 
-embdermdose <- ((emamlderm*emabdermabs*embfinappr*acredis) + 
-                    (emaocderm*emabdermabs*embfinappr*acredis))/(bodyweight*1000)
+embdermdose <- ((emamlderm * emabdermabs * embfinappr * acredis) + 
+                    (emaocderm * emabdermabs * embfinappr * acredis)) / 
+    (bodyweight * 1000)
 embdose <- (embdermdose + embinhdose)
 
 efraction.exact(embdose, gam=0.95, L=0.00025 , logx=TRUE, wpnt=FALSE)
@@ -786,7 +788,7 @@ slope2 <- mcstoc(rnorm, type="U", mean=0.115613, sd=4.55E-05, rtrunc=TRUE,
                  linf=-0.176931, lsup=0.408158)	
 
 # function Emamectin B neuro (tremors - quantal)
-qln2 <- bckgrd2 + (1 - bckgrd2)*(1 - exp( - slope2*embdose))
+qln2 <- bckgrd2 + (1 - bckgrd2) * (1 - exp( - slope2 * embdose))
 ebneuro <- mc(qln2)
 summary(ebneuro)
 
