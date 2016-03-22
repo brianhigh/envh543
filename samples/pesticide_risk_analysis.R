@@ -45,12 +45,6 @@ load.pkgs <- function(pkgs, repos = "http://cran.r-project.org") {
 # Load the required packages, installing as needed.
 load.pkgs(c("mc2d", "fitdistrplus", "STAND", "ggplot2"))
 
-# Create the data folder if it does not already exist.
-data.dir <- "data"
-dir.create(file.path(data.dir),
-           showWarnings = FALSE,
-           recursive = TRUE)
-
 #:-----------------------------------------------------------------------------:
 # Import the data
 #:-----------------------------------------------------------------------------:
