@@ -86,9 +86,9 @@ air17 <- subset(dfair, dfair$study=="AHE17")
 air18 <- subset(dfair, dfair$study=="AHE18")
 air20 <- subset(dfair, dfair$study=="AHE20")
 air21 <- subset(dfair, dfair$study=="AHE21")
-airdist17 <- fitdist(air17$airsamp, "lnorm") 
-airdist18 <- fitdist(air18$airsamp, "lnorm")  
-airdist20 <- fitdist(air20$airsamp, "lnorm") 
+airdist17 <- fitdist(air17$airsamp, "lnorm")
+airdist18 <- fitdist(air18$airsamp, "lnorm")
+airdist20 <- fitdist(air20$airsamp, "lnorm")
 airdist21 <- fitdist(air21$airsamp, "lnorm")
 
 # Open Cab Application 
@@ -96,10 +96,10 @@ air07 <- subset(ocair, ocair$study=="AHE07")
 air62 <- subset(ocair, ocair$study=="AHE62")
 air63 <- subset(ocair, ocair$study=="AHE63")
 air64 <- subset(ocair, ocair$study=="AHE64")
-airdist07 <- fitdist(air07$airsamp, "lnorm") 
-airdist62 <- fitdist(air62$airsamp, "lnorm")  
-airdist63 <- fitdist(air63$airsamp, "lnorm")  
-airdist64 <- fitdist(air64$airsamp, "lnorm") 
+airdist07 <- fitdist(air07$airsamp, "lnorm")
+airdist62 <- fitdist(air62$airsamp, "lnorm")
+airdist63 <- fitdist(air63$airsamp, "lnorm")
+airdist64 <- fitdist(air64$airsamp, "lnorm")
 
 #:-----------------------------------------------------------------------------:
 # Fit Dermal Distributions
@@ -129,71 +129,71 @@ lowl18 <- subset(dflowl, dflowl$study=="AHE18")
 lowl20 <- subset(dflowl, dflowl$study=="AHE20")
 lowl21 <- subset(dflowl, dflowl$study=="AHE21")
 lowldist17 <- fitdist(lowl17$normlowl, "lnorm")
-lowldist18 <- fitdist(lowl18$normlowl, "lnorm")  
-lowldist20 <- fitdist(lowl20$normlowl, "lnorm") 
-lowldist21 <- fitdist(lowl21$normlowl, "lnorm") 
+lowldist18 <- fitdist(lowl18$normlowl, "lnorm") 
+lowldist20 <- fitdist(lowl20$normlowl, "lnorm")
+lowldist21 <- fitdist(lowl21$normlowl, "lnorm")
 
 upl17 <- subset(dfupl, dfupl$study=="AHE17")
 upl18 <- subset(dfupl, dfupl$study=="AHE18")
 upl20 <- subset(dfupl, dfupl$study=="AHE20")
 upl21 <- subset(dfupl, dfupl$study=="AHE21")
-upldist17 <- fitdist(upl17$normupl, "lnorm") 
-upldist18 <- fitdist(upl18$normupl, "lnorm")  
-upldist20 <- fitdist(upl20$normupl, "lnorm") 
-upldist21 <- fitdist(upl21$normupl, "lnorm") 
+upldist17 <- fitdist(upl17$normupl, "lnorm")
+upldist18 <- fitdist(upl18$normupl, "lnorm")
+upldist20 <- fitdist(upl20$normupl, "lnorm")
+upldist21 <- fitdist(upl21$normupl, "lnorm")
 
 upa17 <- subset(dfupa, dfupa$study=="AHE17")
 upa18 <- subset(dfupa, dfupa$study=="AHE18")
 upa20 <- subset(dfupa, dfupa$study=="AHE20")
 upa21 <- subset(dfupa, dfupa$study=="AHE21")
-upadist17 <- fitdist(upa17$normupa, "lnorm") 
-upadist18 <- fitdist(upa18$normupa, "lnorm") 
-upadist20 <- fitdist(upa20$normupa, "lnorm") 
-upadist21 <- fitdist(upa21$normupa, "lnorm") 
+upadist17 <- fitdist(upa17$normupa, "lnorm")
+upadist18 <- fitdist(upa18$normupa, "lnorm")
+upadist20 <- fitdist(upa20$normupa, "lnorm")
+upadist21 <- fitdist(upa21$normupa, "lnorm")
 
 lowa17 <- subset(dflowa, dflowa$study=="AHE17")
 lowa18 <- subset(dflowa, dflowa$study=="AHE18")
 lowa20 <- subset(dflowa, dflowa$study=="AHE20")
 lowa21 <- subset(dflowa, dflowa$study=="AHE21")
-lowadist17 <- fitdist(lowa17$normlowa, "lnorm") 
-lowadist18 <- fitdist(lowa18$normlowa, "lnorm")  
-lowadist20 <- fitdist(lowa20$normlowa, "lnorm") 
-lowadist21 <- fitdist(lowa21$normlowa, "lnorm") 
+lowadist17 <- fitdist(lowa17$normlowa, "lnorm")
+lowadist18 <- fitdist(lowa18$normlowa, "lnorm")
+lowadist20 <- fitdist(lowa20$normlowa, "lnorm")
+lowadist21 <- fitdist(lowa21$normlowa, "lnorm")
 
 chest17 <- subset(dfchest, dfchest$study=="AHE17")
 chest18 <- subset(dfchest, dfchest$study=="AHE18")
 chest20 <- subset(dfchest, dfchest$study=="AHE20")
 chest21 <- subset(dfchest, dfchest$study=="AHE21")
-chestdist17 <- fitdist(chest17$normchest, "lnorm") 
-chestdist18 <- fitdist(chest18$normchest, "lnorm")  
-chestdist20 <- fitdist(chest20$normchest, "lnorm") 
+chestdist17 <- fitdist(chest17$normchest, "lnorm")
+chestdist18 <- fitdist(chest18$normchest, "lnorm")
+chestdist20 <- fitdist(chest20$normchest, "lnorm")
 chestdist21 <- fitdist(chest21$normchest, "lnorm")
 
 back17 <- subset(dfback, dfback$study=="AHE17")
 back18 <- subset(dfback, dfback$study=="AHE18")
 back20 <- subset(dfback, dfback$study=="AHE20")
 back21 <- subset(dfback, dfback$study=="AHE21")
-backdist17 <- fitdist(back17$normback, "lnorm") 
-backdist18 <- fitdist(back18$normback, "lnorm")  
-backdist20 <- fitdist(back20$normback, "lnorm") 
+backdist17 <- fitdist(back17$normback, "lnorm")
+backdist18 <- fitdist(back18$normback, "lnorm")
+backdist20 <- fitdist(back20$normback, "lnorm")
 backdist21 <- fitdist(back21$normback, "lnorm")
 
 hand17 <- subset(dfhand, dfhand$study=="AHE17")
 hand18 <- subset(dfhand, dfhand$study=="AHE18")
 hand20 <- subset(dfhand, dfhand$study=="AHE20")
 hand21 <- subset(dfhand, dfhand$study=="AHE21")
-handdist17 <- fitdist(hand17$normhand, "lnorm") 
-handdist18 <- fitdist(hand18$normhand, "lnorm")  
-handdist20 <- fitdist(hand20$normhand, "lnorm") 
+handdist17 <- fitdist(hand17$normhand, "lnorm")
+handdist18 <- fitdist(hand18$normhand, "lnorm")
+handdist20 <- fitdist(hand20$normhand, "lnorm")
 handdist21 <- fitdist(hand21$normhand, "lnorm")
 
 head17 <- subset(dfhead, dfhead$study=="AHE17")
 head18 <- subset(dfhead, dfhead$study=="AHE18")
 head20 <- subset(dfhead, dfhead$study=="AHE20")
 head21 <- subset(dfhead, dfhead$study=="AHE21")
-headdist17 <- fitdist(head17$normhead, "lnorm") 
-headdist18 <- fitdist(head18$normhead, "lnorm")  
-headdist20 <- fitdist(head20$normhead, "lnorm") 
+headdist17 <- fitdist(head17$normhead, "lnorm")
+headdist18 <- fitdist(head18$normhead, "lnorm")
+headdist20 <- fitdist(head20$normhead, "lnorm")
 headdist21 <- fitdist(head21$normhead, "lnorm")
 
 # Open cab appl
@@ -216,9 +216,9 @@ lowl64 <- subset(oclowl, oclowl$study=="AHE64")
 
 lowldistoc <- fitdist(oclowl$normlowl, "lnorm")
 lowldist07 <- fitdist(lowl07$normlowl, "lnorm")
-lowldist62 <- fitdist(lowl62$normlowl, "lnorm")  
-lowldist63 <- fitdist(lowl63$normlowl, "lnorm") 
-lowldist64 <- fitdist(lowl64$normlowl, "lnorm") 
+lowldist62 <- fitdist(lowl62$normlowl, "lnorm")
+lowldist63 <- fitdist(lowl63$normlowl, "lnorm")
+lowldist64 <- fitdist(lowl64$normlowl, "lnorm")
 
 upl07 <- subset(ocupl, ocupl$study=="AHE07")
 upl62 <- subset(ocupl, ocupl$study=="AHE62")
@@ -226,10 +226,10 @@ upl63 <- subset(ocupl, ocupl$study=="AHE63")
 upl64 <- subset(ocupl, ocupl$study=="AHE64")
 
 upldistoc <- fitdist(ocupl$normupl, "lnorm")
-upldist07 <- fitdist(upl07$normupl, "lnorm") 
-upldist62 <- fitdist(upl62$normupl, "lnorm")  
-upldist63 <- fitdist(upl63$normupl, "lnorm") 
-upldist64 <- fitdist(upl64$normupl, "lnorm") 
+upldist07 <- fitdist(upl07$normupl, "lnorm")
+upldist62 <- fitdist(upl62$normupl, "lnorm")
+upldist63 <- fitdist(upl63$normupl, "lnorm")
+upldist64 <- fitdist(upl64$normupl, "lnorm")
 
 upa07 <- subset(ocupa, ocupa$study=="AHE07")
 upa62 <- subset(ocupa, ocupa$study=="AHE62")
@@ -237,10 +237,10 @@ upa63 <- subset(ocupa, ocupa$study=="AHE63")
 upa64 <- subset(ocupa, ocupa$study=="AHE64")
 
 upadistoc <- fitdist(ocupa$normupa, "lnorm")
-upadist07 <- fitdist(upa07$normupa, "lnorm") 
-upadist62 <- fitdist(upa62$normupa, "lnorm") 
-upadist63 <- fitdist(upa63$normupa, "lnorm")  
-upadist64 <- fitdist(upa64$normupa, "lnorm") 
+upadist07 <- fitdist(upa07$normupa, "lnorm")
+upadist62 <- fitdist(upa62$normupa, "lnorm")
+upadist63 <- fitdist(upa63$normupa, "lnorm")
+upadist64 <- fitdist(upa64$normupa, "lnorm")
 
 lowa07 <- subset(oclowa, oclowa$study=="AHE07")
 lowa62 <- subset(oclowa, oclowa$study=="AHE62")
@@ -248,10 +248,10 @@ lowa63 <- subset(oclowa, oclowa$study=="AHE63")
 lowa64 <- subset(oclowa, oclowa$study=="AHE64")
 
 lowadistoc <- fitdist(oclowa$normlowa, "lnorm")
-lowadist07 <- fitdist(lowa07$normlowa, "lnorm") 
-lowadist62 <- fitdist(lowa62$normlowa, "lnorm")  
-lowadist63 <- fitdist(lowa63$normlowa, "lnorm")  
-lowadist64 <- fitdist(lowa64$normlowa, "lnorm") 
+lowadist07 <- fitdist(lowa07$normlowa, "lnorm")
+lowadist62 <- fitdist(lowa62$normlowa, "lnorm")
+lowadist63 <- fitdist(lowa63$normlowa, "lnorm")
+lowadist64 <- fitdist(lowa64$normlowa, "lnorm")
 
 chest07 <- subset(occhest, occhest$study=="AHE07")
 chest62 <- subset(occhest, occhest$study=="AHE62")
@@ -259,10 +259,10 @@ chest63 <- subset(occhest, occhest$study=="AHE63")
 chest64 <- subset(occhest, occhest$study=="AHE64")
 
 chestdistoc <- fitdist(occhest$normchest, "lnorm")
-chestdist07 <- fitdist(chest07$normchest, "lnorm") 
-chestdist62 <- fitdist(chest62$normchest, "lnorm")  
-chestdist63 <- fitdist(chest63$normchest, "lnorm")  
-chestdist64 <- fitdist(chest64$normchest, "lnorm") 
+chestdist07 <- fitdist(chest07$normchest, "lnorm")
+chestdist62 <- fitdist(chest62$normchest, "lnorm")
+chestdist63 <- fitdist(chest63$normchest, "lnorm")
+chestdist64 <- fitdist(chest64$normchest, "lnorm")
 
 back07 <- subset(ocback, ocback$study=="AHE07")
 back62 <- subset(ocback, ocback$study=="AHE62")
@@ -270,10 +270,10 @@ back63 <- subset(ocback, ocback$study=="AHE63")
 back64 <- subset(ocback, ocback$study=="AHE64")
 
 backdistoc <- fitdist(ocback$normback, "lnorm")
-backdist07 <- fitdist(back07$normback, "lnorm") 
-backdist62 <- fitdist(back62$normback, "lnorm")  
-backdist63 <- fitdist(back63$normback, "lnorm")  
-backdist64 <- fitdist(back64$normback, "lnorm") 
+backdist07 <- fitdist(back07$normback, "lnorm")
+backdist62 <- fitdist(back62$normback, "lnorm")
+backdist63 <- fitdist(back63$normback, "lnorm")
+backdist64 <- fitdist(back64$normback, "lnorm")
 
 hand07 <- subset(ochand, ochand$study=="AHE07")
 hand62 <- subset(ochand, ochand$study=="AHE62")
@@ -281,10 +281,10 @@ hand63 <- subset(ochand, ochand$study=="AHE63")
 hand64 <- subset(ochand, ochand$study=="AHE64")
 
 handdistoc <- fitdist(ochand$normhand, "lnorm")
-handdist07 <- fitdist(hand07$normhand, "lnorm") 
-handdist62 <- fitdist(hand62$normhand, "lnorm")  
-handdist63 <- fitdist(hand63$normhand, "lnorm")  
-handdist64 <- fitdist(hand64$normhand, "lnorm") 
+handdist07 <- fitdist(hand07$normhand, "lnorm")
+handdist62 <- fitdist(hand62$normhand, "lnorm")
+handdist63 <- fitdist(hand63$normhand, "lnorm")
+handdist64 <- fitdist(hand64$normhand, "lnorm")
 
 head07 <- subset(ochead, ochead$study=="AHE07")
 head62 <- subset(ochead, ochead$study=="AHE62")
@@ -292,10 +292,10 @@ head63 <- subset(ochead, ochead$study=="AHE63")
 head64 <- subset(ochead, ochead$study=="AHE64")
 
 headdistoc <- fitdist(ochead$normhead, "lnorm")
-headdist07 <- fitdist(head07$normhead, "lnorm") 
-headdist62 <- fitdist(head62$normhead, "lnorm")  
-headdist63 <- fitdist(head63$normhead, "lnorm")  
-headdist64 <- fitdist(head64$normhead, "lnorm") 
+headdist07 <- fitdist(head07$normhead, "lnorm")
+headdist62 <- fitdist(head62$normhead, "lnorm")
+headdist63 <- fitdist(head63$normhead, "lnorm")
+headdist64 <- fitdist(head64$normhead, "lnorm")
 
 CRhead07 <- subset(ocCRhead, ocCRhead$study=="AHE07")
 CRhead62 <- subset(ocCRhead, ocCRhead$study=="AHE62")
@@ -303,10 +303,10 @@ CRhead63 <- subset(ocCRhead, ocCRhead$study=="AHE63")
 CRhead64 <- subset(ocCRhead, ocCRhead$study=="AHE64")
 
 CRheaddistoc <- fitdist(ocCRhead$normCRhead, "lnorm")
-CRheaddist07 <- fitdist(CRhead07$normCRhead, "lnorm") 
-CRheaddist62 <- fitdist(CRhead62$normCRhead, "lnorm")  
-CRheaddist63 <- fitdist(CRhead63$normCRhead, "lnorm")  
-CRheaddist64 <- fitdist(CRhead64$normCRhead, "lnorm") 
+CRheaddist07 <- fitdist(CRhead07$normCRhead, "lnorm")
+CRheaddist62 <- fitdist(CRhead62$normCRhead, "lnorm")
+CRheaddist63 <- fitdist(CRhead63$normCRhead, "lnorm")
+CRheaddist64 <- fitdist(CRhead64$normCRhead, "lnorm")
 
 face07 <- subset(ocface, ocface$study=="AHE07")
 face62 <- subset(ocface, ocface$study=="AHE62")
@@ -314,10 +314,10 @@ face63 <- subset(ocface, ocface$study=="AHE63")
 face64 <- subset(ocface, ocface$study=="AHE64")
 
 facedistoc <- fitdist(ocface$normface, "lnorm")
-facedist07 <- fitdist(face07$normface, "lnorm") 
-facedist62 <- fitdist(face62$normface, "lnorm")  
-facedist63 <- fitdist(face63$normface, "lnorm")  
-facedist64 <- fitdist(face64$normface, "lnorm") 
+facedist07 <- fitdist(face07$normface, "lnorm")
+facedist62 <- fitdist(face62$normface, "lnorm")
+facedist63 <- fitdist(face63$normface, "lnorm")
+facedist64 <- fitdist(face64$normface, "lnorm")
 
 ndvar=(1001)
 ndunc=(101)
@@ -334,7 +334,7 @@ acredis <- mcstoc(rtriang, type="V", min=1, max=60, mode=40)
 # Application Error distribution (source:  Rider and Dickey, 1982)
 apprerr <- mcstoc(rnorm, type="U", mean=-0.028, sd=0.262)
 
-# Body weight in kilograms (source: EFH, taken from NHANES IV, males 18 - 65, 
+# Body weight in kilograms (source: EFH, taken from NHANES IV, males 18-65, 
 # and from participants in AHETF studies).
 bwdis <- mcstoc(rnorm, type="V", mean=85.47, sd=19.03, rtrunc=TRUE, linf=0, 
                 lsup=300)
@@ -561,44 +561,62 @@ mchanddist21 <- mcstoc(rlnorm, type="V", meanlog=handdist21$est["meanlog"],
 #:-----------------------------------------------------------------------------:
 
 # Open Cab Appl
-nmclowldistoc <- mcprobtree(ocwgt, list("87"=mclowldist07, "88"=mclowldist62, 
-                                        "89"=mclowldist63, "90"=mclowldist64)) 
-nmcupldistoc <- mcprobtree(ocwgt, list("87"=mcupldist07, "88"=mcupldist62, 
-                                       "89"=mcupldist63, "90"=mcupldist64))
-nmclowadistoc <- mcprobtree(ocwgt, list("87"=mclowadist07, "88"=mclowadist62, 
-                                        "89"=mclowadist63, "90"=mclowadist64))
-nmcupadistoc <- mcprobtree(ocwgt, list("87"=mcupadist07, "88"=mcupadist62, 
-                                       "89"=mcupadist63, "90"=mcupadist64))
-nmcchestdistoc <- mcprobtree(ocwgt, list("87"=mcchestdist07, "88"=mcchestdist62, 
-                                         "89"=mcchestdist63, "90"=mcchestdist64))
-nmcbackdistoc <- mcprobtree(ocwgt, list("87"=mcbackdist07, "88"=mcbackdist62, 
-                                        "89"=mcbackdist63, "90"=mcbackdist64))
-nmcheaddistoc <- mcprobtree(ocwgt, list("87"=mcheaddist07, "88"=mcheaddist62, 
-                                        "89"=mcheaddist63, "90"=mcheaddist64))
-nmchanddistoc <- mcprobtree(ocwgt, list("87"=mchanddist07, "88"=mchanddist62, 
-                                        "89"=mchanddist63, "90"=mchanddist64))
-nmcfacedistoc <- mcprobtree(ocwgt, list("87"=mcfacedist07, "88"=mcfacedist62, 
-                                        "89"=mcfacedist63, "90"=mcfacedist64))
-nmcCRheaddistoc <- mcprobtree(ocwgt, list("87"=mcCRheaddist07, "88"=mcCRheaddist62, 
-                                          "89"=mcCRheaddist63, "90"=mcCRheaddist64))
+nmclowldistoc <- mcprobtree(ocwgt, 
+                            list("87"=mclowldist07, "88"=mclowldist62, 
+                                 "89"=mclowldist63, "90"=mclowldist64)) 
+nmcupldistoc <- mcprobtree(ocwgt, 
+                           list("87"=mcupldist07, "88"=mcupldist62, 
+                                "89"=mcupldist63, "90"=mcupldist64))
+nmclowadistoc <- mcprobtree(ocwgt, 
+                            list("87"=mclowadist07, "88"=mclowadist62, 
+                                 "89"=mclowadist63, "90"=mclowadist64))
+nmcupadistoc <- mcprobtree(ocwgt, 
+                           list("87"=mcupadist07, "88"=mcupadist62, 
+                                "89"=mcupadist63, "90"=mcupadist64))
+nmcchestdistoc <- mcprobtree(ocwgt, 
+                             list("87"=mcchestdist07, "88"=mcchestdist62, 
+                                  "89"=mcchestdist63, "90"=mcchestdist64))
+nmcbackdistoc <- mcprobtree(ocwgt, 
+                            list("87"=mcbackdist07, "88"=mcbackdist62, 
+                                 "89"=mcbackdist63, "90"=mcbackdist64))
+nmcheaddistoc <- mcprobtree(ocwgt, 
+                            list("87"=mcheaddist07, "88"=mcheaddist62, 
+                                 "89"=mcheaddist63, "90"=mcheaddist64))
+nmchanddistoc <- mcprobtree(ocwgt, 
+                            list("87"=mchanddist07, "88"=mchanddist62, 
+                                 "89"=mchanddist63, "90"=mchanddist64))
+nmcfacedistoc <- mcprobtree(ocwgt, 
+                            list("87"=mcfacedist07, "88"=mcfacedist62, 
+                                 "89"=mcfacedist63, "90"=mcfacedist64))
+nmcCRheaddistoc <- mcprobtree(ocwgt, 
+                              list("87"=mcCRheaddist07, "88"=mcCRheaddist62, 
+                                   "89"=mcCRheaddist63, "90"=mcCRheaddist64))
 
 # Dry flowables
-nmclowldistdf <- mcprobtree(dfweight, list("1"=mclowldist17, "2"=mclowldist18, 
-                                           "3"=mclowldist20, "4"=mclowldist21))
-nmcupldistdf <- mcprobtree(dfweight, list("1"=mcupldist17, "2"=mcupldist18, 
-                                          "3"=mcupldist20, "4"=mcupldist21))
-nmclowadistdf <- mcprobtree(dfweight, list("1"=mclowadist17, "2"=mclowadist18, 
-                                           "3"=mclowadist20, "4"=mclowadist21))
-nmcupadistdf <- mcprobtree(dfweight, list("1"=mcupadist17, "2"=mcupadist18, 
-                                          "3"=mcupadist20, "4"=mcupadist21))
-nmcchestdistdf <- mcprobtree(dfweight, list("1"=mcchestdist17, "2"=mcchestdist18, 
-                                            "3"=mcchestdist20, "4"=mcchestdist21))
-nmcbackdistdf <- mcprobtree(dfweight, list("1"=mcbackdist17, "2"=mcbackdist18, 
-                                           "3"=mcbackdist20, "4"=mcbackdist21))
-nmcheaddistdf <- mcprobtree(dfweight, list("1"=mcheaddist17, "2"=mcheaddist18, 
-                                           "3"=mcheaddist20, "4"=mcheaddist21))
-nmchanddistdf <- mcprobtree(dfweight, list("1"=mchanddist17, "2"=mchanddist18, 
-                                           "3"=mchanddist20, "4"=mchanddist21))
+nmclowldistdf <- mcprobtree(dfweight, 
+                            list("1"=mclowldist17, "2"=mclowldist18, 
+                                 "3"=mclowldist20, "4"=mclowldist21))
+nmcupldistdf <- mcprobtree(dfweight, 
+                           list("1"=mcupldist17, "2"=mcupldist18, 
+                                "3"=mcupldist20, "4"=mcupldist21))
+nmclowadistdf <- mcprobtree(dfweight, 
+                            list("1"=mclowadist17, "2"=mclowadist18, 
+                                 "3"=mclowadist20, "4"=mclowadist21))
+nmcupadistdf <- mcprobtree(dfweight, 
+                           list("1"=mcupadist17, "2"=mcupadist18, 
+                                "3"=mcupadist20, "4"=mcupadist21))
+nmcchestdistdf <- mcprobtree(dfweight, 
+                             list("1"=mcchestdist17, "2"=mcchestdist18, 
+                                  "3"=mcchestdist20, "4"=mcchestdist21))
+nmcbackdistdf <- mcprobtree(dfweight, 
+                            list("1"=mcbackdist17, "2"=mcbackdist18, 
+                                 "3"=mcbackdist20, "4"=mcbackdist21))
+nmcheaddistdf <- mcprobtree(dfweight, 
+                            list("1"=mcheaddist17, "2"=mcheaddist18, 
+                                 "3"=mcheaddist20, "4"=mcheaddist21))
+nmchanddistdf <- mcprobtree(dfweight, 
+                            list("1"=mchanddist17, "2"=mchanddist18, 
+                                 "3"=mchanddist20, "4"=mchanddist21))
 
 # Inhalation nested exposure distributions as mcnodes 
 bodyweight <- mcprobtree(bdwgt, list("1018"=bwdis, "1019"=bwdis2), type="V")
@@ -718,28 +736,30 @@ cornode(nmcfacedistoc, nmcCRheaddistoc, target=0.48)
 embrate <- mcstoc(rtriang, type="V", min=0.003, max=0.015, mode=0.015)
 
 # Application rates with uncertainty
-embfinappr <- embrate - (embrate*apprerr)
+embfinappr <- embrate - (embrate * apprerr)
 
 # Dermal absorption (based on registrant studies)
 emabdermabs <- mcstoc(rnorm, type="U", mean=0.017776, sd=0.014668, rtrunc=TRUE, 
                       linf=0)
 
-embinhdose <- ((nmcairdistdf*mlbrrate*embfinappr*acredis*1000/60) + 
-                   (nmcairdistoc*applbrrate*embfinappr*acredis*1000/60))/(bodyweight*1000)
+embinhdose <- ((nmcairdistdf * mlbrrate * embfinappr * acredis * 1000/60) + 
+               (nmcairdistoc * applbrrate * embfinappr * acredis * 1000/60)) / 
+    (bodyweight * 1000)
 
 # Emamben ppe: cloth on body, gloves on hands, goggles on face
 emamlderm <- (nmclowldistdf + nmcupldistdf + nmcchestdistdf + nmcbackdistdf + 
               nmcupadistdf + nmclowadistdf + 
-                  nmcheaddistdf*(headnecksa/facefnecksa) - 
-                  nmcheaddistdf*.1 + nmchanddistdf)
+                  nmcheaddistdf * (headnecksa/facefnecksa) - 
+                  nmcheaddistdf * .1 + nmchanddistdf)
 emaocderm <- (nmclowldistoc + nmcupldistoc + nmcchestdistoc + nmcbackdistoc + 
-              nmcupadistoc + nmclowadistoc + (nmcheaddistoc 
-                                              - nmcfacedistoc*.1) + nmchanddistoc)
+              nmcupadistoc + nmclowadistoc + 
+                  (nmcheaddistoc - nmcfacedistoc * .1) + nmchanddistoc)
 emaocderm <- ifelse(emaocderm>0, emaocderm, 0)
 emamlderm <- ifelse(emamlderm>0, emamlderm, 0)
 
-embdermdose <- ((emamlderm*emabdermabs*embfinappr*acredis) + 
-                    (emaocderm*emabdermabs*embfinappr*acredis))/(bodyweight*1000)
+embdermdose <- ((emamlderm * emabdermabs * embfinappr * acredis) + 
+                    (emaocderm * emabdermabs * embfinappr * acredis)) / 
+    (bodyweight * 1000)
 embdose <- (embdermdose + embinhdose)
 
 efraction.exact(embdose, gam=0.95, L=0.00025 , logx=TRUE, wpnt=FALSE)
@@ -786,7 +806,7 @@ slope2 <- mcstoc(rnorm, type="U", mean=0.115613, sd=4.55E-05, rtrunc=TRUE,
                  linf=-0.176931, lsup=0.408158)	
 
 # function Emamectin B neuro (tremors - quantal)
-qln2 <- bckgrd2 + (1 - bckgrd2)*(1 - exp( - slope2*embdose))
+qln2 <- bckgrd2 + (1 - bckgrd2) * (1 - exp(-slope2 * embdose))
 ebneuro <- mc(qln2)
 summary(ebneuro)
 
