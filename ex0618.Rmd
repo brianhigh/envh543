@@ -31,7 +31,7 @@ print(df)
 
 # Calculate the average daily IR for those exposure sources missing this value.
 df[is.na(df$avg.daily.IR), "avg.daily.IR"] <- with(
-    df[is.na(df$avg.daily.IR),], IR*duration*frequency/365/1000)
+    df[is.na(df$avg.daily.IR),], IR * duration * frequency / 365 / 1000)
 print(df)
 
 # Calculate average daily loading.
@@ -45,6 +45,6 @@ daily.dose <- signif(sum(df$dose), digits=3)
 print(daily.dose)
 
 # Calculate fraction of total.
-df$fraction <- round(df$dose/daily.dose, digits=3)
+df$fraction <- round(df$dose / daily.dose, digits=3)
 print(df[, c("exposure.source", "dose", "dose.units", "fraction")])
 ```
