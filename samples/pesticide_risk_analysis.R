@@ -129,7 +129,7 @@ lowl18 <- subset(dflowl, dflowl$study=="AHE18")
 lowl20 <- subset(dflowl, dflowl$study=="AHE20")
 lowl21 <- subset(dflowl, dflowl$study=="AHE21")
 lowldist17 <- fitdist(lowl17$normlowl, "lnorm")
-lowldist18 <- fitdist(lowl18$normlowl, "lnorm") 
+lowldist18 <- fitdist(lowl18$normlowl, "lnorm")
 lowldist20 <- fitdist(lowl20$normlowl, "lnorm")
 lowldist21 <- fitdist(lowl21$normlowl, "lnorm")
 
@@ -807,7 +807,6 @@ slope2 <- mcstoc(rnorm, type="U", mean=0.115613, sd=4.55E-05, rtrunc=TRUE,
 
 # function Emamectin B neuro (tremors - quantal)
 qln2 <- bckgrd2 + (1 - bckgrd2) * (1 - exp(-slope2 * embdose))
-
 ebneuro <- mc(qln2)
 summary(ebneuro)
 
