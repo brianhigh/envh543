@@ -82,24 +82,16 @@ airdistdf <- fitdist(dfair$airsamp, "lnorm")
 airdistoc <- fitdist(ocair$airsamp, "lnorm")
 
 # Dry Flowable 
-air17 <- subset(dfair, dfair$study=="AHE17")
-air18 <- subset(dfair, dfair$study=="AHE18")
-air20 <- subset(dfair, dfair$study=="AHE20")
-air21 <- subset(dfair, dfair$study=="AHE21")
-airdist17 <- fitdist(air17$airsamp, "lnorm")
-airdist18 <- fitdist(air18$airsamp, "lnorm")
-airdist20 <- fitdist(air20$airsamp, "lnorm")
-airdist21 <- fitdist(air21$airsamp, "lnorm")
+airdist17 <- fitdist(dfair[dfair$study=="AHE17", "airsamp"], "lnorm")
+airdist18 <- fitdist(dfair[dfair$study=="AHE18", "airsamp"], "lnorm")
+airdist20 <- fitdist(dfair[dfair$study=="AHE20", "airsamp"], "lnorm")
+airdist21 <- fitdist(dfair[dfair$study=="AHE21", "airsamp"], "lnorm")
 
 # Open Cab Application 
-air07 <- subset(ocair, ocair$study=="AHE07")
-air62 <- subset(ocair, ocair$study=="AHE62")
-air63 <- subset(ocair, ocair$study=="AHE63")
-air64 <- subset(ocair, ocair$study=="AHE64")
-airdist07 <- fitdist(air07$airsamp, "lnorm")
-airdist62 <- fitdist(air62$airsamp, "lnorm")
-airdist63 <- fitdist(air63$airsamp, "lnorm")
-airdist64 <- fitdist(air64$airsamp, "lnorm")
+airdist07 <- fitdist(ocair[ocair$study=="AHE07", "airsamp"], "lnorm")
+airdist62 <- fitdist(ocair[ocair$study=="AHE62", "airsamp"], "lnorm")
+airdist63 <- fitdist(ocair[ocair$study=="AHE63", "airsamp"], "lnorm")
+airdist64 <- fitdist(ocair[ocair$study=="AHE64", "airsamp"], "lnorm")
 
 #:-----------------------------------------------------------------------------:
 # Fit Dermal Distributions
