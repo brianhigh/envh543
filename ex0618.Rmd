@@ -18,7 +18,7 @@ This is the copyright statement for the book:
 ```{r}
 options(digits=3)
 exposure.source <- c("drinking water", "swimming", "shellfish")
-viral.load <- c(0.001, 0.01, 1)
+viral.load <- c(0.001, 0.1, 1)
 load.units <- c("viruses/L", "viruses/L", "viruses/g")
 IR <- c(NA, 50, NA)
 duration <- c(NA, 2.6, NA)
