@@ -93,7 +93,9 @@ airdist62 <- fitdist(ocair[ocair$study=="AHE62", "airsamp"], "lnorm")
 airdist63 <- fitdist(ocair[ocair$study=="AHE63", "airsamp"], "lnorm")
 airdist64 <- fitdist(ocair[ocair$study=="AHE64", "airsamp"], "lnorm")
 
-# Alternate: Store in dataframes
+# Alternate: Store in dataframes containing lists
+# This way, you do not have to hardcode study IDs in variable names.
+# And this makes the code more generic, and therefore more reusable.
 airfitdf <- data.frame(t(sapply(unique(dfair$study), function(x) 
     fitdist(dfair[dfair$study==x, "airsamp"], "lnorm"))))
 airfitdf$study <- unique(dfair$study)
