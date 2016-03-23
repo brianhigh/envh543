@@ -350,6 +350,15 @@ dfweight <- mcstoc(rempiricalD, type="V", values=1:4,
 
 # OC weights
 # 07, n=15; 62, n=3; 63, n=5;  64, n=5
+#
+# totN <- 15+3+5+5
+# 15/totN
+## 0.5357143
+# 3/totN
+## 0.1071429
+# 5/totN
+## 0.1785714
+#
 ocwgt <- mcstoc(rempiricalD, type="V", values=87:90, 
                 prob=c(0.5357, 0.107, 0.17, 0.17))
 
