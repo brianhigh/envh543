@@ -5,7 +5,7 @@ output:
     keep_md: yes
 ---
 
-This document offers a solution in R for Example 6.18 from page 215-216 of:
+This document offers a solution in R for Example 6.18 from pages 215-216 of:
 
 [Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
 by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
