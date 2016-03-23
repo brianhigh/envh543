@@ -807,6 +807,7 @@ slope2 <- mcstoc(rnorm, type="U", mean=0.115613, sd=4.55E-05, rtrunc=TRUE,
 
 # function Emamectin B neuro (tremors - quantal)
 qln2 <- bckgrd2 + (1 - bckgrd2) * (1 - exp(-slope2 * embdose))
+
 ebneuro <- mc(qln2)
 summary(ebneuro)
 
