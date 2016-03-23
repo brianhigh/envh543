@@ -1,5 +1,14 @@
 #:-----------------------------------------------------------------------------:
 # Pesticide Risk Analysis Example
+#
+# NOTE: This is a work in progress. It is in need of refactoring to make it
+#       more generic and reusable. Currently, there is a high degree of 
+#       reliance on hardcoded values and variables relating to the specific
+#       datasets used. The intent is to rewrite this generically to work with 
+#       new datasets. Further, during analysis, other tools were used such as
+#       IBM Crystal Ball and EPA BMDS. Future vesions of this program will
+#       not depend upon the use of external tools, such as these, but would
+#       only use R code contained in the script, plus R packages called by it.
 # 
 # MIT License
 #
@@ -43,18 +52,22 @@ load.pkgs <- function(pkgs, repos="http://cran.r-project.org") {
 }
 
 # Load the required packages, installing as needed.
-load.pkgs(c("mc2d", "fitdistrplus", "STAND", "ggplot2"))
+load.pkgs(c("dplyr", "mc2d", "fitdistrplus", "STAND", "ggplot2"))
 
 #:-----------------------------------------------------------------------------:
 # Import the data
 #:-----------------------------------------------------------------------------:
 
-# Import of exposure datasets
+# Import of exposure datasets.
 ocap <- read.delim(file.path('data', 'ocapd.txt'))
 dfml <- read.delim(file.path('data', 'dfmld.txt'))
 
+# Count numbers of observations per study. See: "Distribution weights", below.
+count(dfml, "study")   # 5 studies, with 5 observations per study
+count(ocair, "study")  # 4 studies, with 15, 3, 5, and 5 observations
+
 #:-----------------------------------------------------------------------------:
-# Normalize by dividing by weight
+# Normalize exposures by dividing by weight of active ingredient handled
 #:-----------------------------------------------------------------------------:
 
 dfml.norm <- data.frame(sapply(names(dfml)[5:12], 
@@ -70,7 +83,6 @@ names(ocap.norm) <- c('normlowa', 'normupa', 'normchest', 'normback',
                       'normCRhead', 'normhead')
 ocap <- cbind(ocap, ocap.norm)
 
-
 #:-----------------------------------------------------------------------------:
 # Fit Inhalation Distributions
 #:-----------------------------------------------------------------------------:
@@ -81,13 +93,13 @@ ocair <- subset(ocap, !is.na(ocap$airsamp))
 airdistdf <- fitdist(dfair$airsamp, "lnorm")
 airdistoc <- fitdist(ocair$airsamp, "lnorm")
 
-# Dry Flowable 
+# Mixing and loading of Dry Flowable (DF) pesticide task
 airdist17 <- fitdist(dfair[dfair$study=="AHE17", "airsamp"], "lnorm")
 airdist18 <- fitdist(dfair[dfair$study=="AHE18", "airsamp"], "lnorm")
 airdist20 <- fitdist(dfair[dfair$study=="AHE20", "airsamp"], "lnorm")
 airdist21 <- fitdist(dfair[dfair$study=="AHE21", "airsamp"], "lnorm")
 
-# Open Cab Application 
+# Open Cab (OC) application task
 airdist07 <- fitdist(ocair[ocair$study=="AHE07", "airsamp"], "lnorm")
 airdist62 <- fitdist(ocair[ocair$study=="AHE62", "airsamp"], "lnorm")
 airdist63 <- fitdist(ocair[ocair$study=="AHE63", "airsamp"], "lnorm")
@@ -618,6 +630,8 @@ nmcairdistdf <- mcprobtree(dfweight, list("1"=mcairdist17, "2"=mcairdist18,
 #:-----------------------------------------------------------------------------:
 # Correlations between body areas' exposure 
 #:-----------------------------------------------------------------------------:
+
+# The "target" values came from a separate step performed with IBM Crystal Ball.
 
 # df
 cornode(nmclowldistdf, nmcupldistdf, target=0.85)
