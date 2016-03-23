@@ -1,0 +1,49 @@
+---
+title: "Example 6.18"
+output:
+  html_document:
+    keep_md: yes
+---
+
+This document offers a solution in R for Example 6.18 from page 215-216 of:
+
+[Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
+by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
+
+This is the copyright statement for the book:
+
+> © Haas, Charles N.; Rose, Joan B.; Gerba, Charles P., Jun 02, 2014, 
+> Quantitative Microbial Risk Assessment Wiley, Somerset, ISBN: 9781118910528
+
+```{r}
+options(digits=3)
+exposure.source <- c("drinking water", "swimming", "shellfish")
+viral.load <- c(0.001, 0.01, 1)
+load.units <- c("viruses/L", "viruses/L", "viruses/g")
+IR <- c(NA, 50, NA)
+duration <- c(NA, 2.6, NA)
+frequency <- c(NA, 7, NA)
+avg.daily.IR <- c(1.4, NA, 0.135)
+df <- data.frame(exposure.source, viral.load, load.units, IR, duration, 
+                 frequency, avg.daily.IR)
+print(df)
+
+# Calculate the average daily IR for those exposure sources missing this value.
+df[is.na(df$avg.daily.IR), "avg.daily.IR"] <- with(
+    df[is.na(df$avg.daily.IR),], IR*duration*frequency/365/1000)
+print(df)
+
+# Calculate average daily loading.
+df$dose <- with(df, signif(viral.load * avg.daily.IR, digits=3))
+df$dose.units <- "viruses/day"
+print(df[, c("exposure.source", "viral.load", "load.units", "avg.daily.IR", 
+             "dose", "dose.units")])
+
+# Calculate total average daily loading
+daily.dose <- signif(sum(df$dose), digits=3)
+print(daily.dose)
+
+# Calculate fraction of total
+df$fraction <- signif(df$dose/daily.dose, digits=3)
+print(df[, c("exposure.source", "dose", "dose.units", "fraction")])
+```
