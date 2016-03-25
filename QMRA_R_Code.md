@@ -351,7 +351,7 @@ attach(A)
 
 ```r
 #---------------------------------------------
-ObjFunc<-function(paramsin) {
+ObjFunc <- function(paramsin) {
     # Computes ESS
     if (modell==0) {
        paramsin["theta1"] <- 1
@@ -617,7 +617,7 @@ require(lattice)  # for contour plotting
 # Note the global assignment operator
 observations <<- c(27,30,60,60,70,70,74,80,81,82,84,84,93,98,98,101,105,110)
 
-#----------- Prior Distribution of Parameters --------
+#------------- Prior Distribution of Parameters -------
 prior <- function(mu, k) {
     pmu <- ((mu > 1) & (mu < 500)) / 499
     pk <- ((k > 0.01) & (k < 20)) / 19.99
@@ -625,7 +625,7 @@ prior <- function(mu, k) {
     return(A)
 }
 
-#------------- Neg Binomial Distribution -------------
+#------------- Neg Binomial Distribution --------------
 NB <- function(mu, k, x) {
     A <-gamma(x + k) / (gamma(k) * factorial(x))
     B <-(mu / (k + mu))^x
@@ -633,14 +633,14 @@ NB <- function(mu, k, x) {
     return(A * B * C)
 }
 
-#------------Likelihood Function --------------------
+#------------- Likelihood Function --------------------
  Likelihood <- function(mu, k, data) {
     L <- NB(mu, k, data)
     Lik <- prod(L)
     return(Lik)
 }
 
-#------------- Integrand-----------------------------
+#------------- Integrand-------------------------------
 # This is a product of the prior and the likelihood
 Integrand <- function(y) {
     mu <- y[1]
