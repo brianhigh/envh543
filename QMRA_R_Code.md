@@ -460,7 +460,7 @@ Figure 8.14 Program listing in R to compute best-fit parameters.
 dose <- c(90000, 9000, 900, 90, 9, 0.9, 0.09, 0.009)
 total <- c(3, 7, 8, 9, 11, 7, 7, 7)
 positives <- c(3, 5, 7, 8, 8, 1, 0, 0)
-dataframe = data.frame(dose = dose, total = total, positives = positives)
+dataframe <- data.frame(dose = dose, total = total, positives = positives)
 
 #--------------------------------------------------------------
 # Function to Return Predicted Value Given Parameters
