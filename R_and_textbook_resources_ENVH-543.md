@@ -84,7 +84,7 @@ http://www2.warwick.ac.uk/fac/sci/statistics/staff/academic-research/robert/
 [Beginning Data Science with R](http://offcampus.lib.washington.edu/login?url=http://link.springer.com/book/10.1007%2F978-3-319-12066-9),
 Manas A. Pathak. 2014 Cham: Springer International Publishing.
 
-Author’s website: http://www.cs.cmu.edu/\~manasp/
+Author’s website: http://www.cs.cmu.edu/~manasp/
 
 ### R for Stata Users
 
