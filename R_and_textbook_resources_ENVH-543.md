@@ -116,7 +116,7 @@ Author’s website: http://r4stats.com/
 [R by example](http://link.springer.com.offcampus.lib.washington.edu/book/10.1007%2F978-1-4614-1365-3)
 Jim Albert, 1953-; Maria L. Rizzo. 2012 New York : Springer.
 
-Sample code and errata: http://personal.bgsu.edu/\~mrizzo/Rx/
+Sample code and errata: http://personal.bgsu.edu/~mrizzo/Rx/
 
 ## R Resources
 
