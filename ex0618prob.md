@@ -4,8 +4,8 @@ License: CC BY-SA 4.0
 
 This document offers a 1D Monte Carlo probabilistic solution in R for the 
 daily microbial exposure from drinking water consumption, swimming in surface 
-water and shellfish consumption for 
-[Example 6.18](https://books.google.com/books?id=ejTKAwAAQBAJ&lpg=PT265&ots=6q9TSELe3B&pg=PT265#v=onepage&q&f=false) from pages 215-216 of:
+water and shellfish consumption for [Example 6.18](images/ex0618.png) from pages 
+215-216 of:
 
 [Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
 by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
@@ -43,7 +43,7 @@ water.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
 plot(density(water.cons.L))
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-1.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
 
 ```r
 # Sample 5000 times from a discrete distribution of swim duration with 
@@ -58,7 +58,7 @@ swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE,
 hist(swim.duration)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-2.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-1-2.png)<!-- -->
 
 ```r
 # Define a function to calculate microbial exposure risk.
@@ -83,4 +83,4 @@ daily.dose <- sapply(1:5000,
 plot(density(daily.dose))
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png)<!-- -->
