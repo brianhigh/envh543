@@ -5,6 +5,7 @@ date: 'License: CC BY-SA 4.0'
 output:
   html_document:
     keep_md: yes
+    self-contained: yes
 ---
 
 This document offers a 1D Monte Carlo probabilistic solution in R for the 
