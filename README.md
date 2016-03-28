@@ -7,6 +7,7 @@ offered by the University of Washington in Spring, 2016.
 
 * John Scott Meschke
 * John C. Kissel
+* Mary Schoen
 
 ## Course Description
 
