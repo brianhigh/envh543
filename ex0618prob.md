@@ -43,7 +43,7 @@ water.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
 plot(density(water.cons.L))
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
+![](ex0618prob_files/figure-html/unnamed-chunk-1-1.png)
 
 ```r
 # Sample 5000 times from a discrete distribution of swim duration with 
@@ -58,7 +58,7 @@ swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE,
 hist(swim.duration)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-2.png)<!-- -->
+![](ex0618prob_files/figure-html/unnamed-chunk-1-2.png)
 
 ```r
 # Define a function to calculate microbial exposure risk.
@@ -83,4 +83,4 @@ daily.dose <- sapply(1:5000,
 plot(density(daily.dose))
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png)<!-- -->
+![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png)
