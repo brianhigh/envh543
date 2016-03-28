@@ -33,8 +33,8 @@ plot(density(water.cons.L))
 ![](ex0618prob_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
 
 ```r
-# Sample 5000 times from a discrete distribution of exposure from swimming in 
-# surface water with assigned probabilities of each outcome.
+# Sample 5000 times from a discrete distribution of swim duration with 
+# assigned probabilities of each outcome.
 swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE, 
                         prob = c(0.1, 0.1, 0.2, 0.6))
 
