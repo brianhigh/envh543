@@ -59,7 +59,7 @@ York: Springer.
 
 Author’s website: http://www.probstatinfo.com/
 
-### Introducing Monte Carlo Methods with R {#montecarlo}
+### Introducing Monte Carlo Methods with R
 
 -   Covers the main tools used in statistical simulation from a
     programmer’s point of view
