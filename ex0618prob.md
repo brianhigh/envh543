@@ -1,8 +1,8 @@
-# 1D Monte Carlo simulation of microbial exposure
+# 1-D Monte Carlo simulation of microbial exposure
 Jane Pouzou  
 License: CC BY-SA 4.0  
 
-This document offers a 1D Monte Carlo probabilistic solution in R for the 
+This document offers a 1-D Monte Carlo probabilistic solution in R for the 
 daily microbial exposure from drinking water consumption, swimming in surface 
 water and shellfish consumption for [Example 6.18](images/ex0618.png) from pages 
 215-216 of:
@@ -12,15 +12,15 @@ by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
 
 
 ```r
-# A 1D Monte Carlo simulation for the daily microbial exposure from drinking
-# water consumption, swimming in surface water, and shellfish consumption for 
-# Example 6.18 from Quantitative Microbial Risk Assessment, 2nd Edition by 
-# Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
+# A 1-D Monte Carlo simulation for the daily microbial exposure from drinking
+# water consumption, swimming in surface water, and shellfish consumption 
+# for Example 6.18 from Quantitative Microbial Risk Assessment, 2nd Edition 
+# by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
 
 # Copyright (c) Jane Pouzou
 # License: CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
 
-# Define additional variables provided in the example for three exposure types.
+# Define additional variables provided in the example for three exposures.
 #
 # Shellfish consumption
 shell.viral.load <- 1
@@ -33,9 +33,9 @@ sw.daily.IR <- 50         # Ingestion rate in mL of surface water
 sw.frequency <- 7         # Exposure frequency of 7 swims per year
 
 # Generate 5000 random values from a log-normal distribution to estimate 
-# exposure from consumption of drinking water (ml/day). Divide by 1000 mL/L 
-# to get consumption in liters/day.  Values for meanlog and sdlog are from the 
-# QMRA textbook (Haas, 2014), page 216, Table 6.30.
+# exposure from consumption of drinking water (ml/day). Divide by 1000 
+# mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
+# are from the QMRA textbook (Haas, 2014), page 216, Table 6.30.
 set.seed(1)
 water.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
 
@@ -47,9 +47,9 @@ plot(density(water.cons.L))
 
 ```r
 # Sample 5000 times from a discrete distribution of swim duration with 
-# assigned probabilities of each outcome. These values are hypothetical and
-# are not found in the text, but are defined here to provide an example of
-# sampling from a discrete distribution.
+# assigned probabilities of each outcome. These values are hypothetical 
+# and are not found in the text, but are defined here to provide an 
+# example of sampling from a discrete distribution.
 set.seed(1)
 swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE, 
                         prob = c(0.1, 0.1, 0.2, 0.6))
@@ -68,7 +68,7 @@ Risk.fcn <- function(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
          ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
 }
 
-# Run the simulation 5000 times.
+# Compute 5000 simulated daily dose results and store as a vector.
 daily.dose <- sapply(1:5000, 
                      function(j) Risk.fcn(water.cons.L = water.cons.L[j], 
                                           sw.duration = swim.duration[j], 
@@ -79,20 +79,20 @@ daily.dose <- sapply(1:5000,
                                           sw.daily.IR = sw.daily.IR, 
                                           sw.frequency = sw.frequency))
 
+# Plot the kernel density estimates for the simulation.
+plot(density(daily.dose))
+```
+
+![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png)
+
+```r
 # Set display options for use with the print() function.
 options(digits=3)
 
-# Show the median daily dose from our simulation.
-print(format(median(daily.dose), scientific = TRUE))  # Use scientific notation.
+# Print the geometric mean of the vector of simulated daily dose results.
+print(format(exp(mean(log(daily.dose))), scientific = TRUE))
 ```
 
 ```
 ## [1] "1.37e-01"
 ```
-
-```r
-# Plot the results of the simulation.
-plot(density(daily.dose))
-```
-
-![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png)
