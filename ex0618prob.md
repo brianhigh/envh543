@@ -79,6 +79,18 @@ daily.dose <- sapply(1:5000,
                                           sw.daily.IR = sw.daily.IR, 
                                           sw.frequency = sw.frequency))
 
+# Set display options for use with the print() function.
+options(digits=3)
+
+# Show the median daily dose from our simulation.
+print(format(median(daily.dose), scientific = TRUE))  # Use scientific notation.
+```
+
+```
+## [1] "1.37e-01"
+```
+
+```r
 # Plot the results of the simulation.
 plot(density(daily.dose))
 ```
