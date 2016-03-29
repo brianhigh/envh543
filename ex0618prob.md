@@ -20,6 +20,10 @@ by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
 # Copyright (c) Jane Pouzou
 # License: CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
 
+# ---------------------------------------------------------------------
+# Define variables
+# ---------------------------------------------------------------------
+
 # Define additional variables provided in the example for three exposures.
 #
 # Shellfish consumption
@@ -31,6 +35,10 @@ dw.viral.load <- 0.001
 sw.viral.load <- 0.01
 sw.daily.IR <- 50         # Ingestion rate in mL of surface water
 sw.frequency <- 7         # Exposure frequency of 7 swims per year
+
+# ---------------------------------------------------------------------
+# Sample from probability distributions
+# ---------------------------------------------------------------------
 
 # Generate 5000 random values from a log-normal distribution to estimate 
 # exposure from consumption of drinking water (ml/day). Divide by 1000 
@@ -61,6 +69,10 @@ hist(swim.duration)
 ![](ex0618prob_files/figure-html/unnamed-chunk-1-2.png)
 
 ```r
+# ---------------------------------------------------------------------
+# Calculate estimated daily dose using probabilistic simulation
+# ---------------------------------------------------------------------
+
 # Define a function to calculate microbial exposure risk.
 Risk.fcn <- function(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl, 
                      sw.daily.IR, sw.duration, sw.frequency) {
@@ -79,13 +91,6 @@ daily.dose <- sapply(1:5000,
                                           sw.daily.IR = sw.daily.IR, 
                                           sw.frequency = sw.frequency))
 
-# Plot the kernel density estimates for the simulation.
-plot(density(daily.dose))
-```
-
-![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png)
-
-```r
 # Set display options for use with the print() function.
 options(digits=3)
 
@@ -96,3 +101,73 @@ print(format(exp(mean(log(daily.dose))), scientific = TRUE))
 ```
 ## [1] "1.37e-01"
 ```
+
+```r
+# ---------------------------------------------------------------------
+# Plot the kernel density estimates
+# ---------------------------------------------------------------------
+
+# Calculate kernel density estimates.
+dens <- density(daily.dose)
+
+# Calculate measures of central tendency.
+meas <- data.frame(
+    measure = c("mean", "g. mean", "median", "mode"),
+    value = round(c(
+        mean(daily.dose), exp(mean(log(daily.dose))),
+        median(daily.dose), dens$x[which.max(dens$y)]
+    ), 6),
+    color = c("red", "orange", "green", "blue"),
+    stringsAsFactors = FALSE
+)
+
+# Print measures of central tendency.
+print(meas[1:2])
+```
+
+```
+##   measure value
+## 1    mean 0.137
+## 2 g. mean 0.137
+## 3  median 0.137
+## 4    mode 0.137
+```
+
+```r
+# Contruct text labels by combining each measure with its value.
+meas$label <- sapply(1:4, function(x) 
+    paste(meas$measure[x], as.character(meas$value[x]), sep = ' = '))
+
+# Add lines for measures of central tendency and a legend to a plot.
+add_lines_and_legend <- function(meas, x.pos = 0, y.pos = 0, cex = 1) {
+    # Plot measures of central tendency as vertical lines.
+    res <- sapply(1:4, function(x)
+        abline(v = meas$value[x], col = meas$color[x]))
+    
+    # Add a legend to the plot.
+    legend(x.pos, y.pos, meas$label, col = meas$color, 
+           cex = cex, lty = rep(1, 4), lwd = rep(2, 4))
+}
+
+# Plot the kernel density estimates.
+plot(dens)
+
+# Add lines for measures of central tendency and a legend.
+add_lines_and_legend(meas, 0.139, 550)
+```
+
+![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png)
+
+```r
+# ---------------------------------------------------------------------
+# Plot the empirical cumulative distribution
+# ---------------------------------------------------------------------
+
+# Plot the empirical cumulative distribution for the exposure estimates.
+plot(ecdf(daily.dose))
+
+# Add lines for measures of central tendency and a legend.
+add_lines_and_legend(meas, 0.139, 0.8)
+```
+
+![](ex0618prob_files/figure-html/unnamed-chunk-1-4.png)
