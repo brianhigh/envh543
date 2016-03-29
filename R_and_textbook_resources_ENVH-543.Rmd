@@ -48,6 +48,14 @@ statistical analyses of environmental data.
 
 [EnvStats](http://offcampus.lib.washington.edu/login?url=http://link.springer.com/book/10.1007/978-1-4614-8456-1), An R Package for Environmental Statistics, Steven P. Millard, 2013 New York: Springer.
 
+### Microbiological Risk Assessment in Food Processing
+
+- Provides a detailed coverage of the key steps in MRA and how it can be used to improve food safety
+- A standard work on one of the most important aspects of food safety management
+
+[Microbiological Risk Assessment in Food Processing](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71155643330001451), Martyn Brown; Michael Stringer, 1950-.
+2002 Boca Raton, Fla. : CRC Press ; Cambridge, England : Woodhead Pub.
+
 ### Beginning Data Science with R
 
 - Introduces fundamental data science methodologies using the R programming language
