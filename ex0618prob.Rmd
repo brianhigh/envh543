@@ -112,6 +112,9 @@ meas <- data.frame(
     stringsAsFactors = FALSE
 )
 
+# Set display options for use with the print() function.
+options(digits=6)
+
 # Print measures of central tendency.
 print(meas[1:2])
 

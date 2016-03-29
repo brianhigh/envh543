@@ -121,16 +121,19 @@ meas <- data.frame(
     stringsAsFactors = FALSE
 )
 
+# Set display options for use with the print() function.
+options(digits=6)
+
 # Print measures of central tendency.
 print(meas[1:2])
 ```
 
 ```
-##   measure value
-## 1    mean 0.137
-## 2 g. mean 0.137
-## 3  median 0.137
-## 4    mode 0.137
+##   measure    value
+## 1    mean 0.136970
+## 2 g. mean 0.136967
+## 3  median 0.136800
+## 4    mode 0.136579
 ```
 
 ```r
