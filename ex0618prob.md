@@ -24,7 +24,7 @@ by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
 # Define variables
 # ---------------------------------------------------------------------
 
-# Define additional variables provided in the example for three exposures.
+# Define variables provided in the example for three exposure types.
 #
 # Shellfish consumption
 shell.viral.load <- 1
