@@ -51,7 +51,7 @@ water.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
 plot(density(water.cons.L))
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-1.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-1-1.png) 
 
 ```r
 # Sample 5000 times from a discrete distribution of swim duration with 
@@ -66,7 +66,7 @@ swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE,
 hist(swim.duration)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-2.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-1-2.png) 
 
 ```r
 # ---------------------------------------------------------------------
@@ -125,31 +125,33 @@ meas <- data.frame(
 options(digits=6)
 
 # Print measures of central tendency.
-print(meas[1:2])
+print(meas)
 ```
 
 ```
-##   measure    value
-## 1    mean 0.136970
-## 2 g. mean 0.136967
-## 3  median 0.136800
-## 4    mode 0.136579
+##   measure    value  color
+## 1    mean 0.136970    red
+## 2 g. mean 0.136967 orange
+## 3  median 0.136800  green
+## 4    mode 0.136579   blue
 ```
 
 ```r
 # Contruct text labels by combining each measure with its value.
-meas$label <- sapply(1:4, function(x) 
+meas$label <- sapply(1:nrow(meas), function(x) 
     paste(meas$measure[x], as.character(meas$value[x]), sep = ' = '))
 
 # Add lines for measures of central tendency and a legend to a plot.
 add_lines_and_legend <- function(meas, x.pos = 0, y.pos = 0, cex = 1) {
+    n <- nrow(meas)
+    
     # Plot measures of central tendency as vertical lines.
-    res <- sapply(1:4, function(x)
+    res <- sapply(1:n, function(x)
         abline(v = meas$value[x], col = meas$color[x]))
     
     # Add a legend to the plot.
     legend(x.pos, y.pos, meas$label, col = meas$color, 
-           cex = cex, lty = rep(1, 4), lwd = rep(2, 4))
+           cex = cex, lty = rep(1, n), lwd = rep(2, n))
 }
 
 # Plot the kernel density estimates.
@@ -159,7 +161,7 @@ plot(dens)
 add_lines_and_legend(meas, 0.139, 550)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png) 
 
 ```r
 # ---------------------------------------------------------------------
@@ -173,4 +175,4 @@ plot(ecdf(daily.dose))
 add_lines_and_legend(meas, 0.139, 0.8)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-4.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-1-4.png) 

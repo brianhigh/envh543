@@ -116,21 +116,23 @@ meas <- data.frame(
 options(digits=6)
 
 # Print measures of central tendency.
-print(meas[1:2])
+print(meas)
 
 # Contruct text labels by combining each measure with its value.
-meas$label <- sapply(1:4, function(x) 
+meas$label <- sapply(1:nrow(meas), function(x) 
     paste(meas$measure[x], as.character(meas$value[x]), sep = ' = '))
 
 # Add lines for measures of central tendency and a legend to a plot.
 add_lines_and_legend <- function(meas, x.pos = 0, y.pos = 0, cex = 1) {
+    n <- nrow(meas)
+    
     # Plot measures of central tendency as vertical lines.
-    res <- sapply(1:4, function(x)
+    res <- sapply(1:n, function(x)
         abline(v = meas$value[x], col = meas$color[x]))
     
     # Add a legend to the plot.
     legend(x.pos, y.pos, meas$label, col = meas$color, 
-           cex = cex, lty = rep(1, 4), lwd = rep(2, 4))
+           cex = cex, lty = rep(1, n), lwd = rep(2, n))
 }
 
 # Plot the kernel density estimates.
