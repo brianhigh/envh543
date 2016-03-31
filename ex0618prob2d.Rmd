@@ -46,15 +46,6 @@ options(digits = 5)
 # Define variables
 # ---------------------------------------------------------------------
 
-# Shellfish viral loading (viruses/g):
-# Shellfish consumption (g/day):
-# Drinking water viral loading (viruses/L):
-# Drinking water consumption (L/day):
-# Swmming in surface water viral loading (viruses/L):
-# Swimming daily ingenstion rate (mL/hour): fictitious sd = 45
-# Swimming duration (hours): fictitious discrete distribution
-# Swimming frequency (swims/year):
-
 # Define the deterministic factors.
 shell.viral.load <- 1     # Shellfish viral loading (viruses/g)
 dw.viral.load <- 0.001    # Drinking water viral loading (viruses/L)
