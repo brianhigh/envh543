@@ -170,7 +170,7 @@ sw.frequency <- mcstoc(runif, type = "V", min = 7, max = 7)
 sw.daily.IR <- mcstoc(rnorm, type = "U", mean = 50, sd = 45, seed = seed, 
                       rtrunc = TRUE, linf = 0)
 
-# Values for meanlog and sdlog are from (Haas, at al. 2014) page 216.
+# Values for meanlog and sdlog are from (Haas, et al. 2014) page 216.
 water.cons.L <- mcstoc(rlnorm, type = "V", meanlog = 7.49, sdlog = 0.407, 
                        seed = seed) / 1000
 
@@ -200,18 +200,24 @@ o <- capture.output(dosemccut <- mcmodelcut({
     # ------------
     # Evaluate all the 0, V and U nodes.
     {
+        # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
+        # 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
+        # (Wiley, 2014), p. 215. Other (some fictitious) values are noted below.
         shell.vl <- mcstoc(runif, type = "V", min = 1, max = 1)
         dw.vl <- mcstoc(runif, type = "V", min = 0.001, max = 0.001)
         shell.cons <- mcstoc(runif, type = "V", min = 0.135, max = 0.135)
         sw.vl <- mcstoc(runif, type = "V", min = 0.01, max = 0.01)
         sw.frequency <- mcstoc(runif, type = "V", min = 7, max = 7)
         
+        # The standard deviation value of 45 used here is a fictitious example.
         sw.daily.IR <- mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
                               seed = seed, rtrunc = TRUE, linf = 0)
         
+        # Values for meanlog and sdlog are from (Haas, et al. 2014) page 216.
         water.cons.L <- mcstoc(rlnorm, type = "V", meanlog = 7.49, 
                                sdlog = 0.407, seed = seed) / 1000
         
+        # The discrete distribution used here is a fictitious example.
         sw.duration <- mcstoc(rempiricalD, type = "V", 
                               values = c(0.5, 1, 2, 2.6), 
                               prob = c(0.1, 0.1, 0.2, 0.6))
