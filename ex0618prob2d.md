@@ -112,11 +112,11 @@ for (i in 1:250) {
 }
 
 # Plot the empirical cumulative distribution for the first iteration.
-plot(ecdf(log10(Risk.mat[, 1])))
+plot(ecdf(Risk.mat[, 1]), col="#ADD8E605")
 
 # Plot empirical cumulative distributions for additional iterations in blue.
-for (j in 2:250) {
-    plot(ecdf(log10(Risk.mat[, j])), col = "lightblue", add = TRUE)
+for (j in 1:250) {
+    plot(ecdf(Risk.mat[, j]), col="#ADD8E605", add = TRUE)
 }
 ```
 
