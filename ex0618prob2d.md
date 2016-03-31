@@ -203,7 +203,7 @@ mcnode.names <- unpackList(create_mcnode_objects())  # Use mcnode.names later.
 dose1 <- mc(calc_dose(mget(mcnode.names)))
 
 # Plot the Monte Carlo object.
-plot(dose)
+plot(dose1)
 ```
 
 ![](ex0618prob2d_files/figure-html/unnamed-chunk-1-3.png)
@@ -217,7 +217,7 @@ dosemccut <- mcmodelcut({
     # Block2: Evaluate all of the VU nodes and return an mc object.
     { dose2 <- calc_dose(mget(mcnode.names))
       dosemod <- mc(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
-                    sw.daily.IR, sw.duration, sw.frequency, dose) }
+                    sw.daily.IR, sw.duration, sw.frequency, dose2) }
 
     # Block 3: Return a list of statistics refering to the mc object.
     { list(sum = summary(dosemod), plot = plot(dosemod, draw = FALSE)) }
@@ -289,7 +289,7 @@ summary(x)
 ##       mean sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
 ## NoUnc    7  0   7    7   7   7   7     7   7 5000    0
 ## 
-## dose :
+## dose2 :
 ##        mean       sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
 ## 50%   0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
 ## mean  0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0

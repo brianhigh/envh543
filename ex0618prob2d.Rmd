@@ -188,7 +188,7 @@ mcnode.names <- unpackList(create_mcnode_objects())  # Use mcnode.names later.
 dose1 <- mc(calc_dose(mget(mcnode.names)))
 
 # Plot the Monte Carlo object.
-plot(dose)
+plot(dose1)
 
 # Build (in three blocks) a mcmodelcut object for evaluation by evalmccut().
 dosemccut <- mcmodelcut({
@@ -198,7 +198,7 @@ dosemccut <- mcmodelcut({
     # Block2: Evaluate all of the VU nodes and return an mc object.
     { dose2 <- calc_dose(mget(mcnode.names))
       dosemod <- mc(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
-                    sw.daily.IR, sw.duration, sw.frequency, dose) }
+                    sw.daily.IR, sw.duration, sw.frequency, dose2) }
 
     # Block 3: Return a list of statistics refering to the mc object.
     { list(sum = summary(dosemod), plot = plot(dosemod, draw = FALSE)) }
