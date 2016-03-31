@@ -210,9 +210,8 @@ plot(dose1)
 ![](ex0618prob2d_files/figure-html/unnamed-chunk-1-3.png)
 
 ```r
-# Define a character vector of the names of the mcnode objects.
-mcnode.names <- c('shellfish.vl', 'shellfish.cons.g', 'dw.vl', 'dw.cons.L', 
-                  'sw.vl', 'sw.daily.IR', 'sw.duration', 'sw.frequency')
+# Get the item names of the mcnode object list to use with mcmodelcut().
+mcnode.names <- names(create_mcnode_objects())
 
 # Build (in three blocks) a mcmodelcut object for evaluation by evalmccut().
 dosemccut <- mcmodelcut({

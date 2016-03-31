@@ -191,9 +191,8 @@ dose1 <- mc(calc_dose(create_mcnode_objects()))
 # Plot the Monte Carlo object.
 plot(dose1)
 
-# Define a character vector of the names of the mcnode objects.
-mcnode.names <- c('shellfish.vl', 'shellfish.cons.g', 'dw.vl', 'dw.cons.L', 
-                  'sw.vl', 'sw.daily.IR', 'sw.duration', 'sw.frequency')
+# Get the item names of the mcnode object list to use with mcmodelcut().
+mcnode.names <- names(create_mcnode_objects())
 
 # Build (in three blocks) a mcmodelcut object for evaluation by evalmccut().
 dosemccut <- mcmodelcut({
