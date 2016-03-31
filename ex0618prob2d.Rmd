@@ -133,9 +133,10 @@ load.pkg <- function(pkg) {
     }
 }
 
-# Load the mc2d package, installing first if necessary.
+# Load required packages, installing first if necessary.
 suppressMessages(load.pkg("mc2d"))
-# Or use library(mc2d) and take your chances...
+suppressMessages(load.pkg("PBSmodelling"))  # For unpackList()
+# Or use library() and take your chances...
 
 # Set the number of simulations in the variability dimension.
 ndvar(5000)
@@ -143,33 +144,49 @@ ndvar(5000)
 # Set the number of simulations in the uncertainty dimension. 
 ndunc(250)
 
-# Create mcnode objects and other variables for use with mc() and mcmodelcut().
-#
-# Values are from Example 6.18 from Quantitative Microbial Risk Assessment, 
-# 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
-# (Wiley, 2014), p. 215. Use of additional fictitious values are noted below. 
-shell.vl <- mcstoc(runif, type = "V", min = 1, max = 1)
-dw.vl <- mcstoc(runif, type = "V", min = 0.001, max = 0.001)
-shell.cons <- mcstoc(runif, type = "V", min = 0.135, max = 0.135)
-sw.vl <- mcstoc(runif, type = "V", min = 0.01, max = 0.01)
-sw.frequency <- mcstoc(runif, type = "V", min = 7, max = 7)
+# Define a function to create mcnode objects given probability distributions.
+create_mcnode_objects <- function() {
+    # Evaluate all the 0, V and U nodes.
+    
+    # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
+    # 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
+    # (Wiley, 2014), p. 215. Other values (some fictitious) are noted below.
+    shell.vl <- mcstoc(runif, type = "V", min = 1, max = 1)
+    dw.vl <- mcstoc(runif, type = "V", min = 0.001, max = 0.001)
+    shell.cons <- mcstoc(runif, type = "V", min = 0.135, max = 0.135)
+    sw.vl <- mcstoc(runif, type = "V", min = 0.01, max = 0.01)
+    sw.frequency <- mcstoc(runif, type = "V", min = 7, max = 7)
+    
+    # The standard deviation value of 45 used here is a fictitious example.
+    sw.daily.IR <- mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
+                          seed = seed, rtrunc = TRUE, linf = 0)
+    
+    # Values for meanlog and sdlog are from (Haas, et al. 2014) page 216.
+    water.cons.L <- mcstoc(rlnorm, type = "V", meanlog = 7.49, 
+                           sdlog = 0.407, seed = seed) / 1000
+    
+    # The discrete distribution used here is a fictitious example.
+    sw.duration <- mcstoc(rempiricalD, type = "V", 
+                          values = c(0.5, 1, 2, 2.6), 
+                          prob = c(0.1, 0.1, 0.2, 0.6))
+    
+    return(list(shell.vl = shell.vl, dw.vl = dw.vl, shell.cons = shell.cons, 
+                sw.vl = sw.vl, sw.frequency = sw.frequency, 
+                sw.daily.IR = sw.daily.IR, water.cons.L = water.cons.L, 
+                sw.duration = sw.duration))
+}
 
-# The standard deviation value of 45 used here is a fictitious example.
-sw.daily.IR <- mcstoc(rnorm, type = "U", mean = 50, sd = 45, seed = seed, 
-                      rtrunc = TRUE, linf = 0)
+# Define a function to calculate the estimated risk using mcnode objects.
+calc_dose <- function(mc.obj) {
+    (mc.obj$shell.vl * mc.obj$shell.cons) + 
+    (mc.obj$water.cons.L * mc.obj$dw.vl) + 
+    ((mc.obj$sw.vl * 
+          (mc.obj$sw.daily.IR * mc.obj$sw.duration * mc.obj$sw.frequency)
+      ) / 365 / 1000)
+}
 
-# Values for meanlog and sdlog are from (Haas, et al. 2014) page 216.
-water.cons.L <- mcstoc(rlnorm, type = "V", meanlog = 7.49, sdlog = 0.407, 
-                       seed = seed) / 1000
-
-# The discrete distribution used here is a fictitious example.
-sw.duration <- mcstoc(rempiricalD, type = "V", values = c(0.5, 1, 2, 2.6), 
-                      prob = c(0.1, 0.1, 0.2, 0.6))
-
-# Create a Monte Carlo object.
-dose1 <- mc((shell.vl * shell.cons) + (water.cons.L * dw.vl) + 
-                ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)
-                  ) / 365 / 1000))
+# Create a Monte Carlo object from estimated risk using mcnode objects.
+dose1 <- mc(calc_dose(create_mcnode_objects()))
 
 # Plot the Monte Carlo object.
 plot(dose1)
@@ -181,27 +198,7 @@ o <- capture.output(dosemccut <- mcmodelcut({
     # ------------
     # Evaluate all the 0, V and U nodes.
     {
-        # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
-        # 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
-        # (Wiley, 2014), p. 215. Other (some fictitious) values are noted below.
-        shell.vl <- mcstoc(runif, type = "V", min = 1, max = 1)
-        dw.vl <- mcstoc(runif, type = "V", min = 0.001, max = 0.001)
-        shell.cons <- mcstoc(runif, type = "V", min = 0.135, max = 0.135)
-        sw.vl <- mcstoc(runif, type = "V", min = 0.01, max = 0.01)
-        sw.frequency <- mcstoc(runif, type = "V", min = 7, max = 7)
-        
-        # The standard deviation value of 45 used here is a fictitious example.
-        sw.daily.IR <- mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
-                              seed = seed, rtrunc = TRUE, linf = 0)
-        
-        # Values for meanlog and sdlog are from (Haas, et al. 2014) page 216.
-        water.cons.L <- mcstoc(rlnorm, type = "V", meanlog = 7.49, 
-                               sdlog = 0.407, seed = seed) / 1000
-        
-        # The discrete distribution used here is a fictitious example.
-        sw.duration <- mcstoc(rempiricalD, type = "V", 
-                              values = c(0.5, 1, 2, 2.6), 
-                              prob = c(0.1, 0.1, 0.2, 0.6))
+        unpackList(create_mcnode_objects())
     }
     # -------------
     # Second block:
@@ -209,10 +206,7 @@ o <- capture.output(dosemccut <- mcmodelcut({
     # Evaluate all the VU nodes.
     # Leads to the mc object.
     {
-        dose2 <-  ((shell.vl * shell.cons) + (water.cons.L * dw.vl) +
-                     ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)
-                       ) / 365 / 1000))
-        
+        dose2 <- calc_dose(create_mcnode_objects())
         dosemod <- mc(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
                       sw.daily.IR, sw.duration, sw.frequency, dose2)
     }
