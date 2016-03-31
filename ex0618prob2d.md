@@ -73,7 +73,7 @@ sw.d.IR <- rnorm(250, mean = 50, sd = 45)
 plot(density(sw.d.IR))
 ```
 
-![](ex0618prob2d_files/figure-html/unnamed-chunk-1-1.png)
+![](ex0618prob2d_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
 
 ```r
 # Run 250 iterations of a 5000-sample simulation.
@@ -118,12 +118,15 @@ for (j in 2:250) {
 }
 ```
 
-![](ex0618prob2d_files/figure-html/unnamed-chunk-1-2.png)
+![](ex0618prob2d_files/figure-html/unnamed-chunk-1-2.png)<!-- -->
 
 ```r
 # ---------------------------------------------------------------------
 # Repeat the simulation with mc2d
 # ---------------------------------------------------------------------
+
+# There are multiple ways to run the 2D simulation depending on the 
+# desired output. We will use mc() and mcmodelcut() from the mc2d package.
 
 # Define a function to conditionally install and load a package.
 load.pkg <- function(pkg) {
@@ -178,9 +181,6 @@ water.cons.L <- mcstoc(rlnorm, type = "V", meanlog = 7.49, sdlog = 0.407,
 sw.duration <- mcstoc(rempiricalD, type = "V", values = c(0.5, 1, 2, 2.6), 
                       prob = c(0.1, 0.1, 0.2, 0.6))
 
-# There are multiple ways to run the 2D simulation depending on the 
-# desired output. We will use mc() and mcmodelcut() from the mc2d package.
-
 # Create a Monte Carlo object.
 dose1 <- mc((shell.vl * shell.cons) + (water.cons.L * dw.vl) + 
                 ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)
@@ -190,10 +190,10 @@ dose1 <- mc((shell.vl * shell.cons) + (water.cons.L * dw.vl) +
 plot(dose1)
 ```
 
-![](ex0618prob2d_files/figure-html/unnamed-chunk-1-3.png)
+![](ex0618prob2d_files/figure-html/unnamed-chunk-1-3.png)<!-- -->
 
 ```r
-# Evaluate the 2-D Monte Carlo model.
+# Build a mcmodelcut object that can be sent to evalmccut for evaluation.
 o <- capture.output(dosemccut <- mcmodelcut({
     # ------------
     # First block:
@@ -242,17 +242,12 @@ o <- capture.output(dosemccut <- mcmodelcut({
     # or any function leading to a vector (et), a list (minmax),
     # a matrix or a data.frame (summary)
     {
-        list(sum = summary(dosemod), plot = plot(dosemod, draw = TRUE),
+        list(sum = summary(dosemod), plot = plot(dosemod, draw = FALSE),
              minmax = lapply(dosemod, range))
     }
 }))
 
-# Turn off plotting if running in knitr context to save space in the report.
-if (isTRUE(getOption('knitr.in.progress'))) {
-    # The simulation makes a lot of plots. Don't show them.
-    o <- capture.output(dev.off())
-}
-
+# Evaluate the 2-D Monte Carlo model using a loop on the uncertainty dimension.
 # Capture the text output (a progress bar) to "o" to save space in the report.
 o <- capture.output(
     x <- evalmccut(dosemccut, nsv = 5000, nsu = 250, seed = seed))
@@ -318,3 +313,9 @@ summary(x)
 ## 97.5% 0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.144 5000    0
 ## Nas   0.000 0.000000 0.000 0.000 0.000 0.000 0.000 0.000 0.000    0    0
 ```
+
+```r
+plot(x)
+```
+
+![](ex0618prob2d_files/figure-html/unnamed-chunk-1-4.png)<!-- -->
