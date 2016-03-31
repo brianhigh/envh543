@@ -73,7 +73,7 @@ sw.d.IR <- rnorm(250, mean = 50, sd = 45)
 plot(density(sw.d.IR))
 ```
 
-![](ex0618prob2d_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
+![](ex0618prob2d_files/figure-html/unnamed-chunk-1-1.png)
 
 ```r
 # Run 250 iterations of a 5000-sample simulation.
@@ -118,7 +118,7 @@ for (j in 2:250) {
 }
 ```
 
-![](ex0618prob2d_files/figure-html/unnamed-chunk-1-2.png)<!-- -->
+![](ex0618prob2d_files/figure-html/unnamed-chunk-1-2.png)
 
 ```r
 # ---------------------------------------------------------------------
@@ -190,7 +190,7 @@ dose1 <- mc((shell.vl * shell.cons) + (water.cons.L * dw.vl) +
 plot(dose1)
 ```
 
-![](ex0618prob2d_files/figure-html/unnamed-chunk-1-3.png)<!-- -->
+![](ex0618prob2d_files/figure-html/unnamed-chunk-1-3.png)
 
 ```r
 # Evaluate the 2-D Monte Carlo model.
