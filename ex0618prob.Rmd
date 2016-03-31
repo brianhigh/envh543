@@ -37,7 +37,7 @@ shell.cons <- 9e-4 * 150  # 9e-4 Person-Days per year * 150 g per occurrence
 # Drinking water consumption
 dw.viral.load <- 0.001
 # Surface water consumption while swimming
-sw.viral.load <- 0.01
+sw.viral.load <- 0.1
 sw.daily.IR <- 50         # Ingestion rate in mL of surface water
 sw.frequency <- 7         # Exposure frequency of 7 swims per year
 

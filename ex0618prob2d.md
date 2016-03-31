@@ -41,12 +41,23 @@ options(digits = 5)
 # Define variables
 # ---------------------------------------------------------------------
 
+# Shellfish viral loading (viruses/g):
+# Shellfish consumption (g/day):
+# Drinking water viral loading (viruses/L):
+# Drinking water consumption (L/day):
+# Swmming in surface water viral loading (viruses/L):
+# Swimming daily ingenstion rate (mL/hour): fictitious sd = 45
+# Swimming duration (hours): fictitious discrete distribution
+# Swimming frequency (swims/year):
+
 # Define the deterministic factors.
-shell.viral.load <- 1
-dw.viral.load <- 0.001
-shell.cons <- 0.135
-sw.viral.load <- 0.01
-sw.frequency <- 7
+shell.viral.load <- 1     # Shellfish viral loading (viruses/g)
+dw.viral.load <- 0.001    # Drinking water viral loading (viruses/L)
+shell.cons <- 0.135       # Shellfish consumption (viruses/day)
+sw.viral.load <- 0.1      # Swmming in surface water viral loading (viruses/L)
+sw.frequency <- 7         # Swimming frequency (swims/year)
+
+# Define an integer to use when setting the seed of the random number generator.
 seed <- 1
 
 # Define a function to calculate estimated exposure risk.
@@ -141,6 +152,9 @@ suppressMessages(load.pkg("mc2d"))
 suppressMessages(load.pkg("PBSmodelling"))  # For unpackList()
 # Or use library() and take your chances...
 
+# Define an integer to use when setting the seed of the random number generator.
+seed <- 1
+
 # Set the number of simulations in the variability dimension.
 ndvar(5000)
 ```
@@ -163,44 +177,40 @@ ndunc(250)
 create_mcnode_objects <- function() {
     # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
     # 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
-    # (Wiley, 2014), p. 215. Other values (some fictitious) are noted below.
-    shell.vl <- mcstoc(runif, type = "V", min = 1, max = 1)
-    dw.vl <- mcstoc(runif, type = "V", min = 0.001, max = 0.001)
-    shell.cons <- mcstoc(runif, type = "V", min = 0.135, max = 0.135)
-    sw.vl <- mcstoc(runif, type = "V", min = 0.01, max = 0.01)
-    sw.frequency <- mcstoc(runif, type = "V", min = 7, max = 7)
+    # (Wiley, 2014), pp. 215-216. Other fictitious values are noted below.
     
-    # The standard deviation value of 45 used here is a fictitious example.
-    sw.daily.IR <- mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
-                          seed = seed, rtrunc = TRUE, linf = 0)
-    
-    # Values for meanlog and sdlog are from (Haas, et al. 2014) page 216.
-    water.cons.L <- mcstoc(rlnorm, type = "V", meanlog = 7.49, 
-                           sdlog = 0.407, seed = seed) / 1000
-    
-    # The discrete distribution used here is a fictitious example.
-    sw.duration <- mcstoc(rempiricalD, type = "V", 
-                          values = c(0.5, 1, 2, 2.6), 
-                          prob = c(0.1, 0.1, 0.2, 0.6))
-    
-    return(list(shell.vl = shell.vl, dw.vl = dw.vl, shell.cons = shell.cons, 
-                sw.vl = sw.vl, sw.frequency = sw.frequency, 
-                sw.daily.IR = sw.daily.IR, water.cons.L = water.cons.L, 
-                sw.duration = sw.duration))
+    # Return a list of mcnode objects.
+    return(list(
+        # Shellfish viral loading (viruses/g):
+        shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1),
+        # Shellfish consumption (g/day):
+        shellfish.cons.g = mcstoc(runif, type = "V", min = 0.135, max = 0.135),
+        # Drinking water viral loading (viruses/L):
+        dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001),
+        # Drinking water consumption (L/day):
+        dw.cons.L = mcstoc(rlnorm, type = "V", meanlog = 7.49, sdlog = 0.407, 
+                           seed = seed) / 1000,
+        # Swmming in surface water viral loading (viruses/L):
+        sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1),
+        # Swimming daily ingenstion rate (mL/hour): fictitious sd = 45
+        sw.daily.IR = mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
+                             seed = seed, rtrunc = TRUE, linf = 0),
+        # Swimming duration (hours): fictitious discrete distribution
+        sw.duration = mcstoc(rempiricalD, type = "V", 
+                             values = c(0.5, 1, 2, 2.6), 
+                             prob = c(0.1, 0.1, 0.2, 0.6)),
+        # Swimming frequency (swims/year):
+        sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)))
 }
 
 # Define a function to estimate exposure risk from mcnode objects.
-calc_dose <- function(mcnode.list) {
-    with(mcnode.list, 
-        (shell.vl * shell.cons) + 
-        (water.cons.L * dw.vl) + 
-        ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
+calc_dose <- function(mcnodes) {
+    with(mcnodes, ((shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) +
+       ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)))
 }
 
 # Create a Monte Carlo object from a set of mcnode objects.
-# dose1 <- mc(calc_dose(create_mcnode_objects()))    # This would also work.
-mcnode.names <- unpackList(create_mcnode_objects())  # Use mcnode.names later.
-dose1 <- mc(calc_dose(mget(mcnode.names)))
+dose1 <- mc(calc_dose(create_mcnode_objects()))
 
 # Plot the Monte Carlo object.
 plot(dose1)
@@ -209,6 +219,10 @@ plot(dose1)
 ![](ex0618prob2d_files/figure-html/unnamed-chunk-1-3.png)
 
 ```r
+# Define a character vector of the names of the mcnode objects.
+mcnode.names <- c('shellfish.vl', 'shellfish.cons.g', 'dw.vl', 'dw.cons.L', 
+                  'sw.vl', 'sw.daily.IR', 'sw.duration', 'sw.frequency')
+
 # Build (in three blocks) a mcmodelcut object for evaluation by evalmccut().
 dosemccut <- mcmodelcut({
     # Block 1: Evaluate all of the 0, V and U nodes, returning mcnode objects.
@@ -216,8 +230,7 @@ dosemccut <- mcmodelcut({
     
     # Block2: Evaluate all of the VU nodes and return an mc object.
     { dose2 <- calc_dose(mget(mcnode.names))
-      dosemod <- mc(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
-                    sw.daily.IR, sw.duration, sw.frequency, dose2) }
+      dosemod <- do.call(mc, mget(c(mcnode.names, "dose2"))) }
 
     # Block 3: Return a list of statistics refering to the mc object.
     { list(sum = summary(dosemod), plot = plot(dosemod, draw = FALSE)) }
@@ -229,6 +242,13 @@ dosemccut <- mcmodelcut({
 ## {
 ##     unpackList(create_mcnode_objects())
 ## }
+```
+
+```
+## Warning in mcmodelcut({: The last call should be 'mymc <- mc(...)'
+```
+
+```
 ## The mc object is named:  dosemod
 ```
 
@@ -239,12 +259,12 @@ capture.output(x <- evalmccut(dosemccut, nsv = 5000, nsu = 250, seed = seed))
 ```
 
 ```
-## [1] "'0' mcnode(s) built in the first block:  "                                                                     
-## [2] "'V' mcnode(s) built in the first block: dw.vl shell.cons shell.vl sw.duration sw.frequency sw.vl water.cons.L "
-## [3] "'U' mcnode(s) built in the first block: sw.daily.IR "                                                          
-## [4] "'VU' mcnode(s) built in the first block:  "                                                                    
-## [5] "The 'U' and 'VU' nodes will be sent column by column in the loop"                                              
-## [6] "---------|---------|---------|---------|---------|"                                                            
+## [1] "'0' mcnode(s) built in the first block:  "                                                                            
+## [2] "'V' mcnode(s) built in the first block: dw.cons.L dw.vl shellfish.cons.g shellfish.vl sw.duration sw.frequency sw.vl "
+## [3] "'U' mcnode(s) built in the first block: sw.daily.IR "                                                                 
+## [4] "'VU' mcnode(s) built in the first block:  "                                                                           
+## [5] "The 'U' and 'VU' nodes will be sent column by column in the loop"                                                     
+## [6] "---------|---------|---------|---------|---------|"                                                                   
 ## [7] "**************************************************"
 ```
 
@@ -253,25 +273,25 @@ summary(x)
 ```
 
 ```
-## shell.vl :
+## shellfish.vl :
 ##       mean sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
 ## NoUnc    1  0   1    1   1   1   1     1   1 5000    0
 ## 
-## shell.cons :
+## shellfish.cons.g :
 ##        mean sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
 ## NoUnc 0.135  0 0.135 0.135 0.135 0.135 0.135 0.135 0.135 5000    0
-## 
-## water.cons.L :
-##       mean    sd   Min  2.5%  25%  50%  75% 97.5%  Max  nsv Na's
-## NoUnc 1.95 0.841 0.402 0.776 1.36 1.78 2.38  4.07 8.44 5000    0
 ## 
 ## dw.vl :
 ##        mean sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
 ## NoUnc 0.001  0 0.001 0.001 0.001 0.001 0.001 0.001 0.001 5000    0
 ## 
+## dw.cons.L :
+##       mean    sd   Min  2.5%  25%  50%  75% 97.5%  Max  nsv Na's
+## NoUnc 1.95 0.841 0.402 0.776 1.36 1.78 2.38  4.07 8.44 5000    0
+## 
 ## sw.vl :
-##       mean sd  Min 2.5%  25%  50%  75% 97.5%  Max  nsv Na's
-## NoUnc 0.01  0 0.01 0.01 0.01 0.01 0.01  0.01 0.01 5000    0
+##       mean sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
+## NoUnc  0.1  0 0.1  0.1 0.1 0.1 0.1   0.1 0.1 5000    0
 ## 
 ## sw.daily.IR :
 ##       NoVar
@@ -283,7 +303,7 @@ summary(x)
 ## 
 ## sw.duration :
 ##       mean    sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
-## NoUnc 2.11 0.727 0.5  0.5   2 2.6 2.6   2.6 2.6 5000    0
+## NoUnc  2.1 0.745 0.5  0.5   2 2.6 2.6   2.6 2.6 5000    0
 ## 
 ## sw.frequency :
 ##       mean sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
@@ -291,10 +311,10 @@ summary(x)
 ## 
 ## dose2 :
 ##        mean       sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
-## 50%   0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
-## mean  0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
+## 50%   0.137 0.000844 0.135 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## mean  0.137 0.000846 0.135 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
 ## 2.5%  0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
-## 97.5% 0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.144 5000    0
+## 97.5% 0.137 0.000860 0.136 0.136 0.137 0.137 0.138 0.140 0.144 5000    0
 ## Nas   0.000 0.000000 0.000 0.000 0.000 0.000 0.000 0.000 0.000    0    0
 ```
 

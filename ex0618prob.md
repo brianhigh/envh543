@@ -32,7 +32,7 @@ shell.cons <- 9e-4 * 150  # 9e-4 Person-Days per year * 150 g per occurrence
 # Drinking water consumption
 dw.viral.load <- 0.001
 # Surface water consumption while swimming
-sw.viral.load <- 0.01
+sw.viral.load <- 0.1
 sw.daily.IR <- 50         # Ingestion rate in mL of surface water
 sw.frequency <- 7         # Exposure frequency of 7 swims per year
 
@@ -51,7 +51,7 @@ water.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
 plot(density(water.cons.L))
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-1.png) 
+![](ex0618prob_files/figure-html/unnamed-chunk-1-1.png)
 
 ```r
 # Sample 5000 times from a discrete distribution of swim duration with 
@@ -66,7 +66,7 @@ swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE,
 hist(swim.duration)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-2.png) 
+![](ex0618prob_files/figure-html/unnamed-chunk-1-2.png)
 
 ```r
 # ---------------------------------------------------------------------
@@ -130,10 +130,10 @@ print(meas)
 
 ```
 ##   measure    value  color
-## 1    mean 0.136970    red
-## 2 g. mean 0.136967 orange
-## 3  median 0.136800  green
-## 4    mode 0.136579   blue
+## 1    mean 0.137151    red
+## 2 g. mean 0.137149 orange
+## 3  median 0.136990  green
+## 4    mode 0.136810   blue
 ```
 
 ```r
@@ -161,7 +161,7 @@ plot(dens)
 add_lines_and_legend(meas, 0.139, 550)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png) 
+![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png)
 
 ```r
 # ---------------------------------------------------------------------
@@ -175,4 +175,4 @@ plot(ecdf(daily.dose))
 add_lines_and_legend(meas, 0.139, 0.8)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-4.png) 
+![](ex0618prob_files/figure-html/unnamed-chunk-1-4.png)

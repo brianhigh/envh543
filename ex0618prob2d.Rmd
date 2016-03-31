@@ -46,12 +46,23 @@ options(digits = 5)
 # Define variables
 # ---------------------------------------------------------------------
 
+# Shellfish viral loading (viruses/g):
+# Shellfish consumption (g/day):
+# Drinking water viral loading (viruses/L):
+# Drinking water consumption (L/day):
+# Swmming in surface water viral loading (viruses/L):
+# Swimming daily ingenstion rate (mL/hour): fictitious sd = 45
+# Swimming duration (hours): fictitious discrete distribution
+# Swimming frequency (swims/year):
+
 # Define the deterministic factors.
-shell.viral.load <- 1
-dw.viral.load <- 0.001
-shell.cons <- 0.135
-sw.viral.load <- 0.01
-sw.frequency <- 7
+shell.viral.load <- 1     # Shellfish viral loading (viruses/g)
+dw.viral.load <- 0.001    # Drinking water viral loading (viruses/L)
+shell.cons <- 0.135       # Shellfish consumption (viruses/day)
+sw.viral.load <- 0.1      # Swmming in surface water viral loading (viruses/L)
+sw.frequency <- 7         # Swimming frequency (swims/year)
+
+# Define an integer to use when setting the seed of the random number generator.
 seed <- 1
 
 # Define a function to calculate estimated exposure risk.
@@ -138,6 +149,9 @@ suppressMessages(load.pkg("mc2d"))
 suppressMessages(load.pkg("PBSmodelling"))  # For unpackList()
 # Or use library() and take your chances...
 
+# Define an integer to use when setting the seed of the random number generator.
+seed <- 1
+
 # Set the number of simulations in the variability dimension.
 ndvar(5000)
 
@@ -148,47 +162,47 @@ ndunc(250)
 create_mcnode_objects <- function() {
     # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
     # 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
-    # (Wiley, 2014), p. 215. Other values (some fictitious) are noted below.
-    shell.vl <- mcstoc(runif, type = "V", min = 1, max = 1)
-    dw.vl <- mcstoc(runif, type = "V", min = 0.001, max = 0.001)
-    shell.cons <- mcstoc(runif, type = "V", min = 0.135, max = 0.135)
-    sw.vl <- mcstoc(runif, type = "V", min = 0.01, max = 0.01)
-    sw.frequency <- mcstoc(runif, type = "V", min = 7, max = 7)
+    # (Wiley, 2014), pp. 215-216. Other fictitious values are noted below.
     
-    # The standard deviation value of 45 used here is a fictitious example.
-    sw.daily.IR <- mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
-                          seed = seed, rtrunc = TRUE, linf = 0)
-    
-    # Values for meanlog and sdlog are from (Haas, et al. 2014) page 216.
-    water.cons.L <- mcstoc(rlnorm, type = "V", meanlog = 7.49, 
-                           sdlog = 0.407, seed = seed) / 1000
-    
-    # The discrete distribution used here is a fictitious example.
-    sw.duration <- mcstoc(rempiricalD, type = "V", 
-                          values = c(0.5, 1, 2, 2.6), 
-                          prob = c(0.1, 0.1, 0.2, 0.6))
-    
-    return(list(shell.vl = shell.vl, dw.vl = dw.vl, shell.cons = shell.cons, 
-                sw.vl = sw.vl, sw.frequency = sw.frequency, 
-                sw.daily.IR = sw.daily.IR, water.cons.L = water.cons.L, 
-                sw.duration = sw.duration))
+    # Return a list of mcnode objects.
+    return(list(
+        # Shellfish viral loading (viruses/g):
+        shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1),
+        # Shellfish consumption (g/day):
+        shellfish.cons.g = mcstoc(runif, type = "V", min = 0.135, max = 0.135),
+        # Drinking water viral loading (viruses/L):
+        dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001),
+        # Drinking water consumption (L/day):
+        dw.cons.L = mcstoc(rlnorm, type = "V", meanlog = 7.49, sdlog = 0.407, 
+                           seed = seed) / 1000,
+        # Swmming in surface water viral loading (viruses/L):
+        sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1),
+        # Swimming daily ingenstion rate (mL/hour): fictitious sd = 45
+        sw.daily.IR = mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
+                             seed = seed, rtrunc = TRUE, linf = 0),
+        # Swimming duration (hours): fictitious discrete distribution
+        sw.duration = mcstoc(rempiricalD, type = "V", 
+                             values = c(0.5, 1, 2, 2.6), 
+                             prob = c(0.1, 0.1, 0.2, 0.6)),
+        # Swimming frequency (swims/year):
+        sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)))
 }
 
 # Define a function to estimate exposure risk from mcnode objects.
-calc_dose <- function(mcnode.list) {
-    with(mcnode.list, 
-        (shell.vl * shell.cons) + 
-        (water.cons.L * dw.vl) + 
-        ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
+calc_dose <- function(mcnodes) {
+    with(mcnodes, ((shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) +
+       ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)))
 }
 
 # Create a Monte Carlo object from a set of mcnode objects.
-# dose1 <- mc(calc_dose(create_mcnode_objects()))    # This would also work.
-mcnode.names <- unpackList(create_mcnode_objects())  # Use mcnode.names later.
-dose1 <- mc(calc_dose(mget(mcnode.names)))
+dose1 <- mc(calc_dose(create_mcnode_objects()))
 
 # Plot the Monte Carlo object.
 plot(dose1)
+
+# Define a character vector of the names of the mcnode objects.
+mcnode.names <- c('shellfish.vl', 'shellfish.cons.g', 'dw.vl', 'dw.cons.L', 
+                  'sw.vl', 'sw.daily.IR', 'sw.duration', 'sw.frequency')
 
 # Build (in three blocks) a mcmodelcut object for evaluation by evalmccut().
 dosemccut <- mcmodelcut({
@@ -197,8 +211,7 @@ dosemccut <- mcmodelcut({
     
     # Block2: Evaluate all of the VU nodes and return an mc object.
     { dose2 <- calc_dose(mget(mcnode.names))
-      dosemod <- mc(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
-                    sw.daily.IR, sw.duration, sw.frequency, dose2) }
+      dosemod <- do.call(mc, mget(c(mcnode.names, "dose2"))) }
 
     # Block 3: Return a list of statistics refering to the mc object.
     { list(sum = summary(dosemod), plot = plot(dosemod, draw = FALSE)) }
