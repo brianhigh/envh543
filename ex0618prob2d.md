@@ -49,7 +49,7 @@ sw.viral.load <- 0.01
 sw.frequency <- 7
 seed <- 1
 
-# Define a function to calculate exposure risk.
+# Define a function to calculate estimated exposure risk.
 Risk.fcn <- function(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
                      sw.daily.IR, sw.duration, sw.frequency) {
     ((shell.vl * shell.cons) + (water.cons.L * dw.vl) +
@@ -98,7 +98,7 @@ for (i in 1:250) {
     
     # Compute 5000 daily dose simulations and store as a vector in a matrix.
     Risk.mat[,i] <- sapply(1:5000, function(j) 
-        # Define a function to calculate microbial exposure risk.
+        # Define a function to calculate esimated microbial exposure risk.
         Risk.fcn(water.cons.L = water.cons.L[j],
                  sw.duration = swim.duration[j],
                  shell.vl = shell.viral.load,
@@ -189,14 +189,18 @@ create_mcnode_objects <- function() {
                 sw.duration = sw.duration))
 }
 
-# Define a function to calculate the estimated risk using mcnode objects.
-calc_dose <- function(mc.obj) {
-    with(mc.obj, (shell.vl * shell.cons) + (water.cons.L * dw.vl) + ((sw.vl * 
-                   (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
+# Define a function to estimate exposure risk from mcnode objects.
+calc_dose <- function(mcnode.list) {
+    with(mcnode.list, 
+        (shell.vl * shell.cons) + 
+        (water.cons.L * dw.vl) + 
+        ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
 }
 
-# Create a Monte Carlo object from mcnode objects.
-dose1 <- mc(calc_dose(create_mcnode_objects()))
+# Create a Monte Carlo object from a set of mcnode objects.
+# dose1 <- mc(calc_dose(create_mcnode_objects()))    # This would also work.
+mcnode.names <- unpackList(create_mcnode_objects())  # Use mcnode.names later.
+dose1 <- mc(calc_dose(mget(mcnode.names)))
 
 # Plot the Monte Carlo object.
 plot(dose1)
@@ -206,19 +210,29 @@ plot(dose1)
 
 ```r
 # Build (in three blocks) a mcmodelcut object for evaluation by evalmccut().
-o <- capture.output(dosemccut <- mcmodelcut({
+dosemccut <- mcmodelcut({
     # Block 1: Evaluate all of the 0, V and U nodes, returning mcnode objects.
     { unpackList(create_mcnode_objects()) }
     
     # Block2: Evaluate all of the VU nodes and return an mc object.
-    { dose2 <- calc_dose(create_mcnode_objects())
+    { dose2 <- calc_dose(mget(mcnode.names))
       dosemod <- mc(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
                     sw.daily.IR, sw.duration, sw.frequency, dose2) }
 
     # Block 3: Return a list of statistics refering to the mc object.
     { list(sum = summary(dosemod), plot = plot(dosemod, draw = FALSE)) }
-}))
+})
+```
 
+```
+## The following expression will be evaluated only once :
+## {
+##     unpackList(create_mcnode_objects())
+## }
+## The mc object is named:  dosemod
+```
+
+```r
 # Evaluate the 2-D Monte Carlo model using a loop on the uncertainty dimension.
 # Capture the text output and print when finished to save space in the report.
 capture.output(x <- evalmccut(dosemccut, nsv = 5000, nsu = 250, seed = seed))
@@ -280,7 +294,7 @@ summary(x)
 ## 50%   0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
 ## mean  0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
 ## 2.5%  0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
-## 97.5% 0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
+## 97.5% 0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.144 5000    0
 ## Nas   0.000 0.000000 0.000 0.000 0.000 0.000 0.000 0.000 0.000    0    0
 ```
 
