@@ -49,14 +49,14 @@ sw.viral.load <- 0.01
 sw.frequency <- 7
 seed <- 1
 
-# Define a function to calculate risk.
+# Define a function to calculate exposure risk.
 Risk.fcn <- function(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
                      sw.daily.IR, sw.duration, sw.frequency) {
     ((shell.vl * shell.cons) + (water.cons.L * dw.vl) +
        ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
 }
 
-# Define an empty matric to hold the simulation results.
+# Define an empty matrix to hold the simulation results.
 Risk.mat <- matrix(as.numeric(NA), nrow = 5000, ncol = 250)
 
 # ---------------------------------------------------------------------
@@ -112,7 +112,7 @@ for (i in 1:250) {
 # Plot the empirical cumulative distribution for the first iteration.
 plot(ecdf(log10(Risk.mat[, 1])))
 
-# Plot empirical cumulative distributions of additional iterations in blue.
+# Plot empirical cumulative distributions for additional iterations in blue.
 for (j in 2:250) {
     plot(ecdf(log10(Risk.mat[, j])), col = "lightblue", add = TRUE)
 }
@@ -125,7 +125,7 @@ for (j in 2:250) {
 # Repeat the simulation with mc2d
 # ---------------------------------------------------------------------
 
-# There are multiple ways to run the 2D simulation depending on the 
+# There are multiple ways to run the 2-D simulation depending on the 
 # desired output. We will use mc() and mcmodelcut() from the mc2d package.
 
 # Define a function to conditionally install and load a package.
@@ -191,14 +191,11 @@ create_mcnode_objects <- function() {
 
 # Define a function to calculate the estimated risk using mcnode objects.
 calc_dose <- function(mc.obj) {
-    (mc.obj$shell.vl * mc.obj$shell.cons) + 
-    (mc.obj$water.cons.L * mc.obj$dw.vl) + 
-    ((mc.obj$sw.vl * 
-          (mc.obj$sw.daily.IR * mc.obj$sw.duration * mc.obj$sw.frequency)
-      ) / 365 / 1000)
+    with(mc.obj, (shell.vl * shell.cons) + (water.cons.L * dw.vl) + ((sw.vl * 
+                   (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
 }
 
-# Create a Monte Carlo object from estimated risk using mcnode objects.
+# Create a Monte Carlo object from mcnode objects.
 dose1 <- mc(calc_dose(create_mcnode_objects()))
 
 # Plot the Monte Carlo object.
@@ -208,35 +205,18 @@ plot(dose1)
 ![](ex0618prob2d_files/figure-html/unnamed-chunk-1-3.png)
 
 ```r
-# Build a mcmodelcut object that can be sent to evalmccut for evaluation.
+# Build (in three blocks) a mcmodelcut object for evaluation by evalmccut().
 o <- capture.output(dosemccut <- mcmodelcut({
-    # ------------
-    # First block:
-    # ------------
-    # Evaluate all the 0, V and U nodes.
-    {
-        unpackList(create_mcnode_objects())
-    }
-    # -------------
-    # Second block:
-    # -------------
-    # Evaluate all the VU nodes.
-    # Leads to the mc object.
-    {
-        dose2 <- calc_dose(create_mcnode_objects())
-        dosemod <- mc(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
-                      sw.daily.IR, sw.duration, sw.frequency, dose2)
-    }
-    # ------------
-    # Third block:
-    # ------------
-    # Leads to a list of statistics: summary, plot, tornado
-    # or any function leading to a vector (et), a list (minmax),
-    # a matrix or a data.frame (summary)
-    {
-        list(sum = summary(dosemod), plot = plot(dosemod, draw = FALSE),
-             minmax = lapply(dosemod, range))
-    }
+    # Block 1: Evaluate all of the 0, V and U nodes, returning mcnode objects.
+    { unpackList(create_mcnode_objects()) }
+    
+    # Block2: Evaluate all of the VU nodes and return an mc object.
+    { dose2 <- calc_dose(create_mcnode_objects())
+      dosemod <- mc(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
+                    sw.daily.IR, sw.duration, sw.frequency, dose2) }
+
+    # Block 3: Return a list of statistics refering to the mc object.
+    { list(sum = summary(dosemod), plot = plot(dosemod, draw = FALSE)) }
 }))
 
 # Evaluate the 2-D Monte Carlo model using a loop on the uncertainty dimension.
