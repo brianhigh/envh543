@@ -259,6 +259,7 @@ capture.output(x <- evalmccut(dosemccut, nsv = 5000, nsu = 250, seed = seed))
 ```
 
 ```r
+# Print a summary and a plot for the mccut object.
 summary(x)
 ```
 
@@ -313,3 +314,16 @@ plot(x)
 ```
 
 ![](ex0618prob2d_files/figure-html/unnamed-chunk-1-4.png)
+
+```r
+# Plot the empirical cumulative distribution for the estimated exposure.
+expo.x <- x$plot$dose2
+expo.l <- length(expo.x)
+expo.y <- 1:expo.l/expo.l
+plot(expo.x, expo.y, pch = 20, cex = 0.1, col='#ADD8E604', 
+     main='ecdf(dose2)', ylab = 'Fn(x)', xlab = 'x')
+abline(h = 0, col = "gray", lty = 2, lwd = 2)
+abline(h = 1, col = "gray", lty = 2, lwd = 2)
+```
+
+![](ex0618prob2d_files/figure-html/unnamed-chunk-1-5.png)
