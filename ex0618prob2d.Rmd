@@ -201,7 +201,7 @@ create_mcnode_objects <- function() {
         # Swimming in surface water viral loading (viruses/L):
         sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1),
         
-        # Swimming daily ingenstion rate (mL/hour): fictitious sd = 45
+        # Swimming daily ingestion rate (mL/hour): fictitious sd = 45
         sw.daily.IR = mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
                              seed = seed, rtrunc = TRUE, linf = 0),
         
