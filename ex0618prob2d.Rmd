@@ -183,7 +183,7 @@ create_mcnode_objects <- function() {
     # 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
     # (Wiley, 2014), pp. 215-216. Other fictitious values are noted below.
     
-    # Return a list of mcnode objects.
+    # Return a list of mcnode objects. (V = variability, U = uncertainty)
     return(list(
         # Shellfish viral loading (viruses/g):
         shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1),
@@ -239,20 +239,25 @@ mcnode.names <- names(create_mcnode_objects())
 
 # Build a mcmodelcut object for evaluation by evalmccut().
 dosemccut <- mcmodelcut({
+    # Evaluate a 2-D MC model using a loop to gather statistics.
     
-    # Block 1: Evaluate all of the 0, V and U nodes, returning mcnode objects.
+    # Block 1: Evaluate all of the 0, V and U mcnodes. (Runs only once.)
     {
+        # Create the mcnode objects and and extract them from a list.
         unpackList(create_mcnode_objects())
     }
     
-    # Block2: Evaluate all of the VU nodes and return an mc object.
+    # Block2: Evaluate all of the VU nodes. Loop on the uncertainty dimension.
     {
+        # Estimate the exposure using the V and U nodes to create a VU node.
         dose2 <- calc_dose(mget(mcnode.names))
+        
+        # Note: Generates a warning from using do.call(), which can be ignored.
         dose.model <- do.call(mc, mget(c(mcnode.names, "dose2"))) 
     }
 
-    # Block 3: Return a list of statistics refering to the mc object.
-    { 
+    # Block 3: Calculate statistics in the variability dimension (within loop).
+    {
         list(sum = summary(dose.model), plot = plot(dose.model, draw = FALSE))
     }
 
