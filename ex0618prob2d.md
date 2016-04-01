@@ -128,11 +128,11 @@ for (i in 1:250) {
 # ------------------
 
 # Plot the empirical cumulative distribution for the first iteration.
-plot(ecdf(Risk.mat[, 1]), col="#ADD8E605", main='ecdf(Risk.mat)')
+plot(ecdf(Risk.mat[, 1]), col = "#ADD8E605", main = 'ecdf(Risk.mat)')
 
 # Plot empirical cumulative distributions for additional iterations in blue.
 for (j in 1:250) {
-    plot(ecdf(Risk.mat[, j]), col="#ADD8E605", add = TRUE)
+    plot(ecdf(Risk.mat[, j]), col = "#ADD8E605", add = TRUE)
 }
 ```
 
@@ -202,22 +202,29 @@ create_mcnode_objects <- function() {
     return(list(
         # Shellfish viral loading (viruses/g):
         shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1),
+        
         # Shellfish consumption (g/day):
         shellfish.cons.g = mcstoc(runif, type = "V", min = 0.135, max = 0.135),
+        
         # Drinking water viral loading (viruses/L):
         dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001),
+        
         # Drinking water consumption (L/day):
         dw.cons.L = mcstoc(rlnorm, type = "V", meanlog = 7.49, sdlog = 0.407, 
                            seed = seed) / 1000,
+        
         # Swmming in surface water viral loading (viruses/L):
         sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1),
+        
         # Swimming daily ingenstion rate (mL/hour): fictitious sd = 45
         sw.daily.IR = mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
                              seed = seed, rtrunc = TRUE, linf = 0),
+        
         # Swimming duration (hours): fictitious discrete distribution
         sw.duration = mcstoc(rempiricalD, type = "V", 
                              values = c(0.5, 1, 2, 2.6), 
                              prob = c(0.1, 0.1, 0.2, 0.6)),
+        
         # Swimming frequency (swims/year):
         sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)))
 }
@@ -246,20 +253,28 @@ plot(dose1)
 # Run a 2-D MC simulation
 # ------------------------
 
-# Get the item names of the mcnode object list to use with mcmodelcut().
+# Get a character vector of mcnode names to use in Block 2 of mcmodelcut().
 mcnode.names <- names(create_mcnode_objects())
 
-# Build (in three blocks) a mcmodelcut object for evaluation by evalmccut().
+# Build a mcmodelcut object for evaluation by evalmccut().
 dosemccut <- mcmodelcut({
+    
     # Block 1: Evaluate all of the 0, V and U nodes, returning mcnode objects.
-    { unpackList(create_mcnode_objects()) }
+    {
+        unpackList(create_mcnode_objects())
+    }
     
     # Block2: Evaluate all of the VU nodes and return an mc object.
-    { dose2 <- calc_dose(mget(mcnode.names))
-      dosemod <- do.call(mc, mget(c(mcnode.names, "dose2"))) }
+    {
+        dose2 <- calc_dose(mget(mcnode.names))
+        dose.model <- do.call(mc, mget(c(mcnode.names, "dose2"))) 
+    }
 
     # Block 3: Return a list of statistics refering to the mc object.
-    { list(sum = summary(dosemod), plot = plot(dosemod, draw = FALSE)) }
+    { 
+        list(sum = summary(dose.model), plot = plot(dose.model, draw = FALSE))
+    }
+
 })
 ```
 
@@ -275,7 +290,7 @@ dosemccut <- mcmodelcut({
 ```
 
 ```
-## The mc object is named:  dosemod
+## The mc object is named:  dose.model
 ```
 
 ```r
@@ -360,7 +375,7 @@ plot(x)
 expo.x <- x$plot$dose2
 expo.l <- length(expo.x)
 expo.y <- 1:expo.l/expo.l
-plot(expo.x, expo.y, pch = 20, cex = 0.1, col='#ADD8E604', 
+plot(expo.x, expo.y, pch = 20, cex = 0.1, col = '#ADD8E604', 
      main='ecdf(dose2)', ylab = 'Fn(x)', xlab = 'x')
 abline(h = 0, col = "gray", lty = 2, lwd = 2)
 abline(h = 1, col = "gray", lty = 2, lwd = 2)
