@@ -1,12 +1,14 @@
 ---
 title: "1-D Monte Carlo simulation of microbial exposure"
-author: "Jane Pouzou"
-date: 'License: CC BY-SA 4.0'
+author: "Jane Pouzou and Brian High"
+date: '![CC BY-SA 4.0](cc_by-sa_4.png)'
 output:
   html_document:
     keep_md: yes
     self-contained: yes
 ---
+
+## Introduction
 
 This document offers a 1-D Monte Carlo probabilistic solution in R for the 
 daily microbial exposure from drinking water consumption, swimming in surface 
@@ -16,19 +18,9 @@ water and shellfish consumption for [Example 6.18](images/ex0618.png) from pages
 [Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
 by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
 
+## Define variables
+
 ```{r}
-# A 1-D Monte Carlo simulation for the daily microbial exposure from drinking
-# water consumption, swimming in surface water, and shellfish consumption 
-# for Example 6.18 from Quantitative Microbial Risk Assessment, 2nd Edition 
-# by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
-
-# Copyright (c) Jane Pouzou
-# License: CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
-
-# ---------------------------------------------------------------------
-# Define variables
-# ---------------------------------------------------------------------
-
 # Define variables provided in the example for three exposure types.
 
 # Shellfish consumption
@@ -42,11 +34,11 @@ dw.viral.load <- 0.001
 sw.viral.load <- 0.1
 sw.daily.IR <- 50               # Ingestion rate in mL of surface water
 sw.frequency <- 7               # Exposure frequency of 7 swims per year
+```
 
-# ---------------------------------------------------------------------
-# Sample from probability distributions
-# ---------------------------------------------------------------------
+## Sample from probability distributions
 
+```{r}
 # Generate 5000 random values from a log-normal distribution to estimate 
 # exposure from consumption of drinking water (ml/day). Divide by 1000 
 # mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
@@ -67,11 +59,13 @@ swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE,
 
 # Create a simple histogram of our distribution as a check.
 hist(swim.duration)
+```
 
-# ---------------------------------------------------------------------
-# Calculate estimated daily dose using probabilistic simulation
-# ---------------------------------------------------------------------
+## Estimate daily dose
 
+Calculate estimated daily dose using a probabilistic simulation model.
+
+```{r}
 # Define a function to calculate microbial exposure risk.
 Risk.fcn <- function(shellfish.vl, shellfish.cons.g, water.cons.L, dw.vl, sw.vl, 
                      sw.daily.IR, sw.duration, sw.frequency) {
@@ -95,11 +89,11 @@ options(digits=3)
 
 # Print the geometric mean of the vector of simulated daily dose results.
 print(format(exp(mean(log(daily.dose))), scientific = TRUE))
+```
 
-# ---------------------------------------------------------------------
-# Plot the kernel density estimates
-# ---------------------------------------------------------------------
+## Plot the kernel density estimates
 
+```{r}
 # Calculate kernel density estimates.
 dens <- density(daily.dose)
 
@@ -113,13 +107,21 @@ meas <- data.frame(
     color = c("red", "orange", "green", "blue"),
     stringsAsFactors = FALSE
 )
+```
 
+### Calculate measures of central tendency for plotting
+
+```{r}
 # Set display options for use with the print() function.
 options(digits=6)
 
 # Print measures of central tendency.
 print(meas)
+```
 
+### Plot the kernel density estimates with measures of central tendency
+
+```{r}
 # Contruct text labels by combining each measure with its value.
 meas$label <- sapply(1:nrow(meas), function(x) 
     paste(meas$measure[x], as.character(meas$value[x]), sep = ' = '))
@@ -142,11 +144,11 @@ plot(dens)
 
 # Add lines for measures of central tendency and a legend.
 add_lines_and_legend(meas, 0.139, 550)
+```
 
-# ---------------------------------------------------------------------
-# Plot the empirical cumulative distribution
-# ---------------------------------------------------------------------
+## Plot the empirical cumulative distribution
 
+```{r}
 # Plot the empirical cumulative distribution for the exposure estimates.
 plot(ecdf(daily.dose))
 

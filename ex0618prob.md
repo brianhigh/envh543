@@ -1,6 +1,8 @@
 # 1-D Monte Carlo simulation of microbial exposure
-Jane Pouzou  
-License: CC BY-SA 4.0  
+Jane Pouzou and Brian High  
+![CC BY-SA 4.0](cc_by-sa_4.png)  
+
+## Introduction
 
 This document offers a 1-D Monte Carlo probabilistic solution in R for the 
 daily microbial exposure from drinking water consumption, swimming in surface 
@@ -10,20 +12,10 @@ water and shellfish consumption for [Example 6.18](images/ex0618.png) from pages
 [Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
 by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
 
+## Define variables
+
 
 ```r
-# A 1-D Monte Carlo simulation for the daily microbial exposure from drinking
-# water consumption, swimming in surface water, and shellfish consumption 
-# for Example 6.18 from Quantitative Microbial Risk Assessment, 2nd Edition 
-# by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
-
-# Copyright (c) Jane Pouzou
-# License: CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
-
-# ---------------------------------------------------------------------
-# Define variables
-# ---------------------------------------------------------------------
-
 # Define variables provided in the example for three exposure types.
 
 # Shellfish consumption
@@ -37,11 +29,12 @@ dw.viral.load <- 0.001
 sw.viral.load <- 0.1
 sw.daily.IR <- 50               # Ingestion rate in mL of surface water
 sw.frequency <- 7               # Exposure frequency of 7 swims per year
+```
 
-# ---------------------------------------------------------------------
-# Sample from probability distributions
-# ---------------------------------------------------------------------
+## Sample from probability distributions
 
+
+```r
 # Generate 5000 random values from a log-normal distribution to estimate 
 # exposure from consumption of drinking water (ml/day). Divide by 1000 
 # mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
@@ -53,7 +46,7 @@ water.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
 plot(density(water.cons.L))
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-1.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-2-1.png)
 
 ```r
 # Sample 5000 times from a discrete distribution of swim duration with 
@@ -68,13 +61,14 @@ swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE,
 hist(swim.duration)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-2.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-2-2.png)
+
+## Estimate daily dose
+
+Calculate estimated daily dose using a probabilistic simulation model.
+
 
 ```r
-# ---------------------------------------------------------------------
-# Calculate estimated daily dose using probabilistic simulation
-# ---------------------------------------------------------------------
-
 # Define a function to calculate microbial exposure risk.
 Risk.fcn <- function(shellfish.vl, shellfish.cons.g, water.cons.L, dw.vl, sw.vl, 
                      sw.daily.IR, sw.duration, sw.frequency) {
@@ -104,11 +98,10 @@ print(format(exp(mean(log(daily.dose))), scientific = TRUE))
 ## [1] "1.37e-01"
 ```
 
-```r
-# ---------------------------------------------------------------------
-# Plot the kernel density estimates
-# ---------------------------------------------------------------------
+## Plot the kernel density estimates
 
+
+```r
 # Calculate kernel density estimates.
 dens <- density(daily.dose)
 
@@ -122,7 +115,12 @@ meas <- data.frame(
     color = c("red", "orange", "green", "blue"),
     stringsAsFactors = FALSE
 )
+```
 
+### Calculate measures of central tendency for plotting
+
+
+```r
 # Set display options for use with the print() function.
 options(digits=6)
 
@@ -137,6 +135,9 @@ print(meas)
 ## 3  median 0.136990  green
 ## 4    mode 0.136810   blue
 ```
+
+### Plot the kernel density estimates with measures of central tendency
+
 
 ```r
 # Contruct text labels by combining each measure with its value.
@@ -163,13 +164,12 @@ plot(dens)
 add_lines_and_legend(meas, 0.139, 550)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-3.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-6-1.png)
+
+## Plot the empirical cumulative distribution
+
 
 ```r
-# ---------------------------------------------------------------------
-# Plot the empirical cumulative distribution
-# ---------------------------------------------------------------------
-
 # Plot the empirical cumulative distribution for the exposure estimates.
 plot(ecdf(daily.dose))
 
@@ -177,4 +177,4 @@ plot(ecdf(daily.dose))
 add_lines_and_legend(meas, 0.139, 0.8)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-1-4.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-7-1.png)

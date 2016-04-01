@@ -1,12 +1,14 @@
 ---
 title: "2-D Monte Carlo simulation of microbial exposure"
-author: "Jane Pouzou"
-date: 'License: CC BY-SA 4.0'
+author: "Jane Pouzou and Brian High"
+date: '![CC BY-SA 4.0](cc_by-sa_4.png)'
 output:
   html_document:
     keep_md: yes
     self-contained: yes
 ---
+
+## Introduction
 
 This document offers two 2-D Monte Carlo probabilistic solutions in R for the 
 daily microbial exposure from drinking water consumption, swimming in surface 
@@ -20,40 +22,28 @@ The first solution is coded manually with functionality built into "base" R.
 
 The second solution uses the _mc2d_ package.
 
+## Perform a 2-D Monte Carlo simulation
+
+### Clear workspace
+
 ```{r}
-# A 2-D Monte Carlo simulation for the daily microbial exposure from drinking
-# water consumption, swimming in surface water, and shellfish consumption
-# for Example 6.18 from Quantitative Microbial Risk Assessment, 2nd Edition
-# by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
-
-# Copyright (c) Jane Pouzou
-# License: CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
-
-# ---------------------------------------------------------------------
-# Perform a 2-D Monte Carlo simulation
-# ---------------------------------------------------------------------
-
-# ----------------
-# Clear workspace
-# ----------------
-
 # Clear the workspace, unless you are running in knitr context.
 if (!isTRUE(getOption('knitr.in.progress'))) {
     closeAllConnections()
     rm(list = ls())
 }
+```
 
-# ------------
-# Set options
-# ------------
+### Set options
 
+```{r}
 # Set display options for use with the print() function.
 options(digits = 5)
+```
 
-# -----------------
-# Define variables
-# -----------------
+### Define variables
 
+```{r}
 # Define the deterministic factors.
 shellfish.viral.load <- 1  # Shellfish viral loading (viruses/g)
 dw.viral.load <- 0.001     # Drinking water viral loading (viruses/L)
@@ -66,22 +56,22 @@ seed <- 1
 
 # Define an empty matrix to hold the simulation results.
 Risk.mat <- matrix(as.numeric(NA), nrow = 5000, ncol = 250)
+```
 
-# -----------------
-# Define functions
-# -----------------
+### Define functions
 
+```{r}
 # Define a function to calculate estimated exposure risk.
 Risk.fcn <- function(shellfish.vl, shellfish.cons.g, water.cons.L, dw.vl, 
                      sw.vl, sw.daily.IR, sw.duration, sw.frequency) {
     ((shellfish.vl * shellfish.cons.g) + (water.cons.L * dw.vl) + 
          ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
 }
+```
 
-# ------------------------
-# Run a 2-D MC simulation
-# ------------------------
+### Run a 2-D MC simulation
 
+```{r}
 # Generate 250 random samples from a normal distribution to estimate 
 # ingestion rate (IR) in mL of surface water. The standard deviation 
 # value of 45 used here is a fictitious example.
@@ -123,11 +113,11 @@ for (i in 1:250) {
                  sw.daily.IR = sw.d.IR[i],
                  sw.frequency = sw.frequency))
 }
+```
 
-# ------------------
-# Summarize results
-# ------------------
+### Summarize results
 
+```{r}
 # Plot the empirical cumulative distribution for the first iteration.
 plot(ecdf(Risk.mat[, 1]), col = "#ADD8E605", main = 'ecdf(Risk.mat)')
 
@@ -135,18 +125,16 @@ plot(ecdf(Risk.mat[, 1]), col = "#ADD8E605", main = 'ecdf(Risk.mat)')
 for (j in 1:250) {
     plot(ecdf(Risk.mat[, j]), col = "#ADD8E605", add = TRUE)
 }
+```
 
-# ---------------------------------------------------------------------
-# Repeat the simulation with mc2d
-# ---------------------------------------------------------------------
+## Repeat the simulation with mc2d
 
-# There are multiple ways to run the 2-D simulation depending on the 
-# desired output. We will use mc() and mcmodelcut() from the mc2d package.
+There are multiple ways to run the 2-D simulation depending on the 
+desired output. We will use mc() and mcmodelcut() from the mc2d package.
 
-# --------------
-# Load packages
-# --------------
+### Load packages
 
+```{r}
 # Define a function to conditionally install and load a package.
 load.pkg <- function(pkg) {
     if (! suppressWarnings(require(pkg, character.only = TRUE)) ) {
@@ -159,11 +147,11 @@ load.pkg <- function(pkg) {
 suppressMessages(load.pkg("mc2d"))
 suppressMessages(load.pkg("PBSmodelling"))  # For unpackList()
 # Or use library() and take your chances...
+```
 
-# -----------------
-# Define variables
-# -----------------
+### Define variables
 
+```{r}
 # Define an integer to use when setting the seed of the random number generator.
 seed <- 1
 
@@ -172,11 +160,11 @@ ndvar(5000)
 
 # Set the number of simulations in the uncertainty dimension. 
 ndunc(250)
+```
 
-# --------------------
-# Define MC functions
-# --------------------
+### Define MC functions
 
+```{r}
 # Define a function to create mcnode objects for use by mc() and mcmodelcut().
 create_mcnode_objects <- function() {
     # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
@@ -219,21 +207,21 @@ calc_dose <- function(mcnodes) {
     with(mcnodes, ((shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) +
        ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)))
 }
+```
 
-# ------------------------
-# Run a 1-D MC simulation
-# ------------------------
+### Run a 1-D MC simulation
 
+```{r}
 # Create a Monte Carlo object from a set of mcnode objects.
 dose1 <- mc(calc_dose(create_mcnode_objects()))
 
 # Plot the Monte Carlo object.
 plot(dose1)
+```
 
-# ------------------------
-# Run a 2-D MC simulation
-# ------------------------
+### Run a 2-D MC simulation
 
+```{r warning=FALSE}
 # Get a character vector of mcnode names to use in Block 2 of mcmodelcut().
 mcnode.names <- names(create_mcnode_objects())
 
@@ -266,11 +254,11 @@ dosemccut <- mcmodelcut({
 # Evaluate the 2-D Monte Carlo model using a loop on the uncertainty dimension.
 # Capture the text output and print when finished to save space in the report.
 capture.output(x <- evalmccut(dosemccut, nsv = 5000, nsu = 250, seed = seed))
+```
 
-# ------------------
-# Summarize results
-# ------------------
+### Summarize results
 
+```{r}
 # Print a summary and a plot for the mccut object.
 summary(x)
 plot(x)

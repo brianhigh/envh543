@@ -1,6 +1,8 @@
 # 2-D Monte Carlo simulation of microbial exposure
-Jane Pouzou  
-License: CC BY-SA 4.0  
+Jane Pouzou and Brian High  
+![CC BY-SA 4.0](cc_by-sa_4.png)  
+
+## Introduction
 
 This document offers two 2-D Monte Carlo probabilistic solutions in R for the 
 daily microbial exposure from drinking water consumption, swimming in surface 
@@ -14,41 +16,31 @@ The first solution is coded manually with functionality built into "base" R.
 
 The second solution uses the _mc2d_ package.
 
+## Perform a 2-D Monte Carlo simulation
+
+### Clear workspace
+
 
 ```r
-# A 2-D Monte Carlo simulation for the daily microbial exposure from drinking
-# water consumption, swimming in surface water, and shellfish consumption
-# for Example 6.18 from Quantitative Microbial Risk Assessment, 2nd Edition
-# by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
-
-# Copyright (c) Jane Pouzou
-# License: CC BY-SA 4.0 - https://creativecommons.org/licenses/by-sa/4.0/
-
-# ---------------------------------------------------------------------
-# Perform a 2-D Monte Carlo simulation
-# ---------------------------------------------------------------------
-
-# ----------------
-# Clear workspace
-# ----------------
-
 # Clear the workspace, unless you are running in knitr context.
 if (!isTRUE(getOption('knitr.in.progress'))) {
     closeAllConnections()
     rm(list = ls())
 }
+```
 
-# ------------
-# Set options
-# ------------
+### Set options
 
+
+```r
 # Set display options for use with the print() function.
 options(digits = 5)
+```
 
-# -----------------
-# Define variables
-# -----------------
+### Define variables
 
+
+```r
 # Define the deterministic factors.
 shellfish.viral.load <- 1  # Shellfish viral loading (viruses/g)
 dw.viral.load <- 0.001     # Drinking water viral loading (viruses/L)
@@ -61,22 +53,24 @@ seed <- 1
 
 # Define an empty matrix to hold the simulation results.
 Risk.mat <- matrix(as.numeric(NA), nrow = 5000, ncol = 250)
+```
 
-# -----------------
-# Define functions
-# -----------------
+### Define functions
 
+
+```r
 # Define a function to calculate estimated exposure risk.
 Risk.fcn <- function(shellfish.vl, shellfish.cons.g, water.cons.L, dw.vl, 
                      sw.vl, sw.daily.IR, sw.duration, sw.frequency) {
     ((shellfish.vl * shellfish.cons.g) + (water.cons.L * dw.vl) + 
          ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
 }
+```
 
-# ------------------------
-# Run a 2-D MC simulation
-# ------------------------
+### Run a 2-D MC simulation
 
+
+```r
 # Generate 250 random samples from a normal distribution to estimate 
 # ingestion rate (IR) in mL of surface water. The standard deviation 
 # value of 45 used here is a fictitious example.
@@ -87,7 +81,7 @@ sw.d.IR <- rnorm(250, mean = 50, sd = 45)
 plot(density(sw.d.IR))
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-1-1.png) 
+![](ex0618prob2d_files/figure-html/unnamed-chunk-5-1.png)
 
 ```r
 # Run 250 iterations of a 5000-sample simulation.
@@ -122,11 +116,12 @@ for (i in 1:250) {
                  sw.daily.IR = sw.d.IR[i],
                  sw.frequency = sw.frequency))
 }
+```
 
-# ------------------
-# Summarize results
-# ------------------
+### Summarize results
 
+
+```r
 # Plot the empirical cumulative distribution for the first iteration.
 plot(ecdf(Risk.mat[, 1]), col = "#ADD8E605", main = 'ecdf(Risk.mat)')
 
@@ -136,20 +131,17 @@ for (j in 1:250) {
 }
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-1-2.png) 
+![](ex0618prob2d_files/figure-html/unnamed-chunk-6-1.png)
+
+## Repeat the simulation with mc2d
+
+There are multiple ways to run the 2-D simulation depending on the 
+desired output. We will use mc() and mcmodelcut() from the mc2d package.
+
+### Load packages
+
 
 ```r
-# ---------------------------------------------------------------------
-# Repeat the simulation with mc2d
-# ---------------------------------------------------------------------
-
-# There are multiple ways to run the 2-D simulation depending on the 
-# desired output. We will use mc() and mcmodelcut() from the mc2d package.
-
-# --------------
-# Load packages
-# --------------
-
 # Define a function to conditionally install and load a package.
 load.pkg <- function(pkg) {
     if (! suppressWarnings(require(pkg, character.only = TRUE)) ) {
@@ -162,11 +154,12 @@ load.pkg <- function(pkg) {
 suppressMessages(load.pkg("mc2d"))
 suppressMessages(load.pkg("PBSmodelling"))  # For unpackList()
 # Or use library() and take your chances...
+```
 
-# -----------------
-# Define variables
-# -----------------
+### Define variables
 
+
+```r
 # Define an integer to use when setting the seed of the random number generator.
 seed <- 1
 
@@ -187,11 +180,10 @@ ndunc(250)
 ## [1] 250
 ```
 
-```r
-# --------------------
-# Define MC functions
-# --------------------
+### Define MC functions
 
+
+```r
 # Define a function to create mcnode objects for use by mc() and mcmodelcut().
 create_mcnode_objects <- function() {
     # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
@@ -234,11 +226,12 @@ calc_dose <- function(mcnodes) {
     with(mcnodes, ((shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) +
        ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)))
 }
+```
 
-# ------------------------
-# Run a 1-D MC simulation
-# ------------------------
+### Run a 1-D MC simulation
 
+
+```r
 # Create a Monte Carlo object from a set of mcnode objects.
 dose1 <- mc(calc_dose(create_mcnode_objects()))
 
@@ -246,13 +239,12 @@ dose1 <- mc(calc_dose(create_mcnode_objects()))
 plot(dose1)
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-1-3.png) 
+![](ex0618prob2d_files/figure-html/unnamed-chunk-10-1.png)
+
+### Run a 2-D MC simulation
+
 
 ```r
-# ------------------------
-# Run a 2-D MC simulation
-# ------------------------
-
 # Get a character vector of mcnode names to use in Block 2 of mcmodelcut().
 mcnode.names <- names(create_mcnode_objects())
 
@@ -288,13 +280,6 @@ dosemccut <- mcmodelcut({
 ## {
 ##     unpackList(create_mcnode_objects())
 ## }
-```
-
-```
-## Warning in mcmodelcut({: The last call should be 'mymc <- mc(...)'
-```
-
-```
 ## The mc object is named:  dose.model
 ```
 
@@ -314,11 +299,10 @@ capture.output(x <- evalmccut(dosemccut, nsv = 5000, nsu = 250, seed = seed))
 ## [7] "**************************************************"
 ```
 
-```r
-# ------------------
-# Summarize results
-# ------------------
+### Summarize results
 
+
+```r
 # Print a summary and a plot for the mccut object.
 summary(x)
 ```
@@ -373,7 +357,7 @@ summary(x)
 plot(x)
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-1-4.png) 
+![](ex0618prob2d_files/figure-html/unnamed-chunk-12-1.png)
 
 ```r
 # Plot the empirical cumulative distribution for the estimated exposure.
@@ -386,4 +370,4 @@ abline(h = 0, col = "gray", lty = 2, lwd = 2)
 abline(h = 1, col = "gray", lty = 2, lwd = 2)
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-1-5.png) 
+![](ex0618prob2d_files/figure-html/unnamed-chunk-12-2.png)
