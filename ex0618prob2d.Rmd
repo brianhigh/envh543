@@ -58,7 +58,7 @@ options(digits = 5)
 shellfish.viral.load <- 1  # Shellfish viral loading (viruses/g)
 dw.viral.load <- 0.001     # Drinking water viral loading (viruses/L)
 shellfish.cons.g <- 0.135  # Shellfish consumption (viruses/day)
-sw.viral.load <- 0.1       # Swmming in surface water viral loading (viruses/L)
+sw.viral.load <- 0.1       # Swimming in surface water viral loading (viruses/L)
 sw.frequency <- 7          # Swimming frequency (swims/year)
 
 # Define an integer to use when setting the seed of the random number generator.
@@ -198,7 +198,7 @@ create_mcnode_objects <- function() {
         dw.cons.L = mcstoc(rlnorm, type = "V", meanlog = 7.49, sdlog = 0.407, 
                            seed = seed) / 1000,
         
-        # Swmming in surface water viral loading (viruses/L):
+        # Swimming in surface water viral loading (viruses/L):
         sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1),
         
         # Swimming daily ingenstion rate (mL/hour): fictitious sd = 45
