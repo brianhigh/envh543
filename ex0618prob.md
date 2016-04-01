@@ -27,8 +27,8 @@ by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
 # Define variables provided in the example for three exposure types.
 #
 # Shellfish consumption
-shell.viral.load <- 1
-shell.cons <- 9e-4 * 150  # 9e-4 Person-Days per year * 150 g per occurrence
+shellfish.viral.load <- 1
+shellfish.cons.g <- 9e-4 * 150  # 9e-4 days/year * 150 g/day
 # Drinking water consumption
 dw.viral.load <- 0.001
 # Surface water consumption while swimming
@@ -74,9 +74,9 @@ hist(swim.duration)
 # ---------------------------------------------------------------------
 
 # Define a function to calculate microbial exposure risk.
-Risk.fcn <- function(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl, 
+Risk.fcn <- function(shellfish.vl, shellfish.cons.g, water.cons.L, dw.vl, sw.vl, 
                      sw.daily.IR, sw.duration, sw.frequency) {
-    ((shell.vl * shell.cons) + (water.cons.L * dw.vl) + 
+    ((shellfish.vl * shellfish.cons.g) + (water.cons.L * dw.vl) + 
          ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
 }
 
@@ -84,9 +84,9 @@ Risk.fcn <- function(shell.vl, shell.cons, water.cons.L, dw.vl, sw.vl,
 daily.dose <- sapply(1:5000, 
                      function(j) Risk.fcn(water.cons.L = water.cons.L[j], 
                                           sw.duration = swim.duration[j], 
-                                          shell.vl = shell.viral.load, 
+                                          shellfish.vl = shellfish.viral.load, 
                                           dw.vl = dw.viral.load, 
-                                          shell.cons = shell.cons, 
+                                          shellfish.cons.g = shellfish.cons.g, 
                                           sw.vl = sw.viral.load, 
                                           sw.daily.IR = sw.daily.IR, 
                                           sw.frequency = sw.frequency))
@@ -146,7 +146,7 @@ add_lines_and_legend <- function(meas, x.pos = 0, y.pos = 0, cex = 1) {
     n <- nrow(meas)
     
     # Plot measures of central tendency as vertical lines.
-    res <- sapply(1:n, function(x)
+    res <- sapply(1:n, function(x) 
         abline(v = meas$value[x], col = meas$color[x]))
     
     # Add a legend to the plot.
