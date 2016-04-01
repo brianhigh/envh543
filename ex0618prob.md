@@ -25,16 +25,18 @@ by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
 # ---------------------------------------------------------------------
 
 # Define variables provided in the example for three exposure types.
-#
+
 # Shellfish consumption
 shellfish.viral.load <- 1
 shellfish.cons.g <- 9e-4 * 150  # 9e-4 days/year * 150 g/day
+
 # Drinking water consumption
 dw.viral.load <- 0.001
+
 # Surface water consumption while swimming
 sw.viral.load <- 0.1
-sw.daily.IR <- 50         # Ingestion rate in mL of surface water
-sw.frequency <- 7         # Exposure frequency of 7 swims per year
+sw.daily.IR <- 50               # Ingestion rate in mL of surface water
+sw.frequency <- 7               # Exposure frequency of 7 swims per year
 
 # ---------------------------------------------------------------------
 # Sample from probability distributions
