@@ -97,7 +97,7 @@ Specifically, within the `for()` loop:
 - Compute 5000 daily exposure estimates and store as a vector in a matrix.
 
 The results of each iteration will be accumulated in a 5000 row by 250 column 
-matrix.
+matrix. 
 
 
 ```r
@@ -134,10 +134,14 @@ for (i in 1:nsv) {
 }
 ```
 
+This approach stores all of the simulated sample data in memory (in the matrix).
+For very large simulations, you may run out of memory. The last example in
+this document will present a solution to the memomy consumption problem. 
+
 ### Summarize results
 
 We will build up an empirical cumulative distribution plot of all of the loop
-iterations, but plotting each curve over a plot of the first iteration.
+iterations, by overlaying each new curve over a plot of the first iteration.
 
 
 ```r
@@ -250,7 +254,7 @@ expo.mod1 <- mcmodel({
 ### Evaluate the model
 
 Evaluate the model with 5000 iterations in the variability dimension and 250 
-iterations in the uncertainty dimesion.
+iterations in the uncertainty dimension.
 
 
 ```r
