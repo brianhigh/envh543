@@ -191,21 +191,11 @@ create_mcnode_objects <- function() {
         sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)))
 }
 
-# Define a function to estimate exposure risk from mcnode objects.
+# Define a function to estimate microbial exposure risk from mcnode objects.
 calc_dose <- function(mcnodes) {
-    with(mcnodes, ((shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) +
-                       ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)))
+    with(mcnodes, ((shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + ((
+        sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)))
 }
-
-# ------------------------
-# Run a 1-D MC simulation
-# ------------------------
-
-# Create a Monte Carlo object from a set of mcnode objects.
-dose1 <- mc(calc_dose(create_mcnode_objects()))
-
-# Plot the Monte Carlo object.
-plot(dose1)
 
 # ------------------------
 # Run a 2-D MC simulation
@@ -219,24 +209,24 @@ dosemccut <- mcmodelcut({
     # Evaluate a 2-D MC model using a loop to gather statistics.
     
     # Block 1: Evaluate all of the 0, V and U mcnodes. (Runs only once.)
-{
-    # Create the mcnode objects and and extract them from a list.
-    unpackList(create_mcnode_objects())
-}
+    {
+        # Create the mcnode objects and and extract them from a list.
+        unpackList(create_mcnode_objects())
+    }
 
-# Block2: Evaluate all of the VU nodes. Loop on the uncertainty dimension.
-{
-    # Estimate the exposure using the V and U nodes to create a VU node.
-    dose2 <- calc_dose(mget(mcnode.names))
-    
-    # Note: Generates a warning from using do.call(), which can be ignored.
-    dose.model <- do.call(mc, mget(c(mcnode.names, "dose2"))) 
-}
+    # Block2: Evaluate all of the VU nodes. Loop on the uncertainty dimension.
+    {
+        # Estimate the exposure using the V and U nodes to create a VU node.
+        dose2 <- calc_dose(mget(mcnode.names))
+        
+        # Note: Generates a warning from using do.call(), which can be ignored.
+        dose.model <- do.call(mc, mget(c(mcnode.names, "dose2"))) 
+    }
 
-# Block 3: Calculate statistics in the variability dimension (within loop).
-{
-    list(sum = summary(dose.model), plot = plot(dose.model, draw = FALSE))
-}
+    # Block 3: Calculate statistics in the variability dimension (within loop).
+    {
+        list(sum = summary(dose.model), plot = plot(dose.model, draw = FALSE))
+    }
 
 })
 

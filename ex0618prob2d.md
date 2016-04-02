@@ -81,7 +81,7 @@ sw.d.IR <- rnorm(250, mean = 50, sd = 45)
 plot(density(sw.d.IR))
 ```
 
-![](ex0618prob2d_files/figure-html/unnamed-chunk-5-1.png)
+![](./ex0618prob2d_files/figure-html/unnamed-chunk-5-1.png) 
 
 ```r
 # Run 250 iterations of a 5000-sample simulation.
@@ -131,12 +131,15 @@ for (j in 1:250) {
 }
 ```
 
-![](ex0618prob2d_files/figure-html/unnamed-chunk-6-1.png)
+![](./ex0618prob2d_files/figure-html/unnamed-chunk-6-1.png) 
 
 ## Repeat the simulation with mc2d
 
-There are multiple ways to run the 2-D simulation depending on the 
-desired output. We will use mc() and mcmodelcut() from the mc2d package.
+There are multiple ways to run 2-dimensional Monte Carlo simulation depending 
+on the desired output. 
+
+First, we will use mcmodel() and evalmcmod() from the _mc2d_ package. This is
+a very simple way to perform the 2-D simulation.
 
 ### Load packages
 
@@ -151,125 +154,155 @@ load.pkg <- function(pkg) {
 }
 
 # Load required packages, installing first if necessary.
-suppressMessages(load.pkg("mc2d"))
-suppressMessages(load.pkg("PBSmodelling"))  # For unpackList()
-# Or use library() and take your chances...
+suppressMessages(load.pkg("mc2d"))   # Or just use: library(mc2d)
 ```
 
-### Define variables
+### Define exposure model
 
 
 ```r
-# Define an integer to use when setting the seed of the random number generator.
-seed <- 1
-
-# Set the number of simulations in the variability dimension.
-ndvar(5000)
-```
-
-```
-## [1] 5000
-```
-
-```r
-# Set the number of simulations in the uncertainty dimension. 
-ndunc(250)
-```
-
-```
-## [1] 250
-```
-
-### Define MC functions
-
-
-```r
-# Define a function to create mcnode objects for use by mc() and mcmodelcut().
-create_mcnode_objects <- function() {
+# Define an exposure model for evaluation by evalmcmod().
+expo.mod1 <- mcmodel({
     # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
     # 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
     # (Wiley, 2014), pp. 215-216. Other fictitious values are noted below.
     
-    # Return a list of mcnode objects. (V = variability, U = uncertainty)
-    return(list(
+    # Shellfish viral loading (viruses/g):
+    shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1)
+    
+    # Shellfish consumption (g/day):
+    shellfish.cons.g = mcstoc(runif, type = "V", min = 0.135, max = 0.135)
+    
+    # Drinking water viral loading (viruses/L):
+    dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001)
+    
+    # Drinking water consumption (L/day):
+    dw.cons.L = mcstoc(rlnorm, type = "V", 
+                       meanlog = 7.49, sdlog = 0.407) / 1000
+    
+    # Swimming in surface water viral loading (viruses/L):
+    sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1)
+    
+    # Swimming daily ingestion rate (mL/hour): fictitious sd = 45
+    sw.daily.IR = mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
+                         rtrunc = TRUE, linf = 0)
+    
+    # Swimming duration (hours): fictitious discrete distribution
+    sw.duration = mcstoc(rempiricalD, type = "V", 
+                         values = c(0.5, 1, 2, 2.6), 
+                         prob = c(0.1, 0.1, 0.2, 0.6))
+    
+    # Swimming frequency (swims/year):
+    sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)
+    
+    # Create an mc object to estimate microbial exposure.
+    mc((shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
+           ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
+})
+```
+
+### Evaluate the model
+
+
+```r
+# Evaluate the model with 5000 variability and 250 uncertainty simulations.
+expo.ev1 <- evalmcmod(expo.mod1, nsv = 5000, nsu = 250, seed = 1)
+```
+
+### Summarize results
+
+
+```r
+# Summarize the results.
+summary(expo.ev1)
+```
+
+```
+##  :
+##         mean       sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
+## median 0.137 0.000847 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## mean   0.137 0.000849 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## 2.5%   0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
+## 97.5%  0.138 0.000867 0.136 0.136 0.137 0.137 0.138 0.140 0.144 5000    0
+```
+
+```r
+# Generate an "ecdf" plot.
+plot(expo.ev1)
+```
+
+![](./ex0618prob2d_files/figure-html/unnamed-chunk-10-1.png) 
+
+## Repeat 2-D simulation again with a loop
+
+This time we will use mcmodelcut() and evalmccut() to get a different style of 
+summary output. By using these alternate functions, we will also be able to 
+conserve system memory, at the cost of taking more time to perform the 
+simulation. To construct the model, we will need to build it in three blocks.
+
+### Load packages
+
+
+```r
+# Load packages.
+library(mc2d)
+```
+
+### Define exposure model
+
+
+```r
+# Build a mcmodelcut object for evaluation by evalmccut().
+expo.mcmcut <- mcmodelcut({
+    # Block 1: Evaluate all of the 0, V and U mcnodes. (Runs only once.)
+    {
+        # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
+        # 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
+        # (Wiley, 2014), pp. 215-216. Other fictitious values are noted below.
+        
         # Shellfish viral loading (viruses/g):
-        shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1),
+        shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1)
         
         # Shellfish consumption (g/day):
-        shellfish.cons.g = mcstoc(runif, type = "V", min = 0.135, max = 0.135),
+        shellfish.cons.g = mcstoc(runif, type = "V", min = 0.135, max = 0.135)
         
         # Drinking water viral loading (viruses/L):
-        dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001),
+        dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001)
         
         # Drinking water consumption (L/day):
-        dw.cons.L = mcstoc(rlnorm, type = "V", meanlog = 7.49, sdlog = 0.407, 
-                           seed = seed) / 1000,
+        dw.cons.L = mcstoc(rlnorm, type = "V", 
+                           meanlog = 7.49, sdlog = 0.407) / 1000
         
         # Swimming in surface water viral loading (viruses/L):
-        sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1),
+        sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1)
         
         # Swimming daily ingestion rate (mL/hour): fictitious sd = 45
         sw.daily.IR = mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
-                             seed = seed, rtrunc = TRUE, linf = 0),
+                             rtrunc = TRUE, linf = 0)
         
         # Swimming duration (hours): fictitious discrete distribution
         sw.duration = mcstoc(rempiricalD, type = "V", 
                              values = c(0.5, 1, 2, 2.6), 
-                             prob = c(0.1, 0.1, 0.2, 0.6)),
+                             prob = c(0.1, 0.1, 0.2, 0.6))
         
         # Swimming frequency (swims/year):
-        sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)))
-}
-
-# Define a function to estimate exposure risk from mcnode objects.
-calc_dose <- function(mcnodes) {
-    with(mcnodes, ((shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) +
-       ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)))
-}
-```
-
-### Run a 1-D MC simulation
-
-
-```r
-# Create a Monte Carlo object from a set of mcnode objects.
-dose1 <- mc(calc_dose(create_mcnode_objects()))
-
-# Plot the Monte Carlo object.
-plot(dose1)
-```
-
-![](ex0618prob2d_files/figure-html/unnamed-chunk-10-1.png)
-
-### Run a 2-D MC simulation
-
-
-```r
-# Get a character vector of mcnode names to use in Block 2 of mcmodelcut().
-mcnode.names <- names(create_mcnode_objects())
-
-# Build a mcmodelcut object for evaluation by evalmccut().
-dosemccut <- mcmodelcut({
-    # Evaluate a 2-D MC model using a loop to gather statistics.
-    
-    # Block 1: Evaluate all of the 0, V and U mcnodes. (Runs only once.)
-    {
-        # Create the mcnode objects and and extract them from a list.
-        unpackList(create_mcnode_objects())
+        sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)
     }
     
     # Block2: Evaluate all of the VU nodes. Loop on the uncertainty dimension.
     {
         # Estimate the exposure using the V and U nodes to create a VU node.
-        dose2 <- calc_dose(mget(mcnode.names))
-        
-        # Note: Generates a warning from using do.call(), which can be ignored.
-        dose.model <- do.call(mc, mget(c(mcnode.names, "dose2"))) 
+        expo.mc <- (shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
+            ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)
+   
+        # Build a mc model from all of the mcnode objects.
+        expo.mod2 <- mc(shellfish.vl, shellfish.cons.g, dw.vl, dw.cons.L, 
+                        sw.vl, sw.daily.IR, sw.duration, sw.frequency, expo.mc)
     }
 
     # Block 3: Calculate statistics in the variability dimension (within loop).
     {
-        list(sum = summary(dose.model), plot = plot(dose.model, draw = FALSE))
+        list(sum = summary(expo.mod2), plot = plot(expo.mod2, draw = FALSE))
     }
 
 })
@@ -278,15 +311,28 @@ dosemccut <- mcmodelcut({
 ```
 ## The following expression will be evaluated only once :
 ## {
-##     unpackList(create_mcnode_objects())
+##     shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1)
+##     shellfish.cons.g = mcstoc(runif, type = "V", min = 0.135, 
+##         max = 0.135)
+##     dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001)
+##     dw.cons.L = mcstoc(rlnorm, type = "V", meanlog = 7.49, sdlog = 0.407)/1000
+##     sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1)
+##     sw.daily.IR = mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
+##         rtrunc = TRUE, linf = 0)
+##     sw.duration = mcstoc(rempiricalD, type = "V", values = c(0.5, 
+##         1, 2, 2.6), prob = c(0.1, 0.1, 0.2, 0.6))
+##     sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)
 ## }
-## The mc object is named:  dose.model
+## The mc object is named:  expo.mod2
 ```
+
+### Evaluate the model
+
 
 ```r
 # Evaluate the 2-D Monte Carlo model using a loop on the uncertainty dimension.
 # Capture the text output and print when finished to save space in the report.
-capture.output(x <- evalmccut(dosemccut, nsv = 5000, nsu = 250, seed = seed))
+capture.output(x <- evalmccut(expo.mcmcut, nsv = 5000, nsu = 250, seed = 1))
 ```
 
 ```
@@ -330,26 +376,26 @@ summary(x)
 ## 
 ## sw.daily.IR :
 ##       NoVar
-## 50%    57.2
-## mean   61.9
-## 2.5%   10.0
-## 97.5% 131.3
+## 50%    57.8
+## mean   60.9
+## 2.5%    4.5
+## 97.5% 137.3
 ## Nas     0.0
 ## 
 ## sw.duration :
 ##       mean    sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
-## NoUnc  2.1 0.745 0.5  0.5   2 2.6 2.6   2.6 2.6 5000    0
+## NoUnc 2.11 0.726 0.5  0.5   2 2.6 2.6   2.6 2.6 5000    0
 ## 
 ## sw.frequency :
 ##       mean sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
 ## NoUnc    7  0   7    7   7   7   7     7   7 5000    0
 ## 
-## dose2 :
+## expo.mc :
 ##        mean       sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
-## 50%   0.137 0.000844 0.135 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
-## mean  0.137 0.000846 0.135 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## 50%   0.137 0.000847 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## mean  0.137 0.000849 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
 ## 2.5%  0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
-## 97.5% 0.137 0.000860 0.136 0.136 0.137 0.137 0.138 0.140 0.144 5000    0
+## 97.5% 0.138 0.000867 0.136 0.136 0.137 0.137 0.138 0.140 0.144 5000    0
 ## Nas   0.000 0.000000 0.000 0.000 0.000 0.000 0.000 0.000 0.000    0    0
 ```
 
@@ -357,11 +403,11 @@ summary(x)
 plot(x)
 ```
 
-![](ex0618prob2d_files/figure-html/unnamed-chunk-12-1.png)
+![](./ex0618prob2d_files/figure-html/unnamed-chunk-14-1.png) 
 
 ```r
 # Plot the empirical cumulative distribution for the estimated exposure.
-expo.x <- x$plot$dose2
+expo.x <- x$plot$expo.mc
 expo.l <- length(expo.x)
 expo.y <- 1:expo.l/expo.l
 plot(expo.x, expo.y, pch = 20, cex = 0.1, col = '#ADD8E604', 
@@ -370,4 +416,4 @@ abline(h = 0, col = "gray", lty = 2, lwd = 2)
 abline(h = 1, col = "gray", lty = 2, lwd = 2)
 ```
 
-![](ex0618prob2d_files/figure-html/unnamed-chunk-12-2.png)
+![](./ex0618prob2d_files/figure-html/unnamed-chunk-14-2.png) 
