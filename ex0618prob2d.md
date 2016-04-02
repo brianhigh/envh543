@@ -72,7 +72,7 @@ Plot the kernel density estimates for surface water ingestion rate.
 plot(density(sw.d.IR))
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-4-1.png) 
+![](./ex0618prob2d_files/figure-html/kernel-density-plot-1.png) 
 
 ### Define exposure risk function
 
@@ -176,7 +176,7 @@ for (j in 2:nsu) {
 }
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-8-1.png) 
+![](./ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png) 
 
 ## Repeat the simulation with mc2d
 
@@ -313,7 +313,7 @@ summary(expo.ev1)
 plot(expo.ev1)
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-12-1.png) 
+![](./ex0618prob2d_files/figure-html/results-ev1-1.png) 
 
 ## Repeat 2-D simulation again with a loop
 
@@ -518,7 +518,7 @@ summary(x)
 plot(x)
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-16-1.png) 
+![](./ex0618prob2d_files/figure-html/results-x-1.png) 
 
 Plot the empirical cumulative distribution for the estimated exposure. To match
 the `ecdf` plot made earlier, we will construct the plot elements manually.
@@ -534,4 +534,4 @@ abline(h = 0, col = "gray", lty = 2, lwd = 2)
 abline(h = 1, col = "gray", lty = 2, lwd = 2)
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-17-1.png) 
+![](./ex0618prob2d_files/figure-html/results-expo-1.png) 

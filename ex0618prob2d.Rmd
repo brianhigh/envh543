@@ -72,7 +72,7 @@ sw.d.IR <- rnorm(nsu, mean = 50, sd = 45)
 
 Plot the kernel density estimates for surface water ingestion rate.
 
-```{r}
+```{r kernel-density-plot}
 plot(density(sw.d.IR))
 ```
 
@@ -159,7 +159,7 @@ We will build up an empirical cumulative distribution plot of all of the
 loop iterations, by overlaying each new curve upon a plot of the first 
 iteration.
 
-```{r}
+```{r ecdf-plot-risk-mat}
 # Plot the empirical cumulative distribution for the first iteration.
 plot(ecdf(Risk.mat[, 1]), col = "#ADD8E605", main = 'ecdf(Risk.mat)')
 
@@ -276,7 +276,7 @@ expo.ev1
 
 Print the evaluation results and plot the empirical cumulative distribution.
 
-```{r}
+```{r results-ev1}
 # Summarize the results.
 summary(expo.ev1)
 
@@ -400,7 +400,7 @@ capture.output(x <- evalmccut(expo.mcmcut, nsv = 5000, nsu = 250, seed = 1))
 
 Print the accumulated statistics with `summary()` and `plot()`.
 
-```{r}
+```{r results-x}
 # Print a summary and a plot for the mccut object.
 summary(x)
 plot(x)
@@ -409,7 +409,7 @@ plot(x)
 Plot the empirical cumulative distribution for the estimated exposure. To match
 the `ecdf` plot made earlier, we will construct the plot elements manually.
 
-```{r}
+```{r results-expo}
 expo.x <- x$plot$expo.mc
 expo.l <- length(expo.x)
 expo.y <- 1:expo.l/expo.l
