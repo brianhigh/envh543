@@ -66,15 +66,10 @@ Tools:
 ## R
 
 - R is a statistical programming language and a super advanced calculator
-
-- > 2 million users
-
+- &gt; 2 million users
 - based on functions that can be expanded through packages
-
 - someone has already solved your problem: install.packages()
-
 - it is an interpreter language each command is executed in the console
-
 - "uses vectors to store data" 
 
 ## Help

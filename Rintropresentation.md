@@ -56,15 +56,10 @@ Tools:
 ## R
 
 - R is a statistical programming language and a super advanced calculator
-
-- > 2 million users
-
+- &gt; 2 million users
 - based on functions that can be expanded through packages
-
 - someone has already solved your problem: install.packages()
-
 - it is an interpreter language each command is executed in the console
-
 - "uses vectors to store data" 
 
 ## Help
@@ -439,9 +434,9 @@ str(dt)
 ##  $ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ LLOD        : chr  "n" "y" "y" "y" ...
 ##  $ loc         : chr  "A" "B" "C" "A" ...
-##  $ date        : chr  "2016-01-12" "2015-11-01" "2016-01-12" "2015-11-01" ...
+##  $ date        : chr  "2015-11-01" "2016-01-12" "2015-11-01" "2016-01-12" ...
 ##  $ rain        : chr  "lots" "some" "little" "no" ...
-##  $ rh          : num  67.9 41.7 45.6 48.7 49.8 ...
+##  $ rh          : num  52.2 59.8 63.9 37.8 70.5 ...
 ```
 
 ## Summarize
@@ -453,12 +448,12 @@ aggregate(Sepal.Length ~ loc + date, data = dt, FUN = "mean")
 
 ```
 ##   loc       date Sepal.Length
-## 1   A 2015-11-01        5.972
-## 2   B 2015-11-01        5.744
-## 3   C 2015-11-01        5.824
-## 4   A 2016-01-12        5.712
-## 5   B 2016-01-12        5.900
-## 6   C 2016-01-12        5.908
+## 1   A 2015-11-01        5.712
+## 2   B 2015-11-01        5.900
+## 3   C 2015-11-01        5.908
+## 4   A 2016-01-12        5.972
+## 5   B 2016-01-12        5.744
+## 6   C 2016-01-12        5.824
 ```
 
 ## Summarize
@@ -473,12 +468,12 @@ head(tbltst)
 
 ```
 ##   loc       date   rain Sepal.Length       rh
-## 1   A 2015-11-01 little          4.9 63.26294
-## 2   B 2015-11-01 little          4.9 53.97575
-## 3   C 2015-11-01 little          4.6 68.43432
-## 4   A 2016-01-12 little          4.6 55.28347
-## 5   B 2016-01-12 little          4.6 39.45941
-## 6   C 2016-01-12 little          4.7 45.58809
+## 1   A 2015-11-01 little          4.6 55.21379
+## 2   B 2015-11-01 little          4.6 44.82429
+## 3   C 2015-11-01 little          4.7 63.90940
+## 4   A 2016-01-12 little          4.9 51.50577
+## 5   B 2016-01-12 little          4.9 55.16517
+## 6   C 2016-01-12 little          4.6 42.04769
 ```
 
 ## Summarize
@@ -493,12 +488,12 @@ head(tblsdt)
 
 ```
 ##   loc       date   rain Sepal.Length.mean Sepal.Length.sd
-## 1   A 2015-11-01 little              6.12       1.1189281
-## 2   A 2015-11-01   lots              6.48       1.2437845
-## 3   A 2015-11-01     NA              5.70       0.9027735
-## 4   A 2015-11-01     no              5.50       0.7176350
-## 5   A 2015-11-01   some              6.06       0.7368853
-## 6   A 2016-01-12 little              5.80       1.1467345
+## 1   A 2015-11-01 little              5.80       1.1467345
+## 2   A 2015-11-01   lots              5.46       0.8443933
+## 3   A 2015-11-01     NA              5.84       0.7829432
+## 4   A 2015-11-01     no              5.94       0.5128353
+## 5   A 2015-11-01   some              5.52       0.5805170
+## 6   A 2016-01-12 little              6.12       1.1189281
 ```
 
 ## Summarize
@@ -514,8 +509,8 @@ str(tblsdt)
 ##  $ lc  : chr  "A" "A" "A" "A" ...
 ##  $ dt  : chr  "2015-11-01" "2015-11-01" "2015-11-01" "2015-11-01" ...
 ##  $ rn  : chr  "little" "lots" "NA" "no" ...
-##  $ msl : num  6.12 6.48 5.7 5.5 6.06 5.8 5.46 5.84 5.94 5.52 ...
-##  $ sdsl: num  1.119 1.244 0.903 0.718 0.737 ...
+##  $ msl : num  5.8 5.46 5.84 5.94 5.52 6.12 6.48 5.7 5.5 6.06 ...
+##  $ sdsl: num  1.147 0.844 0.783 0.513 0.581 ...
 ```
 
 ## Basic plots
@@ -588,7 +583,7 @@ lm(Sepal.Length ~ loc + date + rain, data = tbltst)
 ## 
 ## Coefficients:
 ##    (Intercept)            locB            locC  date2016-01-12  
-##        4.77508         0.02826        -0.10744        -0.06404  
+##        4.71104         0.02826        -0.10744         0.06404  
 ##       rainlots          rainNA          rainno        rainsome  
 ##        0.05694         0.10173        -0.29401         0.03217
 ```
@@ -618,10 +613,10 @@ summary(lf)
 ## 
 ## Coefficients:
 ##                Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)     4.77508    0.07763  61.509  2.6e-15 ***
+## (Intercept)     4.71104    0.07608  61.920 2.41e-15 ***
 ## locB            0.02826    0.07780   0.363  0.72329    
 ## locC           -0.10744    0.08074  -1.331  0.21018    
-## date2016-01-12 -0.06404    0.06127  -1.045  0.31835    
+## date2016-01-12  0.06404    0.06127   1.045  0.31835    
 ## rainlots        0.05694    0.11691   0.487  0.63581    
 ## rainNA          0.10173    0.08590   1.184  0.26125    
 ## rainno         -0.29401    0.09383  -3.133  0.00952 ** 
