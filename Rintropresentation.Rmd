@@ -39,29 +39,21 @@ Purpose:
 ## Remember
 
 - Programming is something you do and not something you know. 
-
 - It requires active practice. (Reading is not an active practice.)
 
 ## Programming structures
 
-```{r, eval=FALSE}
-Variables: 
-- numeric, character, factor...
-
-Control Structures: 
-- if(), ifelse(), while(), for()...
-
-Data Structures: 
-- data.frame, class, matrix...
-
-Syntax: 
-- set of rules that defines the correct combinations of symbols
+- Variables: 
+    * numeric, character, factor...
+- Control Structures: 
+    * if(), ifelse(), while(), for()...
+- Data Structures: 
+    * data.frame, class, matrix...
+- Syntax: 
+    * set of rules that defines the correct combinations of symbols
 in that language
-
-Tools:   
-- library, functions...
-```
-
+- Tools:   
+    * library, functions...
 
 ## R
 

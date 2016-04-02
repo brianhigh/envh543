@@ -28,30 +28,21 @@ Purpose:
 ## Remember
 
 - Programming is something you do and not something you know. 
-
 - It requires active practice. (Reading is not an active practice.)
 
 ## Programming structures
 
-
-```r
-Variables: 
-- numeric, character, factor...
-
-Control Structures: 
-- if(), ifelse(), while(), for()...
-
-Data Structures: 
-- data.frame, class, matrix...
-
-Syntax: 
-- set of rules that defines the correct combinations of symbols
+- Variables: 
+    * numeric, character, factor...
+- Control Structures: 
+    * if(), ifelse(), while(), for()...
+- Data Structures: 
+    * data.frame, class, matrix...
+- Syntax: 
+    * set of rules that defines the correct combinations of symbols
 in that language
-
-Tools:   
-- library, functions...
-```
-
+- Tools:   
+    * library, functions...
 
 ## R
 
@@ -433,7 +424,7 @@ str(dt)
 ##  $ loc         : chr  "A" "B" "C" "A" ...
 ##  $ date        : chr  "2015-11-01" "2016-01-12" "2015-11-01" "2016-01-12" ...
 ##  $ rain        : chr  "lots" "some" "little" "no" ...
-##  $ rh          : num  48.2 72.1 50.1 68.3 66.7 ...
+##  $ rh          : num  48.9 61.8 52.7 57.7 56.2 ...
 ```
 
 ## Summarize
@@ -465,12 +456,12 @@ head(tbltst)
 
 ```
 ##   loc       date   rain Sepal.Length       rh
-## 1   A 2015-11-01 little          4.6 46.14142
-## 2   B 2015-11-01 little          4.6 72.49858
-## 3   C 2015-11-01 little          4.7 50.12838
-## 4   A 2016-01-12 little          4.9 39.33083
-## 5   B 2016-01-12 little          4.9 54.37002
-## 6   C 2016-01-12 little          4.6 67.87821
+## 1   A 2015-11-01 little          4.6 51.25790
+## 2   B 2015-11-01 little          4.6 37.07765
+## 3   C 2015-11-01 little          4.7 52.74339
+## 4   A 2016-01-12 little          4.9 45.18626
+## 5   B 2016-01-12 little          4.9 66.08854
+## 6   C 2016-01-12 little          4.6 55.96847
 ```
 
 ## Summarize
@@ -517,7 +508,7 @@ str(tblsdt)
 boxplot(Sepal.Length ~ loc,data = dt)
 ```
 
-![](Rintropresentation_files/figure-html/unnamed-chunk-26-1.png)
+![](Rintropresentation_files/figure-html/unnamed-chunk-25-1.png)
 
 
 
@@ -538,7 +529,7 @@ p <- p + geom_point(aes(x = Petal.Width, y = Sepal.Length,
 p
 ```
 
-![](Rintropresentation_files/figure-html/unnamed-chunk-29-1.png)
+![](Rintropresentation_files/figure-html/unnamed-chunk-28-1.png)
 
 
 
@@ -562,7 +553,7 @@ p <- p + facet_grid(loc ~ date)
 p
 ```
 
-![](Rintropresentation_files/figure-html/unnamed-chunk-32-1.png)
+![](Rintropresentation_files/figure-html/unnamed-chunk-31-1.png)
 
 
 
