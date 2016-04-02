@@ -233,7 +233,8 @@ ndunc(250)   # Uncertainty
 ```
 
 The _mc2d_ functions will set `nsv` to `ndvar()` and `nsu` to `ndunc()` by 
-default.
+default. Alternatively, we could supply these values to the _mc2d_ model
+functions when we call them.
 
 Define a variable to use to set the `seed`.
 
@@ -241,6 +242,11 @@ Define a variable to use to set the `seed`.
 ```r
 seed <- 1
 ```
+
+We will use this variable to explicitly set the seed with the various
+_mc2d_ functions. Another approach would be to only set it through the
+model evaluation functions, or not at all. Since we want to do our best
+to provide the most reproducible results, we set the seed explicitly.
 
 ### Define exposure model
 
