@@ -4,6 +4,8 @@ author: "Jane Pouzou and Brian High"
 date: '![CC BY-SA 4.0](cc_by-sa_4.png)'
 output:
   html_document:
+    toc: true
+    theme: united
     keep_md: yes
     self-contained: yes
 ---
@@ -17,6 +19,14 @@ water and shellfish consumption for [Example 6.18](images/ex0618.png) from pages
 
 [Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
 by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
+
+## Set global options
+
+```{r}
+# Set knitr options for use when rendering this document.
+library("knitr")
+opts_chunk$set(cache=TRUE, message=FALSE)
+```
 
 ## Define variables
 

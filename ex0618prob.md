@@ -12,6 +12,15 @@ water and shellfish consumption for [Example 6.18](images/ex0618.png) from pages
 [Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
 by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
 
+## Set global options
+
+
+```r
+# Set knitr options for use when rendering this document.
+library("knitr")
+opts_chunk$set(cache=TRUE, message=FALSE)
+```
+
 ## Define variables
 
 
@@ -46,7 +55,7 @@ water.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
 plot(density(water.cons.L))
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-2-1.png)
+![](./ex0618prob_files/figure-html/unnamed-chunk-3-1.png) 
 
 ```r
 # Sample 5000 times from a discrete distribution of swim duration with 
@@ -61,7 +70,7 @@ swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE,
 hist(swim.duration)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-2-2.png)
+![](./ex0618prob_files/figure-html/unnamed-chunk-3-2.png) 
 
 ## Estimate daily dose
 
@@ -186,7 +195,7 @@ plot(dens)
 add_lines_and_legend(meas, 0.139, 550)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-7-1.png)
+![](./ex0618prob_files/figure-html/unnamed-chunk-8-1.png) 
 
 ### Plot the empirical cumulative distribution
 
@@ -199,4 +208,4 @@ plot(ecdf(daily.dose))
 add_lines_and_legend(meas, 0.139, 0.8)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-8-1.png)
+![](./ex0618prob_files/figure-html/unnamed-chunk-9-1.png) 
