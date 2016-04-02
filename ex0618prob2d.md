@@ -16,26 +16,19 @@ The first solution is coded manually with functionality built into "base" R.
 
 The second solution uses the _mc2d_ package.
 
-## Perform a 2-D Monte Carlo simulation
-
-### Clear workspace
-
-
-```r
-# Clear the workspace, unless you are running in knitr context.
-if (!isTRUE(getOption('knitr.in.progress'))) {
-    closeAllConnections()
-    rm(list = ls())
-}
-```
-
-### Set options
+## Set global options
 
 
 ```r
 # Set display options for use with the print() function.
 options(digits = 5)
+
+# Set knitr options for use when rendering this document.
+library("knitr")
+opts_chunk$set(cache=TRUE, message=FALSE)
 ```
+
+## Perform a 2-D Monte Carlo simulation
 
 ### Define variables
 
@@ -81,7 +74,7 @@ sw.d.IR <- rnorm(250, mean = 50, sd = 45)
 plot(density(sw.d.IR))
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-5-1.png) 
+![](./ex0618prob2d_files/figure-html/unnamed-chunk-4-1.png) 
 
 ```r
 # Run 250 iterations of a 5000-sample simulation.
@@ -131,15 +124,20 @@ for (j in 1:250) {
 }
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-6-1.png) 
+![](./ex0618prob2d_files/figure-html/unnamed-chunk-5-1.png) 
 
 ## Repeat the simulation with mc2d
 
-There are multiple ways to run 2-dimensional Monte Carlo simulation depending 
-on the desired output. 
+We will demonstrate two alternative ways to run 2-dimensional Monte Carlo 
+simulation using the 
+[mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) package.
 
-First, we will use mcmodel() and evalmcmod() from the _mc2d_ package. This is
-a very simple way to perform the 2-D simulation.
+For our first alternative, we will use 
+[mcmodel](http://www.inside-r.org/packages/cran/mc2d/docs/mcmodel) and 
+[evalmcmod](http://www.inside-r.org/packages/cran/mc2d/docs/evalmcmod) from 
+the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) package. 
+This is a simple way to implement the 2-D simulation because we just need to
+define the model with `mcmodel()` and evaluate it with `evalmcmod()`.
 
 ### Load packages
 
@@ -158,6 +156,22 @@ suppressMessages(load.pkg("mc2d"))   # Or just use: library(mc2d)
 ```
 
 ### Define exposure model
+
+Within the [mcmodel](http://www.inside-r.org/packages/cran/mc2d/docs/mcmodel)
+function, use [mcstoc](http://www.inside-r.org/packages/cran/mc2d/docs/mcstoc)
+to define "mc nodes" for each component of the model. 
+
+For each "mc node", supply a probability function, the node type as "V" for 
+variability or "U" for uncertainty, and any additional parameters to be passed 
+to the probability function. 
+
+Other node types ("VU" and "0") are also available, but we will not be using 
+them in this example. See the 
+[mcstoc documentation](http://www.inside-r.org/packages/cran/mc2d/docs/mcstoc)
+for details.
+
+The last statement makes an "mc" object using the 
+[mc](http://www.inside-r.org/packages/cran/mc2d/docs/mc) function.
 
 
 ```r
@@ -207,6 +221,12 @@ expo.mod1 <- mcmodel({
 ```r
 # Evaluate the model with 5000 variability and 250 uncertainty simulations.
 expo.ev1 <- evalmcmod(expo.mod1, nsv = 5000, nsu = 250, seed = 1)
+expo.ev1
+```
+
+```
+##   node    mode  nsv nsu nva variate   min  mean median   max Nas type outm
+## 1      numeric 5000 250   1       1 0.135 0.137  0.137 0.144   0   VU each
 ```
 
 ### Summarize results
@@ -231,14 +251,20 @@ summary(expo.ev1)
 plot(expo.ev1)
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-10-1.png) 
+![](./ex0618prob2d_files/figure-html/unnamed-chunk-9-1.png) 
 
 ## Repeat 2-D simulation again with a loop
 
-This time we will use mcmodelcut() and evalmccut() to get a different style of 
-summary output. By using these alternate functions, we will also be able to 
-conserve system memory, at the cost of taking more time to perform the 
-simulation. To construct the model, we will need to build it in three blocks.
+This time we will use another pair of functions from the 
+[mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) 
+package, `mcmodelcut()` and `evalmccut()`, to get a different 
+style of summary output. They implement the uncertainty dimension of the 
+2-D simulation with a processing _loop_.
+
+By using these [mccut](http://www.inside-r.org/packages/cran/mc2d/docs/mccut) 
+functions, we will also be able to conserve system memory, at the cost of 
+taking more time to perform the simulation. This approach allows the evaluation 
+of very high dimensional models on relatively modest computer systems.
 
 ### Load packages
 
@@ -250,9 +276,32 @@ library(mc2d)
 
 ### Define exposure model
 
+The `mcmodelcut()` function expects its input in three blocks:
+
+```
+mcmodelcut(
+    { 
+        # Block 1: evaluated once before the first loop (step 1)
+        { 
+            # Evaluate all of the 0, V and U mc node objects.
+        } 
+        # Block 2: evaluated using nsu = 1 (step 2)
+        { 
+            # Evaluate all of the VU nodes. Last statement makes an mc object.
+        } 
+        # Block 3: repeated nsu times (step 3)
+        { 
+            # Build a list of statistics refering to the mc object.
+        } 
+    })
+```
+
+... where `nsu` is the number of simulations for uncertainty used in the 
+evaluation.
+
 
 ```r
-# Build a mcmodelcut object for evaluation by evalmccut().
+# Build a mcmodelcut object in three blocks for evaluation by evalmccut().
 expo.mcmcut <- mcmodelcut({
     # Block 1: Evaluate all of the 0, V and U mcnodes. (Runs only once.)
     {
@@ -403,7 +452,7 @@ summary(x)
 plot(x)
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-14-1.png) 
+![](./ex0618prob2d_files/figure-html/unnamed-chunk-13-1.png) 
 
 ```r
 # Plot the empirical cumulative distribution for the estimated exposure.
@@ -416,4 +465,4 @@ abline(h = 0, col = "gray", lty = 2, lwd = 2)
 abline(h = 1, col = "gray", lty = 2, lwd = 2)
 ```
 
-![](./ex0618prob2d_files/figure-html/unnamed-chunk-14-2.png) 
+![](./ex0618prob2d_files/figure-html/unnamed-chunk-13-2.png) 
