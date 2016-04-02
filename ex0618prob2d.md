@@ -211,6 +211,37 @@ load.pkg <- function(pkg) {
 suppressMessages(load.pkg("mc2d"))   # Or just use: library(mc2d)
 ```
 
+### Define variables
+
+Set the number of simulations for the variability and uncertainty dimensions. 
+
+
+```r
+ndvar(5000)  # Variability
+```
+
+```
+## [1] 5000
+```
+
+```r
+ndunc(250)   # Uncertainty
+```
+
+```
+## [1] 250
+```
+
+The _mc2d_ functions will set `nsv` to `ndvar()` and `nsu` to `ndunc()` by 
+default.
+
+Define a variable to use to set the `seed`.
+
+
+```r
+seed <- 1
+```
+
 ### Define exposure model
 
 Within the [mcmodel](http://www.inside-r.org/packages/cran/mc2d/docs/mcmodel)
@@ -276,11 +307,11 @@ expo.mod1 <- mcmodel({
 ### Evaluate the model
 
 Evaluate the model with 5000 iterations in the variability dimension and 250 
-iterations in the uncertainty dimension.
+iterations in the uncertainty dimension, as set previously.
 
 
 ```r
-expo.ev1 <- evalmcmod(expo.mod1, nsv = 5000, nsu = 250, seed = 1)
+expo.ev1 <- evalmcmod(expo.mod1, seed = seed)
 expo.ev1
 ```
 
@@ -445,7 +476,7 @@ iterations in the uncertainty dimesion.
 
 ```r
 # Capture the text output and print when finished to save space in the report.
-capture.output(x <- evalmccut(expo.mcmcut, nsv = 5000, nsu = 250, seed = 1))
+capture.output(x <- evalmccut(expo.mcmcut, seed = seed))
 ```
 
 ```
