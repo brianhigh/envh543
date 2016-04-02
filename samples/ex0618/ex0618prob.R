@@ -83,6 +83,7 @@ print(format(exp(mean(log(daily.dose))), scientific = TRUE))
 
 # Calculate kernel density estimates.
 dens <- density(daily.dose)
+dens
 
 # Calculate measures of central tendency.
 meas <- data.frame(

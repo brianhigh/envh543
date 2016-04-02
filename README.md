@@ -20,5 +20,8 @@ health effects assessment, risk characterization, and risk communication.
 - [R and textbook resources](R_and_textbook_resources_ENVH-543.md)
 - Examples
     * [R code provided in QMRA, 2nd ed. textbook](QMRA_R_Code.md)
-    * [Solution in R to Example 6.18](ex0618.md)
-    * [Probabilistic Solution in R to Example 6.18](ex0618prob.md)
+    * Example 6.18
+        + [Solution in Excel](ex0618prob.xls)
+        + [Solution in R](ex0618.md)
+        + [Probabilistic Solution (1-D M.C.) in R](ex0618prob.md)
+        + [Probabilistic Solution (2-D M.C.) in R](ex0618prob2d.md)
