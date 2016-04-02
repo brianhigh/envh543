@@ -276,7 +276,7 @@ evaluation.
 ```{r}
 # Build a mcmodelcut object in three blocks for evaluation by evalmccut().
 expo.mcmcut <- mcmodelcut({
-    # Block 1: Evaluate all of the 0, V and U mcnodes. (Runs only once.)
+    # Block 1: Evaluate all of the 0, V and U mc node objects.
     {
         # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
         # 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
@@ -311,7 +311,7 @@ expo.mcmcut <- mcmodelcut({
         sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)
     }
     
-    # Block2: Evaluate all of the VU nodes. Loop on the uncertainty dimension.
+    # Block2: Evaluate all of the VU nodes. Last statement makes an mc object.
     {
         # Estimate the exposure using the V and U nodes to create a VU node.
         expo.mc <- (shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
@@ -322,7 +322,7 @@ expo.mcmcut <- mcmodelcut({
                         sw.vl, sw.daily.IR, sw.duration, sw.frequency, expo.mc)
     }
 
-    # Block 3: Calculate statistics in the variability dimension (within loop).
+    # Block 3: Build a list of statistics refering to the mc object.
     {
         list(sum = summary(expo.mod2), plot = plot(expo.mod2, draw = FALSE))
     }
