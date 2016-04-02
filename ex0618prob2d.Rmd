@@ -101,7 +101,7 @@ for (i in 1:250) {
     swim.duration <- sample(x = c(0.5, 1, 2, 2.6), size = 5000, 
                             replace = TRUE, prob = c(0.1, 0.1, 0.2, 0.6))
     
-    # Compute 5000 daily dose simulations and store as a vector in a matrix.
+    # Compute 5000 daily simulations and store as a vector in a matrix.
     Risk.mat[,i] <- sapply(1:5000, function(j) 
         # Define a function to calculate esimated microbial exposure risk.
         Risk.fcn(water.cons.L = water.cons.L[j],
@@ -303,7 +303,7 @@ expo.x <- x$plot$expo.mc
 expo.l <- length(expo.x)
 expo.y <- 1:expo.l/expo.l
 plot(expo.x, expo.y, pch = 20, cex = 0.1, col = '#ADD8E604', 
-     main='ecdf(dose2)', ylab = 'Fn(x)', xlab = 'x')
+     main='ecdf(expo.mc)', ylab = 'Fn(x)', xlab = 'x')
 abline(h = 0, col = "gray", lty = 2, lwd = 2)
 abline(h = 1, col = "gray", lty = 2, lwd = 2)
 ```
