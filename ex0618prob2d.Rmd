@@ -256,18 +256,18 @@ expo.mod1 <- mcmodel({
     dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001)
     
     # Drinking water consumption (L/day):
-    dw.cons.L = mcstoc(rlnorm, type = "V", 
+    dw.cons.L = mcstoc(rlnorm, type = "V", seed = seed, 
                        meanlog = 7.49, sdlog = 0.407) / 1000
     
     # Swimming in surface water viral loading (viruses/L):
     sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1)
     
     # Swimming daily ingestion rate (mL/hour): fictitious sd = 45
-    sw.daily.IR = mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
-                         rtrunc = TRUE, linf = 0)
+    sw.daily.IR = mcstoc(rnorm, type = "U", seed = seed, 
+                         mean = 50, sd = 45, rtrunc = TRUE, linf = 0)
     
     # Swimming duration (hours): fictitious discrete distribution
-    sw.duration = mcstoc(rempiricalD, type = "V", 
+    sw.duration = mcstoc(rempiricalD, type = "V", seed = seed, 
                          values = c(0.5, 1, 2, 2.6), 
                          prob = c(0.1, 0.1, 0.2, 0.6))
     
@@ -366,18 +366,18 @@ expo.mcmcut <- mcmodelcut({
         dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001)
         
         # Drinking water consumption (L/day):
-        dw.cons.L = mcstoc(rlnorm, type = "V", 
+        dw.cons.L = mcstoc(rlnorm, type = "V", seed = seed, 
                            meanlog = 7.49, sdlog = 0.407) / 1000
         
         # Swimming in surface water viral loading (viruses/L):
         sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1)
         
         # Swimming daily ingestion rate (mL/hour): fictitious sd = 45
-        sw.daily.IR = mcstoc(rnorm, type = "U", mean = 50, sd = 45, 
-                             rtrunc = TRUE, linf = 0)
+        sw.daily.IR = mcstoc(rnorm, type = "U", seed = seed, 
+                             mean = 50, sd = 45, rtrunc = TRUE, linf = 0)
         
         # Swimming duration (hours): fictitious discrete distribution
-        sw.duration = mcstoc(rempiricalD, type = "V", 
+        sw.duration = mcstoc(rempiricalD, type = "V", seed = seed, 
                              values = c(0.5, 1, 2, 2.6), 
                              prob = c(0.1, 0.1, 0.2, 0.6))
         
