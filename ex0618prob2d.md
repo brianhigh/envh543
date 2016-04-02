@@ -143,12 +143,11 @@ for (i in 1:nsu) {
 ### Summarize results
 
 Since this is a 2-D simulation, we can report the uncertainty in our point 
-estimate of the exposure risk.
+estimate of the microbial exposure risk.
 
 We will use the 50th percentile (median) of the means of each iteration in the
-uncertainty dimension as a point estimate of microbial exposure. The 2.5th and 
-97.5th percentiles of each statistic are used to establish a 95% credible 
-interval (CI95) of this statistic.
+uncertainty dimension as our point estimate. The 2.5th and 97.5th percentiles 
+are used to establish a 95% credible interval (CI95).
 
 
 ```r
@@ -161,7 +160,7 @@ quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ## 0.13683 0.13714 0.13752
 ```
 
-We will build up an empirical cumulative distribution plot of all of the 
+Next, we build up an empirical cumulative distribution plot of all of the 
 loop iterations, by overlaying each new curve upon a plot of the first 
 iteration.
 
