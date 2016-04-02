@@ -51,19 +51,23 @@ sw.frequency          <- 7        # Swimming frequency (swims/year)
 seed <- 1
 
 # Define the number of samples for the variability and uncertainty dimensions.
-nsv <- 250
-nsu <- 5000
+nsv <- 5000
+nsu <- 250
 ```
 
-### Sample from distributions reflecting variability 
+### Sample from distributions reflecting uncertainty 
 
-For the variability dimension, generate 250 random samples from a normal 
+In our previous 1-D Monte Carlo simulation, we used a point estimate for the 
+ingestion rate of surface water while swimming. Now, for our 2-D simulation, we
+will represent the uncertainty around this estimate with a normal distribution.
+
+For the uncertainty dimension, generate 250 random samples from a normal 
 distribution to estimate ingestion rate (IR) in mL of surface water while
-swimming. The standard deviation value of 45 used here is a fictitious example.
+swimming. The standard deviation value of 45 used here is fictitious.
 
 ```{r}
 set.seed(seed)
-sw.d.IR <- rnorm(nsv, mean = 50, sd = 45)
+sw.d.IR <- rnorm(nsu, mean = 50, sd = 45)
 ```
 
 Plot the kernel density estimates for surface water ingestion rate.
@@ -87,12 +91,12 @@ Risk.fcn <- function(shellfish.vl, shellfish.cons.g, water.cons.L, dw.vl,
 ### Run a 2-D MC simulation
 
 Run the simulation using a nested loop structure of 5000 iterations (in the 
-uncertainty dimension) performed by the `sapply()` function for each of 250 
-iterations (in the varibility dimension) of a `for()` loop.
+variability dimension) performed by the `sapply()` function for each of 250 
+iterations (in the uncertainty dimension) of a `for()` loop.
 
 Specifically, within the `for()` loop:
 
-- Sample from the distributions reflecting uncertainty:
+- Sample from the distributions reflecting variability:
     1. Drinking water consumption in liters/day (log-normal distribution)
     2. Swimming duration in hours (discrete distribution)
 - Compute 5000 daily exposure estimates and store as a vector in a matrix.
@@ -102,26 +106,28 @@ matrix.
 
 ```{r}
 # Define an empty matrix to hold the simulation results.
-Risk.mat <- matrix(as.numeric(NA), nrow = nsu, ncol = nsv)
+Risk.mat <- matrix(as.numeric(NA), nrow = nsv, ncol = nsu)
 
-for (i in 1:nsv) {
+# Loop through the uncertainty dimension.
+for (i in 1:nsu) {
     # 1. Generate 5000 random samples from a log-normal distribution to estimate 
     #    exposure from consumption of drinking water (ml/day). Divide by 1000 
     #    mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
     #    are from the QMRA textbook (Haas et al. 2014), page 216, Table 6.30.
     set.seed(seed)
-    water.cons.L <- rlnorm(n = nsu, meanlog = 7.49, sdlog = 0.407) / 1000
+    water.cons.L <- rlnorm(n = nsv, meanlog = 7.49, sdlog = 0.407) / 1000
     
     # 2. Sample 5000 times from a discrete distribution of swim duration with 
     #    assigned probabilities of each outcome. These values are hypothetical 
     #    and are not found in the text, but are defined here to provide an 
     #    example of sampling from a discrete distribution.
     set.seed(seed)
-    swim.duration <- sample(x = c(0.5, 1, 2, 2.6), size = nsu, 
+    swim.duration <- sample(x = c(0.5, 1, 2, 2.6), size = nsv, 
                             replace = TRUE, prob = c(0.1, 0.1, 0.2, 0.6))
     
+    # Loop through the variability dimension.
     # Compute 5000 daily simulations and store as a vector in a matrix.
-    Risk.mat[,i] <- sapply(1:nsu, function(j) 
+    Risk.mat[,i] <- sapply(1:nsv, function(j) 
         # Define a function to calculate esimated microbial exposure risk.
         Risk.fcn(water.cons.L = water.cons.L[j],
                  sw.duration = swim.duration[j],
@@ -136,6 +142,19 @@ for (i in 1:nsv) {
 
 ### Summarize results
 
+Since this is a 2-D simulation, we can report the uncertainty in our point 
+estimate of the exposure risk.
+
+We will use the 50th percentile (median) of the means of each iteration in the
+uncertainty dimension as a point estimate of microbial exposure. The 2.5th and 
+97.5th percentiles of each statistic are used to establish a 95% credible 
+interval (CI95) of this statistic.
+
+```{r}
+mean.risk <- sapply(1:250, function(j) mean(Risk.mat[,j]))
+quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
+```
+
 We will build up an empirical cumulative distribution plot of all of the 
 loop iterations, by overlaying each new curve upon a plot of the first 
 iteration.
@@ -145,7 +164,7 @@ iteration.
 plot(ecdf(Risk.mat[, 1]), col = "#ADD8E605", main = 'ecdf(Risk.mat)')
 
 # Plot empirical cumulative distributions for additional iterations in blue.
-for (j in 2:nsv) {
+for (j in 2:nsu) {
     plot(ecdf(Risk.mat[, j]), col = "#ADD8E605", add = TRUE)
 }
 ```
