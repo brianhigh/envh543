@@ -136,8 +136,9 @@ for (i in 1:nsv) {
 
 ### Summarize results
 
-We will build up an empirical cumulative distribution plot of all of the loop
-iterations, by overlaying each new curve over a plot of the first iteration.
+We will build up an empirical cumulative distribution plot of all of the 
+loop iterations, by overlaying each new curve upon a plot of the first 
+iteration.
 
 ```{r}
 # Plot the empirical cumulative distribution for the first iteration.
