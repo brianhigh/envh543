@@ -71,16 +71,13 @@ help()
 books: 
 
 - Beginning Data Science with R by Manas A. Pathak ([free at UW](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71215329450001451))
-
 - The Art of R Programming: A Tour of Statistical Software Design N. Matloff ([free at UW](http://alliance-primo.hosted.exlibrisgroup.com/UW:CP71185032870001451))
 
 
 ## Function
 
 - some INPUT - computation - some OUTPUT
-
 - e.g. log10(): 10^3 = 1000 
-
 - Thus log10(1000)=3
 
 ## Helper functions 
@@ -436,7 +433,7 @@ str(dt)
 ##  $ loc         : chr  "A" "B" "C" "A" ...
 ##  $ date        : chr  "2015-11-01" "2016-01-12" "2015-11-01" "2016-01-12" ...
 ##  $ rain        : chr  "lots" "some" "little" "no" ...
-##  $ rh          : num  52.2 59.8 63.9 37.8 70.5 ...
+##  $ rh          : num  48.2 72.1 50.1 68.3 66.7 ...
 ```
 
 ## Summarize
@@ -468,12 +465,12 @@ head(tbltst)
 
 ```
 ##   loc       date   rain Sepal.Length       rh
-## 1   A 2015-11-01 little          4.6 55.21379
-## 2   B 2015-11-01 little          4.6 44.82429
-## 3   C 2015-11-01 little          4.7 63.90940
-## 4   A 2016-01-12 little          4.9 51.50577
-## 5   B 2016-01-12 little          4.9 55.16517
-## 6   C 2016-01-12 little          4.6 42.04769
+## 1   A 2015-11-01 little          4.6 46.14142
+## 2   B 2015-11-01 little          4.6 72.49858
+## 3   C 2015-11-01 little          4.7 50.12838
+## 4   A 2016-01-12 little          4.9 39.33083
+## 5   B 2016-01-12 little          4.9 54.37002
+## 6   C 2016-01-12 little          4.6 67.87821
 ```
 
 ## Summarize

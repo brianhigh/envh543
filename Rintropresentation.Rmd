@@ -81,16 +81,13 @@ help()
 books: 
 
 - Beginning Data Science with R by Manas A. Pathak ([free at UW](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71215329450001451))
-
 - The Art of R Programming: A Tour of Statistical Software Design N. Matloff ([free at UW](http://alliance-primo.hosted.exlibrisgroup.com/UW:CP71185032870001451))
 
 
 ## Function
 
 - some INPUT - computation - some OUTPUT
-
 - e.g. log10(): 10^3 = 1000 
-
 - Thus log10(1000)=3
 
 ## Helper functions 
