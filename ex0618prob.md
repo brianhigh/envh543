@@ -86,7 +86,12 @@ daily.dose <- sapply(1:5000,
                                           sw.vl = sw.viral.load, 
                                           sw.daily.IR = sw.daily.IR, 
                                           sw.frequency = sw.frequency))
+```
 
+## Summarize results
+
+
+```r
 # Set display options for use with the print() function.
 options(digits=3)
 
@@ -98,13 +103,35 @@ print(format(exp(mean(log(daily.dose))), scientific = TRUE))
 ## [1] "1.37e-01"
 ```
 
-## Plot the kernel density estimates
+### Calculate kernel density estimates
 
 
 ```r
 # Calculate kernel density estimates.
 dens <- density(daily.dose)
+dens
+```
 
+```
+## 
+## Call:
+## 	density.default(x = daily.dose)
+## 
+## Data: daily.dose (5000 obs.);	Bandwidth 'bw' = 0.0001264
+## 
+##        x               y      
+##  Min.   :0.135   Min.   :  0  
+##  1st Qu.:0.137   1st Qu.:  1  
+##  Median :0.140   Median : 11  
+##  Mean   :0.140   Mean   :112  
+##  3rd Qu.:0.142   3rd Qu.:158  
+##  Max.   :0.144   Max.   :577
+```
+
+### Calculate measures of central tendency
+
+
+```r
 # Calculate measures of central tendency.
 meas <- data.frame(
     measure = c("mean", "g. mean", "median", "mode"),
@@ -115,25 +142,20 @@ meas <- data.frame(
     color = c("red", "orange", "green", "blue"),
     stringsAsFactors = FALSE
 )
-```
 
-### Calculate measures of central tendency for plotting
-
-
-```r
 # Set display options for use with the print() function.
 options(digits=6)
 
 # Print measures of central tendency.
-print(meas)
+print(meas[1:2])
 ```
 
 ```
-##   measure    value  color
-## 1    mean 0.137151    red
-## 2 g. mean 0.137149 orange
-## 3  median 0.136990  green
-## 4    mode 0.136810   blue
+##   measure    value
+## 1    mean 0.137151
+## 2 g. mean 0.137149
+## 3  median 0.136990
+## 4    mode 0.136810
 ```
 
 ### Plot the kernel density estimates with measures of central tendency
@@ -164,9 +186,9 @@ plot(dens)
 add_lines_and_legend(meas, 0.139, 550)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-6-1.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-7-1.png)
 
-## Plot the empirical cumulative distribution
+### Plot the empirical cumulative distribution
 
 
 ```r
@@ -177,4 +199,4 @@ plot(ecdf(daily.dose))
 add_lines_and_legend(meas, 0.139, 0.8)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-7-1.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-8-1.png)
