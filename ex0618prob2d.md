@@ -51,9 +51,10 @@ nsu <- 250
 
 ### Sample from distributions reflecting uncertainty 
 
-In our previous 1-D Monte Carlo simulation, we used a point estimate for the 
-ingestion rate of surface water while swimming. Now, for our 2-D simulation, we
-will represent the uncertainty around this estimate with a normal distribution.
+In our previous [1-D Monte Carlo simulation](ex0618prob.md), we used a point 
+estimate for the ingestion rate of surface water while swimming. Now, for our 
+2-D simulation, we will represent the uncertainty around this estimate with a 
+normal distribution.
 
 For the uncertainty dimension, generate 250 random samples from a normal 
 distribution to estimate ingestion rate (IR) in mL of surface water while
