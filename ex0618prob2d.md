@@ -152,7 +152,7 @@ interval (CI95) of this statistic.
 
 
 ```r
-mean.risk <- sapply(1:250, function(j) mean(Risk.mat[,j]))
+mean.risk <- sapply(1:nsu, function(j) mean(Risk.mat[,j]))
 quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
