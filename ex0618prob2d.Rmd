@@ -41,23 +41,42 @@ opts_chunk$set(cache=TRUE, message=FALSE)
 
 ```{r}
 # Define the deterministic factors.
-shellfish.viral.load <- 1  # Shellfish viral loading (viruses/g)
-dw.viral.load <- 0.001     # Drinking water viral loading (viruses/L)
-shellfish.cons.g <- 0.135  # Shellfish consumption (viruses/day)
-sw.viral.load <- 0.1       # Swimming in surface water viral loading (viruses/L)
-sw.frequency <- 7          # Swimming frequency (swims/year)
+shellfish.viral.load  <- 1        # Shellfish viral loading (viruses/g)
+dw.viral.load         <- 0.001    # Drinking water viral loading (viruses/L)
+shellfish.cons.g      <- 0.135    # Shellfish consumption (viruses/day)
+sw.viral.load         <- 0.1      # Swimming in viral loading (viruses/L)
+sw.frequency          <- 7        # Swimming frequency (swims/year)
 
 # Define an integer to use when setting the seed of the random number generator.
 seed <- 1
 
-# Define an empty matrix to hold the simulation results.
-Risk.mat <- matrix(as.numeric(NA), nrow = 5000, ncol = 250)
+# Define the number of samples for the variability and uncertainty dimensions.
+nsv <- 250
+nsu <- 5000
 ```
 
-### Define functions
+### Sample from distributions reflecting variability 
+
+For the variability dimension, generate 250 random samples from a normal 
+distribution to estimate ingestion rate (IR) in mL of surface water while
+swimming. The standard deviation value of 45 used here is a fictitious example.
 
 ```{r}
-# Define a function to calculate estimated exposure risk.
+set.seed(seed)
+sw.d.IR <- rnorm(nsv, mean = 50, sd = 45)
+```
+
+Plot the kernel density estimates for surface water ingestion rate.
+
+```{r}
+plot(density(sw.d.IR))
+```
+
+### Define exposure risk function
+
+Define a risk function to calculate estimated microbial exposure.
+
+```{r}
 Risk.fcn <- function(shellfish.vl, shellfish.cons.g, water.cons.L, dw.vl, 
                      sw.vl, sw.daily.IR, sw.duration, sw.frequency) {
     ((shellfish.vl * shellfish.cons.g) + (water.cons.L * dw.vl) + 
@@ -67,38 +86,42 @@ Risk.fcn <- function(shellfish.vl, shellfish.cons.g, water.cons.L, dw.vl,
 
 ### Run a 2-D MC simulation
 
+Run the simulation using a nested loop structure of 5000 iterations (in the 
+uncertainty dimension) performed by the `sapply()` function for each of 250 
+iterations (in the varibility dimension) of a `for()` loop.
+
+Specifically, within the `for()` loop:
+
+- Sample from the distributions reflecting uncertainty:
+    1. Drinking water consumption in liters/day (log-normal distribution)
+    2. Swimming duration in hours (discrete distribution)
+- Compute 5000 daily exposure estimates and store as a vector in a matrix.
+
+The results of each iteration will be accumulated in a 5000 row by 250 column 
+matrix.
+
 ```{r}
-# Generate 250 random samples from a normal distribution to estimate 
-# ingestion rate (IR) in mL of surface water. The standard deviation 
-# value of 45 used here is a fictitious example.
-set.seed(seed)
-sw.d.IR <- rnorm(250, mean = 50, sd = 45)
+# Define an empty matrix to hold the simulation results.
+Risk.mat <- matrix(as.numeric(NA), nrow = nsu, ncol = nsv)
 
-# Plot the kernel density estimates for surface water.
-plot(density(sw.d.IR))
-
-# Run 250 iterations of a 5000-sample simulation.
-for (i in 1:250) {
-    # Generate 5000 random samples from a log-normal distribution to estimate 
-    # exposure from consumption of drinking water (ml/day). Divide by 1000 
-    # mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
-    # are from the QMRA textbook (Haas et al. 2014), page 216, Table 6.30.
+for (i in 1:nsv) {
+    # 1. Generate 5000 random samples from a log-normal distribution to estimate 
+    #    exposure from consumption of drinking water (ml/day). Divide by 1000 
+    #    mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
+    #    are from the QMRA textbook (Haas et al. 2014), page 216, Table 6.30.
     set.seed(seed)
-    water.cons.L <- rlnorm(n = 5000, meanlog = 7.49, sdlog = 0.407) / 1000
+    water.cons.L <- rlnorm(n = nsu, meanlog = 7.49, sdlog = 0.407) / 1000
     
-    # Plot the kernel density estimates for drinking water.
-    #plot(density(water.cons.L))  # Uncomment this if you want to see these.
-    
-    # Sample 5000 times from a discrete distribution of swim duration with 
-    # assigned probabilities of each outcome. These values are hypothetical 
-    # and are not found in the text, but are defined here to provide an 
-    # example of sampling from a discrete distribution.
+    # 2. Sample 5000 times from a discrete distribution of swim duration with 
+    #    assigned probabilities of each outcome. These values are hypothetical 
+    #    and are not found in the text, but are defined here to provide an 
+    #    example of sampling from a discrete distribution.
     set.seed(seed)
-    swim.duration <- sample(x = c(0.5, 1, 2, 2.6), size = 5000, 
+    swim.duration <- sample(x = c(0.5, 1, 2, 2.6), size = nsu, 
                             replace = TRUE, prob = c(0.1, 0.1, 0.2, 0.6))
     
     # Compute 5000 daily simulations and store as a vector in a matrix.
-    Risk.mat[,i] <- sapply(1:5000, function(j) 
+    Risk.mat[,i] <- sapply(1:nsu, function(j) 
         # Define a function to calculate esimated microbial exposure risk.
         Risk.fcn(water.cons.L = water.cons.L[j],
                  sw.duration = swim.duration[j],
@@ -113,12 +136,15 @@ for (i in 1:250) {
 
 ### Summarize results
 
+We will build up an empirical cumulative distribution plot of all of the loop
+iterations, but plotting each curve over a plot of the first iteration.
+
 ```{r}
 # Plot the empirical cumulative distribution for the first iteration.
 plot(ecdf(Risk.mat[, 1]), col = "#ADD8E605", main = 'ecdf(Risk.mat)')
 
 # Plot empirical cumulative distributions for additional iterations in blue.
-for (j in 1:250) {
+for (j in 2:nsv) {
     plot(ecdf(Risk.mat[, j]), col = "#ADD8E605", add = TRUE)
 }
 ```
@@ -137,6 +163,10 @@ This is a simple way to implement the 2-D simulation because we just need to
 define the model with `mcmodel()` and evaluate it with `evalmcmod()`.
 
 ### Load packages
+
+Make sure the _mc2d_ package is installed before trying to use it. If we just 
+tried to load it with `library()` or `require()` before it had been installed, 
+our program would end with errors. (That would not be very friendly.)
 
 ```{r}
 # Define a function to conditionally install and load a package.
@@ -165,6 +195,8 @@ Other node types ("VU" and "0") are also available, but we will not be using
 them in this example. See the 
 [mcstoc documentation](http://www.inside-r.org/packages/cran/mc2d/docs/mcstoc)
 for details.
+
+We will model the deterministic factors as uniform probablity distributions.
 
 The last statement makes an "mc" object using the 
 [mc](http://www.inside-r.org/packages/cran/mc2d/docs/mc) function.
@@ -212,13 +244,17 @@ expo.mod1 <- mcmodel({
 
 ### Evaluate the model
 
+Evaluate the model with 5000 iterations in the variability dimension and 250 
+iterations in the uncertainty dimesion.
+
 ```{r}
-# Evaluate the model with 5000 variability and 250 uncertainty simulations.
 expo.ev1 <- evalmcmod(expo.mod1, nsv = 5000, nsu = 250, seed = 1)
 expo.ev1
 ```
 
 ### Summarize results
+
+Print the evaluation results and plot the empirical cumulative distribution.
 
 ```{r}
 # Summarize the results.
@@ -332,20 +368,28 @@ expo.mcmcut <- mcmodelcut({
 
 ### Evaluate the model
 
+Evaluate the model with 5000 iterations in the variability dimension and 250 
+iterations in the uncertainty dimesion.
+
 ```{r}
-# Evaluate the 2-D Monte Carlo model using a loop on the uncertainty dimension.
 # Capture the text output and print when finished to save space in the report.
 capture.output(x <- evalmccut(expo.mcmcut, nsv = 5000, nsu = 250, seed = 1))
 ```
 
 ### Summarize results
 
+Print the accumulated statistics with `summary()` and `plot()`.
+
 ```{r}
 # Print a summary and a plot for the mccut object.
 summary(x)
 plot(x)
+```
 
-# Plot the empirical cumulative distribution for the estimated exposure.
+Plot the empirical cumulative distribution for the estimated exposure. To match
+the `ecdf` plot made earlier, we will construct the plot elements manually.
+
+```{r}
 expo.x <- x$plot$expo.mc
 expo.l <- length(expo.x)
 expo.y <- 1:expo.l/expo.l
