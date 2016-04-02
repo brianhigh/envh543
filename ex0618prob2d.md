@@ -134,10 +134,6 @@ for (i in 1:nsv) {
 }
 ```
 
-This approach stores all of the simulated sample data in memory (in the matrix).
-For very large simulations, you may run out of memory. The last example in
-this document will present a solution to the memomy consumption problem. 
-
 ### Summarize results
 
 We will build up an empirical cumulative distribution plot of all of the loop
