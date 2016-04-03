@@ -39,8 +39,15 @@ opts_chunk$set(cache=TRUE, message=FALSE)
 
 ### Define variables
 
+Define the deterministic factors from the microbial exposure example. Set the 
+_seed_ used for random sampling to enable reproducible results. Define the 
+number of random samples to be drawn from probability distrubutions in the two 
+dimensions (variability and uncertainty) of the simulation.
+
 ```{r}
-# Define the deterministic factors.
+# Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
+# 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
+# (Wiley, 2014), pp. 215-216.
 shellfish.viral.load  <- 1        # Shellfish viral loading (viruses/g)
 dw.viral.load         <- 0.001    # Drinking water viral loading (viruses/L)
 shellfish.cons.g      <- 0.135    # Shellfish consumption (viruses/day)
