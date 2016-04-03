@@ -74,9 +74,12 @@ normal distribution.
 
 For the uncertainty dimension, generate 250 random samples from a normal 
 distribution to estimate ingestion rate (IR) in mL of surface water while
-swimming. The standard deviation value of 45 used here is fictitious.
+swimming. 
 
 ```{r}
+# The point estimate of 50 mL/hr for ingestion of surface water while swimming 
+# is taken from the QMRA textbook (Haas et al. 2014), page 215. We set it here
+# as the mean. The standard deviation value of 45 used here is fictitious.
 set.seed(seed)
 sw.d.IR <- rnorm(nsu, mean = 50, sd = 45)
 ```
