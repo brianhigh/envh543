@@ -4,7 +4,7 @@ Jane Pouzou and Brian High
 
 ## Introduction
 
-This document offers two 2-D Monte Carlo probabilistic solutions in R for the 
+This document offers three 2-D Monte Carlo probabilistic solutions in R for the 
 daily microbial exposure from drinking water consumption, swimming in surface 
 water and shellfish consumption for [Example 6.18](images/ex0618.png) from 
 pages 215-216 of:
@@ -14,7 +14,7 @@ by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
 
 The first solution is coded manually with functionality built into "base" R.
 
-The second solution uses the _mc2d_ package.
+The second and third solutions use the _mc2d_ package.
 
 ## Set global options
 
