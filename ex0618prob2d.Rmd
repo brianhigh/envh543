@@ -110,7 +110,7 @@ matrix.
 Risk.mat <- matrix(as.numeric(NA), nrow = nsv, ncol = nsu)
 
 # Loop through the uncertainty dimension.
-for (i in 1:nsu) {
+for (j in 1:nsu) {
     # 1. Generate 5000 random samples from a log-normal distribution to estimate 
     #    exposure from consumption of drinking water (ml/day). Divide by 1000 
     #    mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
@@ -128,15 +128,15 @@ for (i in 1:nsu) {
     
     # Loop through the variability dimension.
     # Compute 5000 daily simulations and store as a vector in a matrix.
-    Risk.mat[,i] <- sapply(1:nsv, function(j) 
+    Risk.mat[, j] <- sapply(1:nsv, function(i) 
         # Define a function to calculate esimated microbial exposure risk.
-        Risk.fcn(water.cons.L = water.cons.L[j],
-                 sw.duration = swim.duration[j],
+        Risk.fcn(water.cons.L = water.cons.L[i],
+                 sw.duration = swim.duration[i],
                  shellfish.vl = shellfish.viral.load,
                  dw.vl = dw.viral.load,
                  shellfish.cons.g = shellfish.cons.g,
                  sw.vl = sw.viral.load,
-                 sw.daily.IR = sw.d.IR[i],
+                 sw.daily.IR = sw.d.IR[j],
                  sw.frequency = sw.frequency))
 }
 ```
@@ -151,7 +151,7 @@ uncertainty dimension as our point estimate. The 2.5th and 97.5th percentiles
 are used to establish a 95% credible interval (CI95).
 
 ```{r}
-mean.risk <- sapply(1:nsu, function(j) mean(Risk.mat[,j]))
+mean.risk <- sapply(1:nsu, function(j) mean(Risk.mat[, j]))
 quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
@@ -298,7 +298,7 @@ expo.ev1
 
 ### Summarize results
 
-Print the evaluation results and plot the empirical cumulative distribution.
+Print a summary of the evaluation results (`expo.ev1`) and plot the empirical cumulative distribution function (ecdf).
 
 ```{r results-ev1}
 # Summarize the results.
@@ -333,21 +333,20 @@ library(mc2d)
 The `mcmodelcut()` function expects its input in three blocks:
 
 ```
-mcmodelcut(
+mcmodelcut({ 
+    # Block 1: Evaluate all of the 0, V and U mc node objects.
     { 
-        # Block 1: evaluated once before the first loop (step 1)
-        { 
-            # Evaluate all of the 0, V and U mc node objects.
-        } 
-        # Block 2: evaluated using nsu = 1 (step 2)
-        { 
-            # Evaluate all of the VU nodes. Last statement makes an mc object.
-        } 
-        # Block 3: repeated nsu times (step 3)
-        { 
-            # Build a list of statistics refering to the mc object.
-        } 
-    })
+        # This block is evaluated once before the first loop (step 1).
+    } 
+    # Block 2: Evaluate all of the VU nodes. Last statement makes an mc object.
+    { 
+        # This block is evaluated using nsu = 1 (step 2).
+    } 
+    # Block 3: Build a list of statistics refering to the mc object.
+    { 
+        # This block is repeated nsu times (step 3).
+    } 
+})
 ```
 
 ... where `nsu` is the number of simulations for uncertainty used in the 
@@ -394,12 +393,12 @@ expo.mcmcut <- mcmodelcut({
     # Block2: Evaluate all of the VU nodes. Last statement makes an mc object.
     {
         # Estimate the exposure using the V and U nodes to create a VU node.
-        expo.mc <- (shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
+        expo.mc2 <- (shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
             ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)
    
         # Build a mc model from all of the mcnode objects.
         expo.mod2 <- mc(shellfish.vl, shellfish.cons.g, dw.vl, dw.cons.L, 
-                        sw.vl, sw.daily.IR, sw.duration, sw.frequency, expo.mc)
+                        sw.vl, sw.daily.IR, sw.duration, sw.frequency, expo.mc2)
     }
 
     # Block 3: Build a list of statistics refering to the mc object.
@@ -412,33 +411,38 @@ expo.mcmcut <- mcmodelcut({
 
 ### Evaluate the model
 
-Evaluate the model with 5000 iterations in the variability dimension and 250 
-iterations in the uncertainty dimesion.
+Evaluate the model with 5000 iterations in the variability dimension and 
+250 iterations in the uncertainty dimesion. Save the evaluation results as 
+`expo.ev2`. 
+
+Since the `evalmccut()` function produces a lot of text output  
+that we do not want in our report, we capture the text output with the 
+`capture.output()` function and print a summary when finished.
 
 ```{r}
-# Capture the text output and print when finished to save space in the report.
-capture.output(x <- evalmccut(expo.mcmcut, seed = seed))
+capture.output(expo.ev2 <- evalmccut(expo.mcmcut, seed = seed))
 ```
 
 ### Summarize results
 
 Print the accumulated statistics with `summary()` and `plot()`.
 
-```{r results-x}
+```{r results-ev2}
 # Print a summary and a plot for the mccut object.
-summary(x)
-plot(x)
+summary(expo.ev2)
+plot(expo.ev2)
 ```
 
-Plot the empirical cumulative distribution for the estimated exposure. To match
-the `ecdf` plot made earlier, we will construct the plot elements manually.
+Plot the empirical cumulative distribution function (ecdf) for the estimated 
+exposure. To match the format of the `ecdf` plot made earlier, we will 
+construct the plot elements manually.
 
-```{r results-expo}
-expo.x <- x$plot$expo.mc
+```{r results-ev2-ecdf-plot}
+expo.x <- expo.ev2$plot$expo.mc2
 expo.l <- length(expo.x)
 expo.y <- 1:expo.l/expo.l
-plot(expo.x, expo.y, pch = 20, cex = 0.1, col = '#ADD8E604', 
-     main='ecdf(expo.mc)', ylab = 'Fn(x)', xlab = 'x')
+plot(expo.x, expo.y, pch = 20, cex = 0.1, col = '#ADD8E605', 
+     main='ecdf(expo.mc2)', ylab = 'Fn(x)', xlab = 'x')
 abline(h = 0, col = "gray", lty = 2, lwd = 2)
 abline(h = 1, col = "gray", lty = 2, lwd = 2)
 ```

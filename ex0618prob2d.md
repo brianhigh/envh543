@@ -110,7 +110,7 @@ matrix.
 Risk.mat <- matrix(as.numeric(NA), nrow = nsv, ncol = nsu)
 
 # Loop through the uncertainty dimension.
-for (i in 1:nsu) {
+for (j in 1:nsu) {
     # 1. Generate 5000 random samples from a log-normal distribution to estimate 
     #    exposure from consumption of drinking water (ml/day). Divide by 1000 
     #    mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
@@ -128,15 +128,15 @@ for (i in 1:nsu) {
     
     # Loop through the variability dimension.
     # Compute 5000 daily simulations and store as a vector in a matrix.
-    Risk.mat[,i] <- sapply(1:nsv, function(j) 
+    Risk.mat[, j] <- sapply(1:nsv, function(i) 
         # Define a function to calculate esimated microbial exposure risk.
-        Risk.fcn(water.cons.L = water.cons.L[j],
-                 sw.duration = swim.duration[j],
+        Risk.fcn(water.cons.L = water.cons.L[i],
+                 sw.duration = swim.duration[i],
                  shellfish.vl = shellfish.viral.load,
                  dw.vl = dw.viral.load,
                  shellfish.cons.g = shellfish.cons.g,
                  sw.vl = sw.viral.load,
-                 sw.daily.IR = sw.d.IR[i],
+                 sw.daily.IR = sw.d.IR[j],
                  sw.frequency = sw.frequency))
 }
 ```
@@ -152,7 +152,7 @@ are used to establish a 95% credible interval (CI95).
 
 
 ```r
-mean.risk <- sapply(1:nsu, function(j) mean(Risk.mat[,j]))
+mean.risk <- sapply(1:nsu, function(j) mean(Risk.mat[, j]))
 quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
@@ -328,7 +328,7 @@ expo.ev1
 
 ### Summarize results
 
-Print the evaluation results and plot the empirical cumulative distribution.
+Print a summary of the evaluation results (`expo.ev1`) and plot the empirical cumulative distribution function (ecdf).
 
 
 ```r
@@ -339,10 +339,10 @@ summary(expo.ev1)
 ```
 ##  :
 ##         mean       sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
-## median 0.137 0.000847 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
-## mean   0.137 0.000849 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## median 0.137 0.000845 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## mean   0.137 0.000847 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
 ## 2.5%   0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
-## 97.5%  0.138 0.000867 0.136 0.136 0.137 0.137 0.138 0.140 0.144 5000    0
+## 97.5%  0.137 0.000861 0.136 0.136 0.137 0.137 0.138 0.140 0.144 5000    0
 ```
 
 ```r
@@ -378,21 +378,20 @@ library(mc2d)
 The `mcmodelcut()` function expects its input in three blocks:
 
 ```
-mcmodelcut(
+mcmodelcut({ 
+    # Block 1: Evaluate all of the 0, V and U mc node objects.
     { 
-        # Block 1: evaluated once before the first loop (step 1)
-        { 
-            # Evaluate all of the 0, V and U mc node objects.
-        } 
-        # Block 2: evaluated using nsu = 1 (step 2)
-        { 
-            # Evaluate all of the VU nodes. Last statement makes an mc object.
-        } 
-        # Block 3: repeated nsu times (step 3)
-        { 
-            # Build a list of statistics refering to the mc object.
-        } 
-    })
+        # This block is evaluated once before the first loop (step 1).
+    } 
+    # Block 2: Evaluate all of the VU nodes. Last statement makes an mc object.
+    { 
+        # This block is evaluated using nsu = 1 (step 2).
+    } 
+    # Block 3: Build a list of statistics refering to the mc object.
+    { 
+        # This block is repeated nsu times (step 3).
+    } 
+})
 ```
 
 ... where `nsu` is the number of simulations for uncertainty used in the 
@@ -440,12 +439,12 @@ expo.mcmcut <- mcmodelcut({
     # Block2: Evaluate all of the VU nodes. Last statement makes an mc object.
     {
         # Estimate the exposure using the V and U nodes to create a VU node.
-        expo.mc <- (shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
+        expo.mc2 <- (shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
             ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)
    
         # Build a mc model from all of the mcnode objects.
         expo.mod2 <- mc(shellfish.vl, shellfish.cons.g, dw.vl, dw.cons.L, 
-                        sw.vl, sw.daily.IR, sw.duration, sw.frequency, expo.mc)
+                        sw.vl, sw.daily.IR, sw.duration, sw.frequency, expo.mc2)
     }
 
     # Block 3: Build a list of statistics refering to the mc object.
@@ -477,13 +476,17 @@ expo.mcmcut <- mcmodelcut({
 
 ### Evaluate the model
 
-Evaluate the model with 5000 iterations in the variability dimension and 250 
-iterations in the uncertainty dimesion.
+Evaluate the model with 5000 iterations in the variability dimension and 
+250 iterations in the uncertainty dimesion. Save the evaluation results as 
+`expo.ev2`. 
+
+Since the `evalmccut()` function produces a lot of text output  
+that we do not want in our report, we capture the text output with the 
+`capture.output()` function and print a summary when finished.
 
 
 ```r
-# Capture the text output and print when finished to save space in the report.
-capture.output(x <- evalmccut(expo.mcmcut, seed = seed))
+capture.output(expo.ev2 <- evalmccut(expo.mcmcut, seed = seed))
 ```
 
 ```
@@ -503,7 +506,7 @@ Print the accumulated statistics with `summary()` and `plot()`.
 
 ```r
 # Print a summary and a plot for the mccut object.
-summary(x)
+summary(expo.ev2)
 ```
 
 ```
@@ -529,47 +532,48 @@ summary(x)
 ## 
 ## sw.daily.IR :
 ##       NoVar
-## 50%    57.8
-## mean   60.9
-## 2.5%    4.5
-## 97.5% 137.3
+## 50%    57.2
+## mean   61.9
+## 2.5%   10.0
+## 97.5% 131.3
 ## Nas     0.0
 ## 
 ## sw.duration :
 ##       mean    sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
-## NoUnc 2.11 0.726 0.5  0.5   2 2.6 2.6   2.6 2.6 5000    0
+## NoUnc  2.1 0.744 0.5  0.5   2 2.6 2.6   2.6 2.6 5000    0
 ## 
 ## sw.frequency :
 ##       mean sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
 ## NoUnc    7  0   7    7   7   7   7     7   7 5000    0
 ## 
-## expo.mc :
+## expo.mc2 :
 ##        mean       sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
-## 50%   0.137 0.000847 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
-## mean  0.137 0.000849 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## 50%   0.137 0.000845 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## mean  0.137 0.000847 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
 ## 2.5%  0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
-## 97.5% 0.138 0.000867 0.136 0.136 0.137 0.137 0.138 0.140 0.144 5000    0
+## 97.5% 0.137 0.000861 0.136 0.136 0.137 0.137 0.138 0.140 0.144 5000    0
 ## Nas   0.000 0.000000 0.000 0.000 0.000 0.000 0.000 0.000 0.000    0    0
 ```
 
 ```r
-plot(x)
+plot(expo.ev2)
 ```
 
-![](./ex0618prob2d_files/figure-html/results-x-1.png) 
+![](./ex0618prob2d_files/figure-html/results-ev2-1.png) 
 
-Plot the empirical cumulative distribution for the estimated exposure. To match
-the `ecdf` plot made earlier, we will construct the plot elements manually.
+Plot the empirical cumulative distribution function (ecdf) for the estimated 
+exposure. To match the format of the `ecdf` plot made earlier, we will 
+construct the plot elements manually.
 
 
 ```r
-expo.x <- x$plot$expo.mc
+expo.x <- expo.ev2$plot$expo.mc2
 expo.l <- length(expo.x)
 expo.y <- 1:expo.l/expo.l
-plot(expo.x, expo.y, pch = 20, cex = 0.1, col = '#ADD8E604', 
-     main='ecdf(expo.mc)', ylab = 'Fn(x)', xlab = 'x')
+plot(expo.x, expo.y, pch = 20, cex = 0.1, col = '#ADD8E605', 
+     main='ecdf(expo.mc2)', ylab = 'Fn(x)', xlab = 'x')
 abline(h = 0, col = "gray", lty = 2, lwd = 2)
 abline(h = 1, col = "gray", lty = 2, lwd = 2)
 ```
 
-![](./ex0618prob2d_files/figure-html/results-expo-1.png) 
+![](./ex0618prob2d_files/figure-html/results-ev2-ecdf-plot-1.png) 
