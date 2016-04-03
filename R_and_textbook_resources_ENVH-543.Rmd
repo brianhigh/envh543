@@ -1,7 +1,7 @@
 ---
 title: "R and textbook resources for ENV H 543"
 author: "Brian High"
-date: "3/10/2016"
+date: "4/02/2016"
 output:
   html_document:
     keep_md: yes

@@ -1,6 +1,6 @@
 # R and textbook resources for ENV H 543
 Brian High  
-3/10/2016  
+4/02/2016  
 
 ## RStudio Server: "Phage"
 
@@ -39,6 +39,22 @@ statistical analyses of environmental data.
 - Includes extensive examples using data sets from regulatory guidance documents.
 
 [EnvStats](http://offcampus.lib.washington.edu/login?url=http://link.springer.com/book/10.1007/978-1-4614-8456-1), An R Package for Environmental Statistics, Steven P. Millard, 2013 New York: Springer.
+
+### Mastering Scientific Computing with R
+
+What You Will Learn:
+
+- Master data management in R
+- Perform hypothesis tests using both parametric and nonparametric methods
+- Understand how to perform statistical modeling using linear methods
+- Model nonlinear relationships in data with kernel density methods
+- Use matrix operations to improve coding productivity
+- Utilize the observed data to model unobserved variables
+- Deal with missing data using multiple imputations
+- Simplify high-dimensional data using principal components, singular value decomposition, and factor analysis
+- Monte Carlo simulation in one and two dimensions with the mc2d package
+
+[Mastering Scientific Computing with R](http://shop.oreilly.com/product/9781783555253.do), Gerrard P., Johnson R. M. 2015 Packt Publishing.
 
 ### Microbiological Risk Assessment in Food Processing
 
