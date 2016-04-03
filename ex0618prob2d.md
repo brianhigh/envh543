@@ -32,10 +32,13 @@ opts_chunk$set(cache=TRUE, message=FALSE)
 
 ### Define variables
 
-Define the deterministic factors from the microbial exposure example. Set the 
-_seed_ used for random sampling to enable reproducible results. Define the 
-number of random samples to be drawn from probability distrubutions in the two 
-dimensions (variability and uncertainty) of the simulation.
+1. Define the deterministic factors from the microbial exposure example. 
+2. Define the _seed_ used for random sampling to enable reproducible results. 
+   This variable will be used later to set the seed using the `set.seed()`
+   function before random sampling. 
+3. Define the number of random samples to be drawn from probability 
+   distrubutions in the two dimensions (variability and uncertainty) of the 
+   simulation.
 
 
 ```r
