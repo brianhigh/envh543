@@ -188,17 +188,17 @@ mean.risk <- sapply(1:nsu, function(j) mean(Risk.mat[, j]))
 quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
-Next, we build up an empirical cumulative distribution plot of resulting
-2-D matrix. We will use the `plot()` function of the 
+Next, we plot the empirical cumulative distribution function of the risk 
+estimate. We will use the `plot.mcnode()` function of the 
 the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) package
-so that we can easily compare with plots produced later in the document. This 
-function requires us to convert our martrix to a "mc node", which we will do 
+so that we may easily compare with plots from later examples. This 
+function requires us to convert our matrix to a "mcnode", which we will do 
 using the `mcdata()` function.
 
 ```{r ecdf-plot-risk-mat}
 # Plot the empirical cumulative distribution using the mc2d package.
 expo.mc <- mcdata(Risk.mat, type = 'VU', nsv = nsv, nsu = nsu)
-plot(expo.mc)
+plot(expo.mc)     # This actually calls plot.mcnode() .
 ```
 
 ## Repeat the simulation with mc2d
@@ -257,7 +257,7 @@ function, use [mcstoc](http://www.inside-r.org/packages/cran/mc2d/docs/mcstoc)
 to define "mc nodes" for each component of the model. 
 
 For each stochastic variable, use the `mcstoc()` function to create a 
-"mc node", supply a probability function, the node type as "V" for variability 
+"mcnode", supply a probability function, the node type as "V" for variability 
 or "U" for uncertainty, and any additional parameters to be passed to the 
 probability function. 
 
