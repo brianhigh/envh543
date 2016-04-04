@@ -161,11 +161,11 @@ estimate of the microbial exposure risk.
 
 We will use the 50th percentile (median) of the means of each iteration in the
 uncertainty dimension as our point estimate. The 2.5th and 97.5th percentiles 
-are used to establish a 95% credible interval (CI95).
+are used to establish a 95% confidence interval (CI95).
 
 
 ```r
-# Report the median of the means with a 95% credible interval (CI95).
+# Report the median of the means with a 95% confidence interval (CI95).
 mean.risk <- sapply(1:nsu, function(j) mean(Risk.mat[, j]))
 quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
@@ -343,7 +343,7 @@ print(expo.ev1, digits = digits)
 ### Summarize results
 
 Print a summary of the evaluation results (`expo.ev1`) and plot the empirical cumulative distribution function (ecdf). Report the median of the means with a 
-95% credible interval (CI95).
+95% confidence interval (CI95).
 
 
 ```r
@@ -368,7 +368,7 @@ plot(expo.ev1)
 ![](./ex0618prob2d_files/figure-html/results-ev1-1.png) 
 
 ```r
-# Report the median of the means with a 95% credible interval (CI95).
+# Report the median of the means with a 95% confidence interval (CI95).
 mean.risk1 <- sapply(expo.ev1[[1]][1,,], mean)
 quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
@@ -543,7 +543,7 @@ capture.output(expo.ev2 <- evalmccut(expo.mcmcut, seed = seed))
 ### Summarize results
 
 Print the accumulated statistics with `summary()` and `plot()`. Report the 
-median of the means with a 95% credible interval (CI95).
+median of the means with a 95% confidence interval (CI95).
 
 
 ```r
@@ -604,7 +604,7 @@ plot(expo.ev2)
 ![](./ex0618prob2d_files/figure-html/results-ev2-1.png) 
 
 ```r
-# Report the median of the means with a 95% credible interval (CI95).
+# Report the median of the means with a 95% confidence interval (CI95).
 mean.risk2 <- expo.ev2$sum$expo.mc2[,,"mean"]
 quantile(mean.risk2, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
