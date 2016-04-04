@@ -206,7 +206,7 @@ using the `mcdata()` function.
 ```r
 # Plot the empirical cumulative distribution using the mc2d package.
 expo.mc <- mcdata(Risk.mat, type = 'VU', nsv = nsv, nsu = nsu)
-plot(expo.mc)     # This actually calls plot.mcnode() .
+plot(expo.mc)     # This actually calls plot.mcnode().
 ```
 
 ![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png)
