@@ -20,6 +20,16 @@ output:
 - Exercise: Basic data analysis
 - Help
 
+## Learning objectives
+
+- Understand RStudio on a very basic level
+- Write and run a R script
+- Being able to survive cryptic error messages
+- Import and clean up data
+- Have some knowledge of data structures and packages
+- Analyse and graph data
+- Able to ask for help, and find help.
+
 ## Programming (Wikipedia)
 
 - Formulation of a problem that leads to a program
