@@ -55,7 +55,7 @@ water.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
 plot(density(water.cons.L))
 ```
 
-![](./ex0618prob_files/figure-html/unnamed-chunk-3-1.png) 
+![](ex0618prob_files/figure-html/unnamed-chunk-3-1.png)
 
 ```r
 # Sample 5000 times from a discrete distribution of swim duration with 
@@ -70,7 +70,7 @@ swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE,
 hist(swim.duration)
 ```
 
-![](./ex0618prob_files/figure-html/unnamed-chunk-3-2.png) 
+![](ex0618prob_files/figure-html/unnamed-chunk-3-2.png)
 
 ## Estimate daily dose
 
@@ -195,7 +195,7 @@ plot(dens)
 add_lines_and_legend(meas, 0.139, 550)
 ```
 
-![](./ex0618prob_files/figure-html/unnamed-chunk-8-1.png) 
+![](ex0618prob_files/figure-html/unnamed-chunk-8-1.png)
 
 ### Plot the empirical cumulative distribution
 
@@ -208,4 +208,4 @@ plot(ecdf(daily.dose))
 add_lines_and_legend(meas, 0.139, 0.8)
 ```
 
-![](./ex0618prob_files/figure-html/unnamed-chunk-9-1.png) 
+![](ex0618prob_files/figure-html/unnamed-chunk-9-1.png)

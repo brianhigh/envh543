@@ -35,6 +35,25 @@ library("knitr")
 opts_chunk$set(cache=TRUE, message=FALSE)
 ```
 
+## Load packages
+
+Make sure the _mc2d_ package is installed before trying to use it. If we just 
+tried to load it with `library()` or `require()` before it had been installed, 
+our program would end with errors. (That would not be very friendly.)
+
+```{r}
+# Define a function to conditionally install and load a package.
+load.pkg <- function(pkg) {
+    if (! suppressWarnings(require(pkg, character.only = TRUE)) ) {
+        install.packages(pkg, repos = 'http://cran.r-project.org')
+        library(pkg, character.only = TRUE, quietly = TRUE)
+    }
+}
+
+# Load required packages, installing first if necessary.
+suppressMessages(load.pkg("mc2d"))   # Or just use: library(mc2d)
+```
+
 ## Perform a 2-D Monte Carlo simulation
 
 ### Define variables
@@ -169,18 +188,17 @@ mean.risk <- sapply(1:nsu, function(j) mean(Risk.mat[, j]))
 quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
-Next, we build up an empirical cumulative distribution plot of all of the 
-loop iterations, by overlaying each new curve upon a plot of the first 
-iteration.
+Next, we build up an empirical cumulative distribution plot of resulting
+2-D matrix. We will use the `plot()` function of the 
+the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) package
+so that we can easily compare with plots produced later in the document. This 
+function requires us to convert our martrix to a "mc node", which we will do 
+using the `mcdata()` function.
 
 ```{r ecdf-plot-risk-mat}
-# Plot the empirical cumulative distribution for the first iteration.
-plot(ecdf(Risk.mat[, 1]), col = "#ADD8E605", main = 'ecdf(Risk.mat)')
-
-# Plot empirical cumulative distributions for additional iterations in blue.
-for (j in 2:nsu) {
-    plot(ecdf(Risk.mat[, j]), col = "#ADD8E605", add = TRUE)
-}
+# Plot the empirical cumulative distribution using the mc2d package.
+expo.mc <- mcdata(Risk.mat, type = 'VU', nsv = nsv, nsu = nsu)
+plot(expo.mc)
 ```
 
 ## Repeat the simulation with mc2d
@@ -198,21 +216,12 @@ define the model with `mcmodel()` and evaluate it with `evalmcmod()`.
 
 ### Load packages
 
-Make sure the _mc2d_ package is installed before trying to use it. If we just 
-tried to load it with `library()` or `require()` before it had been installed, 
-our program would end with errors. (That would not be very friendly.)
+We did this earlier in the document, but add it again here as a reminder of
+what packages are needed for this example.
 
-```{r}
-# Define a function to conditionally install and load a package.
-load.pkg <- function(pkg) {
-    if (! suppressWarnings(require(pkg, character.only = TRUE)) ) {
-        install.packages(pkg, repos = 'http://cran.r-project.org')
-        library(pkg, character.only = TRUE, quietly = TRUE)
-    }
-}
-
-# Load required packages, installing first if necessary.
-suppressMessages(load.pkg("mc2d"))   # Or just use: library(mc2d)
+```{r warning=FALSE}
+# Load packages.
+library(mc2d)
 ```
 
 ### Define variables
@@ -330,11 +339,11 @@ summary(expo.ev1)
 plot(expo.ev1)
 
 # Report the median of the means with a 95% confidence interval (CI95).
-#mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
-#quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
+mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
+quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 
-# Generate an "ecdf" plot.
-#plot(expo.ev1$expo.mc1)
+# Generate an "ecdf" plot. This actually calls plot.mcnode().
+plot(expo.ev1$expo.mc1)
 ```
 
 ## Repeat 2-D simulation again with a loop
@@ -351,6 +360,9 @@ taking more time to perform the simulation. This approach allows the evaluation
 of very high dimensional models on relatively modest computer systems.
 
 ### Load packages
+
+We did this earlier in the document, but add it again here as a reminder of
+what packages are needed for this example.
 
 ```{r warning=FALSE}
 # Load packages.
@@ -468,25 +480,13 @@ Print the accumulated statistics with `summary()` and `plot()`. Report the
 median of the means with a 95% confidence interval (CI95).
 
 ```{r results-ev2}
-# Print a summary and a plot for the mccut object.
+# Print a summary 
 summary(expo.ev2)
+
+# Plot the mccut object. This actually calls plot.mccut().
 plot(expo.ev2)
 
 # Report the median of the means with a 95% confidence interval (CI95).
 mean.risk2 <- expo.ev2$sum$expo.mc2[, , "mean"]
 quantile(mean.risk2, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
-```
-
-Plot the empirical cumulative distribution function (ecdf) for the estimated 
-exposure. To match the format of the `ecdf` plot made earlier, we will 
-construct the plot elements manually.
-
-```{r results-ev2-ecdf-plot}
-expo.x <- expo.ev2$plot$expo.mc2
-expo.l <- length(expo.x)
-expo.y <- 1:expo.l/expo.l
-plot(expo.x, expo.y, pch = 20, cex = 0.1, col = '#ADD8E605', 
-     main='ecdf(expo.mc2)', ylab = 'Fn(x)', xlab = 'x')
-abline(h = 0, col = "gray", lty = 2, lwd = 2)
-abline(h = 1, col = "gray", lty = 2, lwd = 2)
 ```

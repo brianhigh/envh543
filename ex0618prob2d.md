@@ -28,6 +28,26 @@ library("knitr")
 opts_chunk$set(cache=TRUE, message=FALSE)
 ```
 
+## Load packages
+
+Make sure the _mc2d_ package is installed before trying to use it. If we just 
+tried to load it with `library()` or `require()` before it had been installed, 
+our program would end with errors. (That would not be very friendly.)
+
+
+```r
+# Define a function to conditionally install and load a package.
+load.pkg <- function(pkg) {
+    if (! suppressWarnings(require(pkg, character.only = TRUE)) ) {
+        install.packages(pkg, repos = 'http://cran.r-project.org')
+        library(pkg, character.only = TRUE, quietly = TRUE)
+    }
+}
+
+# Load required packages, installing first if necessary.
+suppressMessages(load.pkg("mc2d"))   # Or just use: library(mc2d)
+```
+
 ## Perform a 2-D Monte Carlo simulation
 
 ### Define variables
@@ -86,7 +106,7 @@ Plot the kernel density estimates for surface water ingestion rate.
 plot(density(sw.d.IR))
 ```
 
-![](ex0618prob2d_files/figure-html/kernel-density-plot-1.png)<!-- -->
+![](ex0618prob2d_files/figure-html/kernel-density-plot-1.png)
 
 ### Define exposure risk function
 
@@ -175,22 +195,21 @@ quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ## 0.13683 0.13714 0.13752
 ```
 
-Next, we build up an empirical cumulative distribution plot of all of the 
-loop iterations, by overlaying each new curve upon a plot of the first 
-iteration.
+Next, we build up an empirical cumulative distribution plot of resulting
+2-D matrix. We will use the `plot()` function of the 
+the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) package
+so that we can easily compare with plots produced later in the document. This 
+function requires us to convert our martrix to a "mc node", which we will do 
+using the `mcdata()` function.
 
 
 ```r
-# Plot the empirical cumulative distribution for the first iteration.
-plot(ecdf(Risk.mat[, 1]), col = "#ADD8E605", main = 'ecdf(Risk.mat)')
-
-# Plot empirical cumulative distributions for additional iterations in blue.
-for (j in 2:nsu) {
-    plot(ecdf(Risk.mat[, j]), col = "#ADD8E605", add = TRUE)
-}
+# Plot the empirical cumulative distribution using the mc2d package.
+expo.mc <- mcdata(Risk.mat, type = 'VU', nsv = nsv, nsu = nsu)
+plot(expo.mc)
 ```
 
-![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png)<!-- -->
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png)
 
 ## Repeat the simulation with mc2d
 
@@ -207,22 +226,13 @@ define the model with `mcmodel()` and evaluate it with `evalmcmod()`.
 
 ### Load packages
 
-Make sure the _mc2d_ package is installed before trying to use it. If we just 
-tried to load it with `library()` or `require()` before it had been installed, 
-our program would end with errors. (That would not be very friendly.)
+We did this earlier in the document, but add it again here as a reminder of
+what packages are needed for this example.
 
 
 ```r
-# Define a function to conditionally install and load a package.
-load.pkg <- function(pkg) {
-    if (! suppressWarnings(require(pkg, character.only = TRUE)) ) {
-        install.packages(pkg, repos = 'http://cran.r-project.org')
-        library(pkg, character.only = TRUE, quietly = TRUE)
-    }
-}
-
-# Load required packages, installing first if necessary.
-suppressMessages(load.pkg("mc2d"))   # Or just use: library(mc2d)
+# Load packages.
+library(mc2d)
 ```
 
 ### Define variables
@@ -341,10 +351,26 @@ print(expo.ev1, digits = digits)
 ```
 
 ```
-##   node    mode  nsv nsu nva variate     min   mean  median     max Nas
-## 1      numeric 5000 250   1       1 0.13541 0.1372 0.13704 0.14425   0
-##   type outm
-## 1   VU each
+##               node    mode  nsv nsu nva variate     min    mean   median
+## 1     shellfish.vl numeric    1   1   1       1 1.00000  1.0000  1.00000
+## 2 shellfish.cons.g numeric    1   1   1       1 0.13500  0.1350  0.13500
+## 3            dw.vl numeric    1   1   1       1 0.00100  0.0010  0.00100
+## 4        dw.cons.L numeric 5000   1   1       1 0.40173  1.9497  1.77880
+## 5            sw.vl numeric    1   1   1       1 0.10000  0.1000  0.10000
+## 6      sw.daily.IR numeric    1 250   1       1 2.30451 61.8607 57.21875
+## 7      sw.duration numeric 5000   1   1       1 0.50000  2.1026  2.60000
+## 8     sw.frequency numeric    1   1   1       1 7.00000  7.0000  7.00000
+## 9         expo.mc1 numeric 5000 250   1       1 0.13541  0.1372  0.13704
+##         max Nas type outm
+## 1   1.00000   0    0 each
+## 2   0.13500   0    0 each
+## 3   0.00100   0    0 each
+## 4   8.44038   0    V each
+## 5   0.10000   0    0 each
+## 6 162.16591   0    U each
+## 7   2.60000   0    V each
+## 8   7.00000   0    0 each
+## 9   0.14425   0   VU each
 ```
 
 ### Summarize results
@@ -361,7 +387,42 @@ summary(expo.ev1)
 ```
 
 ```
-##  :
+## shellfish.vl :
+##       NoUnc
+## NoVar     1
+## 
+## shellfish.cons.g :
+##       NoUnc
+## NoVar 0.135
+## 
+## dw.vl :
+##       NoUnc
+## NoVar 0.001
+## 
+## dw.cons.L :
+##       mean    sd   Min  2.5%  25%  50%  75% 97.5%  Max  nsv Na's
+## NoUnc 1.95 0.841 0.402 0.776 1.36 1.78 2.38  4.07 8.44 5000    0
+## 
+## sw.vl :
+##       NoUnc
+## NoVar   0.1
+## 
+## sw.daily.IR :
+##        NoVar
+## median  57.2
+## mean    61.9
+## 2.5%    10.0
+## 97.5%  131.3
+## 
+## sw.duration :
+##       mean    sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
+## NoUnc  2.1 0.744 0.5  0.5   2 2.6 2.6   2.6 2.6 5000    0
+## 
+## sw.frequency :
+##       NoUnc
+## NoVar     7
+## 
+## expo.mc1 :
 ##         mean       sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
 ## median 0.137 0.000845 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
 ## mean   0.137 0.000847 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
@@ -374,16 +435,25 @@ summary(expo.ev1)
 plot(expo.ev1)
 ```
 
-![](ex0618prob2d_files/figure-html/results-ev1-1.png)<!-- -->
+![](ex0618prob2d_files/figure-html/results-ev1-1.png)
 
 ```r
 # Report the median of the means with a 95% confidence interval (CI95).
-#mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
-#quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
-
-# Generate an "ecdf" plot.
-#plot(expo.ev1$expo.mc1)
+mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
+quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
+
+```
+##    2.5%     50%   97.5% 
+## 0.13699 0.13718 0.13748
+```
+
+```r
+# Generate an "ecdf" plot. This actually calls plot.mcnode().
+plot(expo.ev1$expo.mc1)
+```
+
+![](ex0618prob2d_files/figure-html/results-ev1-2.png)
 
 ## Repeat 2-D simulation again with a loop
 
@@ -399,6 +469,9 @@ taking more time to perform the simulation. This approach allows the evaluation
 of very high dimensional models on relatively modest computer systems.
 
 ### Load packages
+
+We did this earlier in the document, but add it again here as a reminder of
+what packages are needed for this example.
 
 
 ```r
@@ -549,7 +622,7 @@ median of the means with a 95% confidence interval (CI95).
 
 
 ```r
-# Print a summary and a plot for the mccut object.
+# Print a summary 
 summary(expo.ev2)
 ```
 
@@ -600,10 +673,11 @@ summary(expo.ev2)
 ```
 
 ```r
+# Plot the mccut object. This actually calls plot.mccut().
 plot(expo.ev2)
 ```
 
-![](ex0618prob2d_files/figure-html/results-ev2-1.png)<!-- -->
+![](ex0618prob2d_files/figure-html/results-ev2-1.png)
 
 ```r
 # Report the median of the means with a 95% confidence interval (CI95).
@@ -615,20 +689,3 @@ quantile(mean.risk2, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ##    2.5%     50%   97.5% 
 ## 0.13699 0.13718 0.13748
 ```
-
-Plot the empirical cumulative distribution function (ecdf) for the estimated 
-exposure. To match the format of the `ecdf` plot made earlier, we will 
-construct the plot elements manually.
-
-
-```r
-expo.x <- expo.ev2$plot$expo.mc2
-expo.l <- length(expo.x)
-expo.y <- 1:expo.l/expo.l
-plot(expo.x, expo.y, pch = 20, cex = 0.1, col = '#ADD8E605', 
-     main='ecdf(expo.mc2)', ylab = 'Fn(x)', xlab = 'x')
-abline(h = 0, col = "gray", lty = 2, lwd = 2)
-abline(h = 1, col = "gray", lty = 2, lwd = 2)
-```
-
-![](ex0618prob2d_files/figure-html/results-ev2-ecdf-plot-1.png)<!-- -->
