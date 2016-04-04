@@ -326,10 +326,7 @@ print(expo.ev1, digits = digits)
 
 ### Summarize results
 
-Print a summary and a plot of the evaluation results (`expo.ev1`). Report the 
-median of the means with a 95% confidence interval (CI95). Plot the empirical 
-cumulative distribution function (ecdf) of the exposure model (`expo.mc1`) 
-estimates.
+Print a summary and a plot of the evaluation results (`expo.ev1`). 
 
 ```{r results-ev1}
 # Summarize the results.
@@ -337,11 +334,20 @@ summary(expo.ev1)
 
 # Plot the results.
 plot(expo.ev1)
+```
 
+Report the median of the means with a 95% confidence interval (CI95). 
+
+```{r}
 # Report the median of the means with a 95% confidence interval (CI95).
 mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
 quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
+```
 
+Plot the empirical cumulative distribution function (ecdf) of the exposure model 
+(`expo.mc1`) estimates.
+
+```{r plot-mc1}
 # Generate an "ecdf" plot. This actually calls plot.mcnode().
 plot(expo.ev1$expo.mc1)
 ```

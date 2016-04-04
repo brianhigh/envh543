@@ -375,10 +375,7 @@ print(expo.ev1, digits = digits)
 
 ### Summarize results
 
-Print a summary and a plot of the evaluation results (`expo.ev1`). Report the 
-median of the means with a 95% confidence interval (CI95). Plot the empirical 
-cumulative distribution function (ecdf) of the exposure model (`expo.mc1`) 
-estimates.
+Print a summary and a plot of the evaluation results (`expo.ev1`). 
 
 
 ```r
@@ -437,6 +434,9 @@ plot(expo.ev1)
 
 ![](ex0618prob2d_files/figure-html/results-ev1-1.png)
 
+Report the median of the means with a 95% confidence interval (CI95). 
+
+
 ```r
 # Report the median of the means with a 95% confidence interval (CI95).
 mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
@@ -448,12 +448,16 @@ quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ## 0.13699 0.13718 0.13748
 ```
 
+Plot the empirical cumulative distribution function (ecdf) of the exposure model 
+(`expo.mc1`) estimates.
+
+
 ```r
 # Generate an "ecdf" plot. This actually calls plot.mcnode().
 plot(expo.ev1$expo.mc1)
 ```
 
-![](ex0618prob2d_files/figure-html/results-ev1-2.png)
+![](ex0618prob2d_files/figure-html/plot-mc1-1.png)
 
 ## Repeat 2-D simulation again with a loop
 
