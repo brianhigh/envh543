@@ -270,10 +270,13 @@ Within the [mcmodel](http://www.inside-r.org/packages/cran/mc2d/docs/mcmodel)
 function, use [mcstoc](http://www.inside-r.org/packages/cran/mc2d/docs/mcstoc)
 to define "mc nodes" for each component of the model. 
 
-For each "mc node", supply a probability function, the node type as "V" for 
-variability or "U" for uncertainty, and any additional parameters to be passed 
-to the probability function. For deterministic variables, just define them as
-usual or create an "mc node" with the `mcdata()` function using the "0" type.
+For each stochastic variable, use the `mcstoc()` function to create a 
+"mc node", supply a probability function, the node type as "V" for variability 
+or "U" for uncertainty, and any additional parameters to be passed to the 
+probability function. 
+
+For deterministic variables, create nodes with the `mcdata()` function 
+using the "0" type.
 
 We will model the deterministic factors as uniform probablity distributions.
 
@@ -287,22 +290,22 @@ expo.mod1 <- mcmodel({
     # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
     # 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
     # (Wiley, 2014), pp. 215-216. Other fictitious values are noted below.
-    
+        
     # Shellfish viral loading (viruses/g):
-    shellfish.vl <- 1
+    shellfish.vl <- mcdata(1, type = "0")
     
     # Shellfish consumption (g/day):
-    shellfish.cons.g <- 0.135
+    shellfish.cons.g <- mcdata(0.135, type = "0")
     
     # Drinking water viral loading (viruses/L):
-    dw.vl <- 0.001
+    dw.vl <- mcdata(0.001, type = "0")
     
     # Drinking water consumption (L/day):
     dw.cons.L <- mcstoc(rlnorm, type = "V", seed = seed, 
                         meanlog = 7.49, sdlog = 0.407) / 1000
     
     # Swimming in surface water viral loading (viruses/L):
-    sw.vl <- 0.1
+    sw.vl <- mcdata(0.1, type = "0")
     
     # Swimming daily ingestion rate (mL/hour): fictitious sd = 45
     sw.daily.IR <- mcstoc(rnorm, type = "U", seed = seed, 
@@ -314,11 +317,15 @@ expo.mod1 <- mcmodel({
                           prob = c(0.1, 0.1, 0.2, 0.6))
     
     # Swimming frequency (swims/year):
-    sw.frequency <- 7
+    sw.frequency <- mcdata(7, type = "0")
     
-    # Create an mc object to estimate microbial exposure.
-    mc((shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
-           ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
+    # Estimate the exposure using the 0, V and U nodes to create a VU node.
+    expo.mc1 <- (shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
+           ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)
+    
+    # Build a mc model from all of the mcnode objects.
+    mc(shellfish.vl, shellfish.cons.g, dw.vl, dw.cons.L, sw.vl, sw.daily.IR, 
+       sw.duration, sw.frequency, expo.mc1) 
 })
 ```
 
@@ -334,16 +341,34 @@ print(expo.ev1, digits = digits)
 ```
 
 ```
-##   node    mode  nsv nsu nva variate     min   mean  median     max Nas
-## 1      numeric 1001 101   1       1 0.13554 0.1372 0.13704 0.14424   0
-##   type outm
-## 1   VU each
+##               node    mode  nsv nsu nva variate     min    mean   median
+## 1     shellfish.vl numeric    1   1   1       1 1.00000  1.0000  1.00000
+## 2 shellfish.cons.g numeric    1   1   1       1 0.13500  0.1350  0.13500
+## 3            dw.vl numeric    1   1   1       1 0.00100  0.0010  0.00100
+## 4        dw.cons.L numeric 5000   1   1       1 0.40173  1.9497  1.77880
+## 5            sw.vl numeric    1   1   1       1 0.10000  0.1000  0.10000
+## 6      sw.daily.IR numeric    1 250   1       1 2.30451 61.8607 57.21875
+## 7      sw.duration numeric 5000   1   1       1 0.50000  2.1026  2.60000
+## 8     sw.frequency numeric    1   1   1       1 7.00000  7.0000  7.00000
+## 9         expo.mc1 numeric 5000 250   1       1 0.13541  0.1372  0.13704
+##         max Nas type outm
+## 1   1.00000   0    0 each
+## 2   0.13500   0    0 each
+## 3   0.00100   0    0 each
+## 4   8.44038   0    V each
+## 5   0.10000   0    0 each
+## 6 162.16591   0    U each
+## 7   2.60000   0    V each
+## 8   7.00000   0    0 each
+## 9   0.14425   0   VU each
 ```
 
 ### Summarize results
 
-Print a summary of the evaluation results (`expo.ev1`) and plot the empirical cumulative distribution function (ecdf). Report the median of the means with a 
-95% confidence interval (CI95).
+Print a summary and a plot of the evaluation results (`expo.ev1`). Report the 
+median of the means with a 95% confidence interval (CI95). Plot the empirical 
+cumulative distribution function (ecdf) of the exposure model (`expo.mc1`) 
+estimates.
 
 
 ```r
@@ -352,16 +377,51 @@ summary(expo.ev1)
 ```
 
 ```
-##  :
+## shellfish.vl :
+##       NoUnc
+## NoVar     1
+## 
+## shellfish.cons.g :
+##       NoUnc
+## NoVar 0.135
+## 
+## dw.vl :
+##       NoUnc
+## NoVar 0.001
+## 
+## dw.cons.L :
+##       mean    sd   Min  2.5%  25%  50%  75% 97.5%  Max  nsv Na's
+## NoUnc 1.95 0.841 0.402 0.776 1.36 1.78 2.38  4.07 8.44 5000    0
+## 
+## sw.vl :
+##       NoUnc
+## NoVar   0.1
+## 
+## sw.daily.IR :
+##        NoVar
+## median  57.2
+## mean    61.9
+## 2.5%    10.0
+## 97.5%  131.3
+## 
+## sw.duration :
+##       mean    sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
+## NoUnc  2.1 0.744 0.5  0.5   2 2.6 2.6   2.6 2.6 5000    0
+## 
+## sw.frequency :
+##       NoUnc
+## NoVar     7
+## 
+## expo.mc1 :
 ##         mean       sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
-## median 0.137 0.000859 0.136 0.136 0.137 0.137 0.138 0.139 0.144 1001    0
-## mean   0.137 0.000861 0.136 0.136 0.137 0.137 0.138 0.139 0.144 1001    0
-## 2.5%   0.137 0.000856 0.136 0.136 0.136 0.137 0.137 0.139 0.143 1001    0
-## 97.5%  0.137 0.000872 0.136 0.136 0.137 0.137 0.138 0.140 0.144 1001    0
+## median 0.137 0.000845 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## mean   0.137 0.000847 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## 2.5%   0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
+## 97.5%  0.137 0.000861 0.136 0.136 0.137 0.137 0.138 0.140 0.144 5000    0
 ```
 
 ```r
-# Generate an "ecdf" plot.
+# Plot the results.
 plot(expo.ev1)
 ```
 
@@ -369,14 +429,21 @@ plot(expo.ev1)
 
 ```r
 # Report the median of the means with a 95% confidence interval (CI95).
-mean.risk1 <- sapply(expo.ev1[[1]][1,,], mean)
+mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
 quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
 ```
 ##    2.5%     50%   97.5% 
-## 0.13644 0.13667 0.13700
+## 0.13699 0.13718 0.13748
 ```
+
+```r
+# Generate an "ecdf" plot.
+plot(expo.ev1$expo.mc1)
+```
+
+![](./ex0618prob2d_files/figure-html/results-ev1-2.png) 
 
 ## Repeat 2-D simulation again with a loop
 
@@ -434,11 +501,6 @@ mcmodelcut({
 ... where `nsu` is the number of simulations for uncertainty used in the 
 evaluation.
 
-Since `mcmodelcut()` requires that all variables defined in the first block are 
-of type "V", "U", "VU", or "0", our deterministic (type "0") variables need be 
-made into "mc nodes", so create them with the `mcdata()` function using the "0" 
-type.
-
 
 ```r
 # Build a mcmodelcut object in three blocks for evaluation by evalmccut().
@@ -480,7 +542,7 @@ expo.mcmcut <- mcmodelcut({
     
     # Block2: Evaluate all of the VU nodes. Last statement makes an mc object.
     {
-        # Estimate the exposure using the V and U nodes to create a VU node.
+        # Estimate the exposure using the 0, V and U nodes to create a VU node.
         expo.mc2 <- (shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
             ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)
    
@@ -566,23 +628,23 @@ summary(expo.ev2)
 ## 
 ## dw.cons.L :
 ##       mean    sd   Min  2.5%  25%  50%  75% 97.5%  Max  nsv Na's
-## NoUnc 1.95 0.856 0.526 0.752 1.35 1.76 2.37  4.05 8.44 1001    0
+## NoUnc 1.95 0.841 0.402 0.776 1.36 1.78 2.38  4.07 8.44 5000    0
 ## 
 ## sw.vl :
 ##       NoVar
 ## NoInc   0.1
 ## 
 ## sw.daily.IR :
-##        NoVar
-## 50%    56.91
-## mean   62.26
-## 2.5%    9.76
-## 97.5% 123.10
-## Nas     0.00
+##       NoVar
+## 50%    57.2
+## mean   61.9
+## 2.5%   10.0
+## 97.5% 131.3
+## Nas     0.0
 ## 
 ## sw.duration :
 ##       mean    sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
-## NoUnc 2.11 0.736 0.5  0.5   2 2.6 2.6   2.6 2.6 1001    0
+## NoUnc  2.1 0.744 0.5  0.5   2 2.6 2.6   2.6 2.6 5000    0
 ## 
 ## sw.frequency :
 ##       NoVar
@@ -590,10 +652,10 @@ summary(expo.ev2)
 ## 
 ## expo.mc2 :
 ##        mean       sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
-## 50%   0.137 0.000859 0.136 0.136 0.137 0.137 0.138 0.139 0.144 1001    0
-## mean  0.137 0.000861 0.136 0.136 0.137 0.137 0.138 0.139 0.144 1001    0
-## 2.5%  0.137 0.000856 0.136 0.136 0.136 0.137 0.137 0.139 0.143 1001    0
-## 97.5% 0.137 0.000872 0.136 0.136 0.137 0.137 0.138 0.140 0.144 1001    0
+## 50%   0.137 0.000845 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## mean  0.137 0.000847 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
+## 2.5%  0.137 0.000841 0.135 0.136 0.136 0.137 0.137 0.139 0.143 5000    0
+## 97.5% 0.137 0.000861 0.136 0.136 0.137 0.137 0.138 0.140 0.144 5000    0
 ## Nas   0.000 0.000000 0.000 0.000 0.000 0.000 0.000 0.000 0.000    0    0
 ```
 
@@ -605,13 +667,13 @@ plot(expo.ev2)
 
 ```r
 # Report the median of the means with a 95% confidence interval (CI95).
-mean.risk2 <- expo.ev2$sum$expo.mc2[,,"mean"]
+mean.risk2 <- expo.ev2$sum$expo.mc2[, , "mean"]
 quantile(mean.risk2, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
 ```
 ##    2.5%     50%   97.5% 
-## 0.13699 0.13718 0.13745
+## 0.13699 0.13718 0.13748
 ```
 
 Plot the empirical cumulative distribution function (ecdf) for the estimated 
