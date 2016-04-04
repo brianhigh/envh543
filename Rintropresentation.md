@@ -424,7 +424,7 @@ str(dt)
 ##  $ loc         : chr  "A" "B" "C" "A" ...
 ##  $ date        : chr  "2015-11-01" "2016-01-12" "2015-11-01" "2016-01-12" ...
 ##  $ rain        : chr  "lots" "some" "little" "no" ...
-##  $ rh          : num  48.9 61.8 52.7 57.7 56.2 ...
+##  $ rh          : num  44.1 46.4 59 56.6 73.7 ...
 ```
 
 ## Summarize
@@ -456,12 +456,12 @@ head(tbltst)
 
 ```
 ##   loc       date   rain Sepal.Length       rh
-## 1   A 2015-11-01 little          4.6 51.25790
-## 2   B 2015-11-01 little          4.6 37.07765
-## 3   C 2015-11-01 little          4.7 52.74339
-## 4   A 2016-01-12 little          4.9 45.18626
-## 5   B 2016-01-12 little          4.9 66.08854
-## 6   C 2016-01-12 little          4.6 55.96847
+## 1   A 2015-11-01 little          4.6 60.94778
+## 2   B 2015-11-01 little          4.6 39.37218
+## 3   C 2015-11-01 little          4.7 58.98340
+## 4   A 2016-01-12 little          4.9 44.01147
+## 5   B 2016-01-12 little          4.9 59.65316
+## 6   C 2016-01-12 little          4.6 37.78671
 ```
 
 ## Summarize
@@ -508,7 +508,7 @@ str(tblsdt)
 boxplot(Sepal.Length ~ loc,data = dt)
 ```
 
-![](Rintropresentation_files/figure-html/unnamed-chunk-25-1.png)
+![](./Rintropresentation_files/figure-html/boxplot-1.png) 
 
 
 
@@ -529,7 +529,7 @@ p <- p + geom_point(aes(x = Petal.Width, y = Sepal.Length,
 p
 ```
 
-![](Rintropresentation_files/figure-html/unnamed-chunk-28-1.png)
+![](./Rintropresentation_files/figure-html/ggplot-1-1.png) 
 
 
 
@@ -553,7 +553,7 @@ p <- p + facet_grid(loc ~ date)
 p
 ```
 
-![](Rintropresentation_files/figure-html/unnamed-chunk-31-1.png)
+![](./Rintropresentation_files/figure-html/ggplot-3-1.png) 
 
 
 

@@ -347,7 +347,7 @@ str(tblsdt)
 
 ## Basic plots
 
-```{r, eval=T}
+```{r boxplot, eval=T}
 boxplot(Sepal.Length ~ loc,data = dt)
 ```
 
@@ -357,7 +357,7 @@ dev.off()
 
 ## ggplot: The beauty of plotting
 
-```{r, eval=T}
+```{r ggplot-0, eval=T}
 p <- ggplot(dt)
 
 p <- p + geom_point(aes(x = Petal.Width, y = Sepal.Length, 
@@ -366,7 +366,7 @@ p <- p + geom_point(aes(x = Petal.Width, y = Sepal.Length,
 
 ## ggplot: The beauty of plotting
 
-```{r, eval=TRUE}
+```{r ggplot-1, eval=TRUE}
 p
 ```
 
@@ -376,7 +376,7 @@ dev.off()
 
 ## ggplot: The beauty of plotting
 
-```{r, eval = TRUE}
+```{r ggplot-2, eval = TRUE}
 p <- ggplot(dt, aes(x = Petal.Width , y = Sepal.Length))
 
 p <- p + geom_point()
@@ -388,7 +388,7 @@ p <- p + facet_grid(loc ~ date)
 
 ## ggplot: The beauty of plotting
 
-```{r, eval = TRUE}
+```{r ggplot-3, eval = TRUE}
 p
 ```
 
