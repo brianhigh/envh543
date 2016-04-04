@@ -86,7 +86,7 @@ Plot the kernel density estimates for surface water ingestion rate.
 plot(density(sw.d.IR))
 ```
 
-![](./ex0618prob2d_files/figure-html/kernel-density-plot-1.png) 
+![](ex0618prob2d_files/figure-html/kernel-density-plot-1.png)<!-- -->
 
 ### Define exposure risk function
 
@@ -190,7 +190,7 @@ for (j in 2:nsu) {
 }
 ```
 
-![](./ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png) 
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png)<!-- -->
 
 ## Repeat the simulation with mc2d
 
@@ -341,26 +341,10 @@ print(expo.ev1, digits = digits)
 ```
 
 ```
-##               node    mode  nsv nsu nva variate     min    mean   median
-## 1     shellfish.vl numeric    1   1   1       1 1.00000  1.0000  1.00000
-## 2 shellfish.cons.g numeric    1   1   1       1 0.13500  0.1350  0.13500
-## 3            dw.vl numeric    1   1   1       1 0.00100  0.0010  0.00100
-## 4        dw.cons.L numeric 5000   1   1       1 0.40173  1.9497  1.77880
-## 5            sw.vl numeric    1   1   1       1 0.10000  0.1000  0.10000
-## 6      sw.daily.IR numeric    1 250   1       1 2.30451 61.8607 57.21875
-## 7      sw.duration numeric 5000   1   1       1 0.50000  2.1026  2.60000
-## 8     sw.frequency numeric    1   1   1       1 7.00000  7.0000  7.00000
-## 9         expo.mc1 numeric 5000 250   1       1 0.13541  0.1372  0.13704
-##         max Nas type outm
-## 1   1.00000   0    0 each
-## 2   0.13500   0    0 each
-## 3   0.00100   0    0 each
-## 4   8.44038   0    V each
-## 5   0.10000   0    0 each
-## 6 162.16591   0    U each
-## 7   2.60000   0    V each
-## 8   7.00000   0    0 each
-## 9   0.14425   0   VU each
+##   node    mode  nsv nsu nva variate     min   mean  median     max Nas
+## 1      numeric 5000 250   1       1 0.13541 0.1372 0.13704 0.14425   0
+##   type outm
+## 1   VU each
 ```
 
 ### Summarize results
@@ -377,42 +361,7 @@ summary(expo.ev1)
 ```
 
 ```
-## shellfish.vl :
-##       NoUnc
-## NoVar     1
-## 
-## shellfish.cons.g :
-##       NoUnc
-## NoVar 0.135
-## 
-## dw.vl :
-##       NoUnc
-## NoVar 0.001
-## 
-## dw.cons.L :
-##       mean    sd   Min  2.5%  25%  50%  75% 97.5%  Max  nsv Na's
-## NoUnc 1.95 0.841 0.402 0.776 1.36 1.78 2.38  4.07 8.44 5000    0
-## 
-## sw.vl :
-##       NoUnc
-## NoVar   0.1
-## 
-## sw.daily.IR :
-##        NoVar
-## median  57.2
-## mean    61.9
-## 2.5%    10.0
-## 97.5%  131.3
-## 
-## sw.duration :
-##       mean    sd Min 2.5% 25% 50% 75% 97.5% Max  nsv Na's
-## NoUnc  2.1 0.744 0.5  0.5   2 2.6 2.6   2.6 2.6 5000    0
-## 
-## sw.frequency :
-##       NoUnc
-## NoVar     7
-## 
-## expo.mc1 :
+##  :
 ##         mean       sd   Min  2.5%   25%   50%   75% 97.5%   Max  nsv Na's
 ## median 0.137 0.000845 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
 ## mean   0.137 0.000847 0.136 0.136 0.137 0.137 0.138 0.139 0.144 5000    0
@@ -425,25 +374,16 @@ summary(expo.ev1)
 plot(expo.ev1)
 ```
 
-![](./ex0618prob2d_files/figure-html/results-ev1-1.png) 
+![](ex0618prob2d_files/figure-html/results-ev1-1.png)<!-- -->
 
 ```r
 # Report the median of the means with a 95% confidence interval (CI95).
-mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
-quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
-```
+#mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
+#quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 
-```
-##    2.5%     50%   97.5% 
-## 0.13699 0.13718 0.13748
-```
-
-```r
 # Generate an "ecdf" plot.
-plot(expo.ev1$expo.mc1)
+#plot(expo.ev1$expo.mc1)
 ```
-
-![](./ex0618prob2d_files/figure-html/results-ev1-2.png) 
 
 ## Repeat 2-D simulation again with a loop
 
@@ -663,7 +603,7 @@ summary(expo.ev2)
 plot(expo.ev2)
 ```
 
-![](./ex0618prob2d_files/figure-html/results-ev2-1.png) 
+![](ex0618prob2d_files/figure-html/results-ev2-1.png)<!-- -->
 
 ```r
 # Report the median of the means with a 95% confidence interval (CI95).
@@ -691,4 +631,4 @@ abline(h = 0, col = "gray", lty = 2, lwd = 2)
 abline(h = 1, col = "gray", lty = 2, lwd = 2)
 ```
 
-![](./ex0618prob2d_files/figure-html/results-ev2-ecdf-plot-1.png) 
+![](ex0618prob2d_files/figure-html/results-ev2-ecdf-plot-1.png)<!-- -->

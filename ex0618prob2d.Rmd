@@ -330,11 +330,11 @@ summary(expo.ev1)
 plot(expo.ev1)
 
 # Report the median of the means with a 95% confidence interval (CI95).
-mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
-quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
+#mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
+#quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 
 # Generate an "ecdf" plot.
-plot(expo.ev1$expo.mc1)
+#plot(expo.ev1$expo.mc1)
 ```
 
 ## Repeat 2-D simulation again with a loop
