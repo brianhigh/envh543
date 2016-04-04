@@ -249,11 +249,13 @@ The _mc2d_ functions will set `nsv` to `ndvar()` and `nsu` to `ndunc()` by
 default. Alternatively, we could supply these values to the _mc2d_ model
 functions when we call them.
 
-Define a variable to use to set the `seed`.
+Define the variables we will use to set the `seed` for random sampling and the 
+number of `digits` for `print()` statements.
 
 
 ```r
 seed <- 1
+digits <- 5
 ```
 
 We will use this variable to explicitly set the seed with the various
@@ -290,32 +292,32 @@ expo.mod1 <- mcmodel({
     # (Wiley, 2014), pp. 215-216. Other fictitious values are noted below.
     
     # Shellfish viral loading (viruses/g):
-    shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1)
+    shellfish.vl <- mcstoc(runif, type = "V", min = 1, max = 1)
     
     # Shellfish consumption (g/day):
-    shellfish.cons.g = mcstoc(runif, type = "V", min = 0.135, max = 0.135)
+    shellfish.cons.g <- mcstoc(runif, type = "V", min = 0.135, max = 0.135)
     
     # Drinking water viral loading (viruses/L):
-    dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001)
+    dw.vl <- mcstoc(runif, type = "V", min = 0.001, max = 0.001)
     
     # Drinking water consumption (L/day):
-    dw.cons.L = mcstoc(rlnorm, type = "V", seed = seed, 
-                       meanlog = 7.49, sdlog = 0.407) / 1000
+    dw.cons.L <- mcstoc(rlnorm, type = "V", seed = seed, 
+                        meanlog = 7.49, sdlog = 0.407) / 1000
     
     # Swimming in surface water viral loading (viruses/L):
-    sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1)
+    sw.vl <- mcstoc(runif, type = "V", min = 0.1, max = 0.1)
     
     # Swimming daily ingestion rate (mL/hour): fictitious sd = 45
-    sw.daily.IR = mcstoc(rnorm, type = "U", seed = seed, 
-                         mean = 50, sd = 45, rtrunc = TRUE, linf = 0)
+    sw.daily.IR <- mcstoc(rnorm, type = "U", seed = seed, 
+                          mean = 50, sd = 45, rtrunc = TRUE, linf = 0)
     
     # Swimming duration (hours): fictitious discrete distribution
-    sw.duration = mcstoc(rempiricalD, type = "V", seed = seed, 
-                         values = c(0.5, 1, 2, 2.6), 
-                         prob = c(0.1, 0.1, 0.2, 0.6))
+    sw.duration <- mcstoc(rempiricalD, type = "V", seed = seed, 
+                          values = c(0.5, 1, 2, 2.6), 
+                          prob = c(0.1, 0.1, 0.2, 0.6))
     
     # Swimming frequency (swims/year):
-    sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)
+    sw.frequency <- mcstoc(runif, type = "V", min = 7, max = 7)
     
     # Create an mc object to estimate microbial exposure.
     mc((shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
@@ -331,12 +333,14 @@ iterations in the uncertainty dimension, as set previously.
 
 ```r
 expo.ev1 <- evalmcmod(expo.mod1, seed = seed)
-expo.ev1
+print(expo.ev1, digits = digits)
 ```
 
 ```
-##   node    mode  nsv nsu nva variate   min  mean median   max Nas type outm
-## 1      numeric 5000 250   1       1 0.135 0.137  0.137 0.144   0   VU each
+##   node    mode  nsv nsu nva variate     min   mean  median     max Nas
+## 1      numeric 1001 101   1       1 0.13554 0.1372 0.13704 0.14424   0
+##   type outm
+## 1   VU each
 ```
 
 ### Summarize results
@@ -421,32 +425,32 @@ expo.mcmcut <- mcmodelcut({
         # (Wiley, 2014), pp. 215-216. Other fictitious values are noted below.
         
         # Shellfish viral loading (viruses/g):
-        shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1)
+        shellfish.vl <- mcstoc(runif, type = "V", min = 1, max = 1)
         
         # Shellfish consumption (g/day):
-        shellfish.cons.g = mcstoc(runif, type = "V", min = 0.135, max = 0.135)
+        shellfish.cons.g <- mcstoc(runif, type = "V", min = 0.135, max = 0.135)
         
         # Drinking water viral loading (viruses/L):
-        dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001)
+        dw.vl <- mcstoc(runif, type = "V", min = 0.001, max = 0.001)
         
         # Drinking water consumption (L/day):
-        dw.cons.L = mcstoc(rlnorm, type = "V", seed = seed, 
-                           meanlog = 7.49, sdlog = 0.407) / 1000
+        dw.cons.L <- mcstoc(rlnorm, type = "V", seed = seed, 
+                            meanlog = 7.49, sdlog = 0.407) / 1000
         
         # Swimming in surface water viral loading (viruses/L):
-        sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1)
+        sw.vl <- mcstoc(runif, type = "V", min = 0.1, max = 0.1)
         
         # Swimming daily ingestion rate (mL/hour): fictitious sd = 45
-        sw.daily.IR = mcstoc(rnorm, type = "U", seed = seed, 
-                             mean = 50, sd = 45, rtrunc = TRUE, linf = 0)
+        sw.daily.IR <- mcstoc(rnorm, type = "U", seed = seed, 
+                              mean = 50, sd = 45, rtrunc = TRUE, linf = 0)
         
         # Swimming duration (hours): fictitious discrete distribution
-        sw.duration = mcstoc(rempiricalD, type = "V", seed = seed, 
-                             values = c(0.5, 1, 2, 2.6), 
-                             prob = c(0.1, 0.1, 0.2, 0.6))
+        sw.duration <- mcstoc(rempiricalD, type = "V", seed = seed, 
+                              values = c(0.5, 1, 2, 2.6), 
+                              prob = c(0.1, 0.1, 0.2, 0.6))
         
         # Swimming frequency (swims/year):
-        sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)
+        sw.frequency <- mcstoc(runif, type = "V", min = 7, max = 7)
     }
     
     # Block2: Evaluate all of the VU nodes. Last statement makes an mc object.
@@ -471,18 +475,18 @@ expo.mcmcut <- mcmodelcut({
 ```
 ## The following expression will be evaluated only once :
 ## {
-##     shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1)
-##     shellfish.cons.g = mcstoc(runif, type = "V", min = 0.135, 
+##     shellfish.vl <- mcstoc(runif, type = "V", min = 1, max = 1)
+##     shellfish.cons.g <- mcstoc(runif, type = "V", min = 0.135, 
 ##         max = 0.135)
-##     dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001)
-##     dw.cons.L = mcstoc(rlnorm, type = "V", seed = seed, meanlog = 7.49, 
+##     dw.vl <- mcstoc(runif, type = "V", min = 0.001, max = 0.001)
+##     dw.cons.L <- mcstoc(rlnorm, type = "V", seed = seed, meanlog = 7.49, 
 ##         sdlog = 0.407)/1000
-##     sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1)
-##     sw.daily.IR = mcstoc(rnorm, type = "U", seed = seed, mean = 50, 
+##     sw.vl <- mcstoc(runif, type = "V", min = 0.1, max = 0.1)
+##     sw.daily.IR <- mcstoc(rnorm, type = "U", seed = seed, mean = 50, 
 ##         sd = 45, rtrunc = TRUE, linf = 0)
-##     sw.duration = mcstoc(rempiricalD, type = "V", seed = seed, 
+##     sw.duration <- mcstoc(rempiricalD, type = "V", seed = seed, 
 ##         values = c(0.5, 1, 2, 2.6), prob = c(0.1, 0.1, 0.2, 0.6))
-##     sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)
+##     sw.frequency <- mcstoc(runif, type = "V", min = 7, max = 7)
 ## }
 ## The mc object is named:  expo.mod2
 ```

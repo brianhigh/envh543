@@ -377,32 +377,32 @@ expo.mcmcut <- mcmodelcut({
         # (Wiley, 2014), pp. 215-216. Other fictitious values are noted below.
         
         # Shellfish viral loading (viruses/g):
-        shellfish.vl = mcstoc(runif, type = "V", min = 1, max = 1)
+        shellfish.vl <- mcstoc(runif, type = "V", min = 1, max = 1)
         
         # Shellfish consumption (g/day):
-        shellfish.cons.g = mcstoc(runif, type = "V", min = 0.135, max = 0.135)
+        shellfish.cons.g <- mcstoc(runif, type = "V", min = 0.135, max = 0.135)
         
         # Drinking water viral loading (viruses/L):
-        dw.vl = mcstoc(runif, type = "V", min = 0.001, max = 0.001)
+        dw.vl <- mcstoc(runif, type = "V", min = 0.001, max = 0.001)
         
         # Drinking water consumption (L/day):
-        dw.cons.L = mcstoc(rlnorm, type = "V", seed = seed, 
-                           meanlog = 7.49, sdlog = 0.407) / 1000
+        dw.cons.L <- mcstoc(rlnorm, type = "V", seed = seed, 
+                            meanlog = 7.49, sdlog = 0.407) / 1000
         
         # Swimming in surface water viral loading (viruses/L):
-        sw.vl = mcstoc(runif, type = "V", min = 0.1, max = 0.1)
+        sw.vl <- mcstoc(runif, type = "V", min = 0.1, max = 0.1)
         
         # Swimming daily ingestion rate (mL/hour): fictitious sd = 45
-        sw.daily.IR = mcstoc(rnorm, type = "U", seed = seed, 
-                             mean = 50, sd = 45, rtrunc = TRUE, linf = 0)
+        sw.daily.IR <- mcstoc(rnorm, type = "U", seed = seed, 
+                              mean = 50, sd = 45, rtrunc = TRUE, linf = 0)
         
         # Swimming duration (hours): fictitious discrete distribution
-        sw.duration = mcstoc(rempiricalD, type = "V", seed = seed, 
-                             values = c(0.5, 1, 2, 2.6), 
-                             prob = c(0.1, 0.1, 0.2, 0.6))
+        sw.duration <- mcstoc(rempiricalD, type = "V", seed = seed, 
+                              values = c(0.5, 1, 2, 2.6), 
+                              prob = c(0.1, 0.1, 0.2, 0.6))
         
         # Swimming frequency (swims/year):
-        sw.frequency = mcstoc(runif, type = "V", min = 7, max = 7)
+        sw.frequency <- mcstoc(runif, type = "V", min = 7, max = 7)
     }
     
     # Block2: Evaluate all of the VU nodes. Last statement makes an mc object.
