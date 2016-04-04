@@ -9,6 +9,16 @@ Boris Reiss
 - Exercise: Basic data analysis
 - Help
 
+## Learning objectives
+
+- Understand RStudio on a very basic level
+- Write and run a R script
+- Being able to survive cryptic error messages
+- Import and clean up data
+- Have some knowledge of data structures and packages
+- Analyse and graph data
+- Able to ask for help, and find help.
+
 ## Programming (Wikipedia)
 
 - Formulation of a problem that leads to a program
@@ -424,7 +434,7 @@ str(dt)
 ##  $ loc         : chr  "A" "B" "C" "A" ...
 ##  $ date        : chr  "2015-11-01" "2016-01-12" "2015-11-01" "2016-01-12" ...
 ##  $ rain        : chr  "lots" "some" "little" "no" ...
-##  $ rh          : num  45 71.6 37.1 70.7 62.6 ...
+##  $ rh          : num  46.7 60.7 65.6 55.3 64.3 ...
 ```
 
 ## Summarize
@@ -456,12 +466,12 @@ head(tbltst)
 
 ```
 ##   loc       date   rain Sepal.Length       rh
-## 1   A 2015-11-01 little          4.6 56.63594
-## 2   B 2015-11-01 little          4.6 55.98072
-## 3   C 2015-11-01 little          4.7 37.11187
-## 4   A 2016-01-12 little          4.9 67.54508
-## 5   B 2016-01-12 little          4.9 59.10470
-## 6   C 2016-01-12 little          4.6 42.98012
+## 1   A 2015-11-01 little          4.6 43.39486
+## 2   B 2015-11-01 little          4.6 43.61504
+## 3   C 2015-11-01 little          4.7 65.59656
+## 4   A 2016-01-12 little          4.9 53.15915
+## 5   B 2016-01-12 little          4.9 47.80487
+## 6   C 2016-01-12 little          4.6 45.78444
 ```
 
 ## Summarize
