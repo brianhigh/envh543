@@ -482,8 +482,7 @@ capture.output(expo.ev2 <- evalmccut(expo.mcmcut, seed = seed))
 
 ### Summarize results
 
-Print the accumulated statistics with `summary()` and `plot()`. Report the 
-median of the means with a 95% confidence interval (CI95).
+Print the accumulated statistics with `summary()` and `plot()`. 
 
 ```{r results-ev2}
 # Print a summary 
@@ -491,8 +490,25 @@ summary(expo.ev2)
 
 # Plot the mccut object. This actually calls plot.mccut().
 plot(expo.ev2)
+```
 
-# Report the median of the means with a 95% confidence interval (CI95).
+Report the median of the means with a 95% confidence interval (CI95).
+
+```{r}
 mean.risk2 <- expo.ev2$sum$expo.mc2[, , "mean"]
 quantile(mean.risk2, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
+```
+
+We would like to print the plot the empirical cumulative distribution function 
+of the risk estimate, as we did before. But this example only provides uw with
+summarized data. This gives us the 1001 quantiles to one decimal place for each
+of the nsu=250 uncertainty estimates. So, we will feed this into the `mcdata()` 
+function and plot the resulting `mcnode` object to approximate the ecdf plots 
+we have produced for the previous 2-D Monte Carlo examples in this document, 
+just for comparison.
+
+```{r plot-mc2d}
+expo.x <- expo.ev2$plot$expo.mc2
+expo.mc2d <- mcdata(aperm(expo.x, c(3, 2, 1)), type='VU', nsv='1001', nsu='250')
+plot(expo.mc2d)
 ```

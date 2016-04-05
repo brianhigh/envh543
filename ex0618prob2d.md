@@ -106,7 +106,7 @@ Plot the kernel density estimates for surface water ingestion rate.
 plot(density(sw.d.IR))
 ```
 
-![](ex0618prob2d_files/figure-html/kernel-density-plot-1.png)
+![](ex0618prob2d_files/figure-html/kernel-density-plot-1.png)<!-- -->
 
 ### Define exposure risk function
 
@@ -209,7 +209,7 @@ expo.mc <- mcdata(Risk.mat, type = 'VU', nsv = nsv, nsu = nsu)
 plot(expo.mc)     # This actually calls plot.mcnode().
 ```
 
-![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png)
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png)<!-- -->
 
 ## Repeat the simulation with mc2d
 
@@ -432,7 +432,7 @@ summary(expo.ev1)
 plot(expo.ev1)
 ```
 
-![](ex0618prob2d_files/figure-html/results-ev1-1.png)
+![](ex0618prob2d_files/figure-html/results-ev1-1.png)<!-- -->
 
 Report the median of the means with a 95% confidence interval (CI95). 
 
@@ -457,7 +457,7 @@ Plot the empirical cumulative distribution function (ecdf) of the exposure model
 plot(expo.ev1$expo.mc1)
 ```
 
-![](ex0618prob2d_files/figure-html/plot-mc1-1.png)
+![](ex0618prob2d_files/figure-html/plot-mc1-1.png)<!-- -->
 
 ## Repeat 2-D simulation again with a loop
 
@@ -621,8 +621,7 @@ capture.output(expo.ev2 <- evalmccut(expo.mcmcut, seed = seed))
 
 ### Summarize results
 
-Print the accumulated statistics with `summary()` and `plot()`. Report the 
-median of the means with a 95% confidence interval (CI95).
+Print the accumulated statistics with `summary()` and `plot()`. 
 
 
 ```r
@@ -681,10 +680,12 @@ summary(expo.ev2)
 plot(expo.ev2)
 ```
 
-![](ex0618prob2d_files/figure-html/results-ev2-1.png)
+![](ex0618prob2d_files/figure-html/results-ev2-1.png)<!-- -->
+
+Report the median of the means with a 95% confidence interval (CI95).
+
 
 ```r
-# Report the median of the means with a 95% confidence interval (CI95).
 mean.risk2 <- expo.ev2$sum$expo.mc2[, , "mean"]
 quantile(mean.risk2, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
@@ -693,3 +694,20 @@ quantile(mean.risk2, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ##    2.5%     50%   97.5% 
 ## 0.13699 0.13718 0.13748
 ```
+
+We would like to print the plot the empirical cumulative distribution function 
+of the risk estimate, as we did before. But this example only provides uw with
+summarized data. This gives us the 1001 quantiles to one decimal place for each
+of the nsu=250 uncertainty estimates. So, we will feed this into the `mcdata()` 
+function and plot the resulting `mcnode` object to approximate the ecdf plots 
+we have produced for the previous 2-D Monte Carlo examples in this document, 
+just for comparison.
+
+
+```r
+expo.x <- expo.ev2$plot$expo.mc2
+expo.mc2d <- mcdata(aperm(expo.x, c(3, 2, 1)), type='VU', nsv='1001', nsu='250')
+plot(expo.mc2d)
+```
+
+![](ex0618prob2d_files/figure-html/plot-mc2d-1.png)<!-- -->
