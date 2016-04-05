@@ -454,7 +454,6 @@ Report the mean and median of the means with a 95% confidence interval (CI95).
 
 
 ```r
-# Report the median of the means with a 95% confidence interval (CI95).
 mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
 mean(mean.risk1)
 ```

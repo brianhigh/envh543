@@ -348,7 +348,6 @@ plot(expo.ev1)
 Report the mean and median of the means with a 95% confidence interval (CI95). 
 
 ```{r}
-# Report the median of the means with a 95% confidence interval (CI95).
 mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
 mean(mean.risk1)
 quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
