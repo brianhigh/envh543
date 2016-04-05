@@ -93,7 +93,7 @@ a normal distribution which is truncated at lower truncation point of 0.
 
 
 ```r
-# Create a function to randomly draw from a truncated normal distribution.
+# Define a function to randomly draw from a truncated normal distribution.
 # From: Author = "Dason"; URL = http://stackoverflow.com/questions/19343133/
 rtnorm <- function(n, mean = 0, sd = 1, lower = -Inf, upper = Inf) {
     qnorm(runif(n, pnorm(lower, mean, sd), pnorm(upper, mean, sd)), mean, sd)
