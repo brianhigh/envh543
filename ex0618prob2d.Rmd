@@ -518,7 +518,65 @@ array dimensions in the order expected by `mcdata()` and we set `nsv='1001'`
 to match the dimensions of this dataset.
 
 ```{r plot-mc2d}
-expo.q <- expo.ev2$plot$expo.mc2
-expo.mc2d <- mcdata(aperm(expo.q, c(3, 2, 1)), type='VU', nsv='1001', nsu='250')
+expo.q <- expo.ev2$plot$expo.mc2        # q = Quantiles
+expo.qt <- aperm(expo.q, c(3, 2, 1))    # t = Transposed
+expo.mc2d <- mcdata(expo.qt, type='VU', nsv='1001', nsu='250')
 plot(expo.mc2d)
 ```
+
+## Appendix: A look inside an `mcnode` object
+
+You may have wondered, "What is an `mcnode` anyway?" It is a object containing 
+an array of class `mcnode` and some attributes. We can make one manually and 
+compare it with one made with `mcdata()`. Let's try this with our transposed 
+quantile array.
+
+First, let's examine the structure of the array object with the `class`
+and `str()` functions.
+
+```{r}
+class(expo.qt)
+str(expo.qt)
+```
+
+So, this is a three-dimensional numerical array with three a list of 
+three `dimnames` as its only attribute.
+
+To make this into a `mcnode` object, we assign the `mcnode` class and two 
+attributes (`type` and `outm`). We also remove the `dimnames` list attribute.
+
+```{r}
+class(expo.qt) <- 'mcnode'
+attr(expo.qt, 'dimnames') <- NULL
+attr(expo.qt, 'type') <- 'VU'
+attr(expo.qt, 'outm') <- 'each'
+```
+
+The same "ecdf" plot that we just made previously can now be created by 
+plotting the new `mcnode` object made from the transposed quantile array.
+
+```{r plot-expo-qt}
+plot(expo.qt)
+```
+
+The two plots are identical because the two objects from which they were made 
+are identical. 
+
+```{r}
+class(expo.mc2d)
+str(expo.mc2d)
+
+class(expo.qt)
+str(expo.qt)
+```
+
+Our procedure for manually creating a `mcnode` object actually produced an 
+object exactly identical in every way to the one made with `mcdata()`. We can 
+verify this with the `identical()` function.
+
+```{r}
+identical(expo.mc2d, expo.qt)
+```
+
+We do not recommend creating objects manually like this, but gaining a little
+understanding of what objects are made of helps to dispel some of the mystery.

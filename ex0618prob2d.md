@@ -106,7 +106,7 @@ Plot the kernel density estimates for surface water ingestion rate.
 plot(density(sw.d.IR))
 ```
 
-![](ex0618prob2d_files/figure-html/kernel-density-plot-1.png)
+![](./ex0618prob2d_files/figure-html/kernel-density-plot-1.png) 
 
 ### Define exposure risk function
 
@@ -209,7 +209,7 @@ expo.mc <- mcdata(Risk.mat, type = 'VU', nsv = nsv, nsu = nsu)
 plot(expo.mc)     # This actually calls plot.mcnode().
 ```
 
-![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png)
+![](./ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png) 
 
 ## Repeat the simulation with mc2d
 
@@ -432,7 +432,7 @@ summary(expo.ev1)
 plot(expo.ev1)
 ```
 
-![](ex0618prob2d_files/figure-html/results-ev1-1.png)
+![](./ex0618prob2d_files/figure-html/results-ev1-1.png) 
 
 Report the median of the means with a 95% confidence interval (CI95). 
 
@@ -457,7 +457,7 @@ Plot the empirical cumulative distribution function (ecdf) of the exposure model
 plot(expo.ev1$expo.mc1)
 ```
 
-![](ex0618prob2d_files/figure-html/plot-mc1-1.png)
+![](./ex0618prob2d_files/figure-html/plot-mc1-1.png) 
 
 ## Repeat 2-D simulation again with a loop
 
@@ -700,7 +700,7 @@ summary(expo.ev2)
 plot(expo.ev2)
 ```
 
-![](ex0618prob2d_files/figure-html/results-ev2-1.png)
+![](./ex0618prob2d_files/figure-html/results-ev2-1.png) 
 
 Report the median of the means with a 95% confidence interval (CI95).
 
@@ -727,9 +727,121 @@ to match the dimensions of this dataset.
 
 
 ```r
-expo.q <- expo.ev2$plot$expo.mc2
-expo.mc2d <- mcdata(aperm(expo.q, c(3, 2, 1)), type='VU', nsv='1001', nsu='250')
+expo.q <- expo.ev2$plot$expo.mc2        # q = Quantiles
+expo.qt <- aperm(expo.q, c(3, 2, 1))    # t = Transposed
+expo.mc2d <- mcdata(expo.qt, type='VU', nsv='1001', nsu='250')
 plot(expo.mc2d)
 ```
 
-![](ex0618prob2d_files/figure-html/plot-mc2d-1.png)
+![](./ex0618prob2d_files/figure-html/plot-mc2d-1.png) 
+
+## Appendix: A look inside an `mcnode` object
+
+You may have wondered, "What is an `mcnode` anyway?" It is a object containing 
+an array of class `mcnode` and some attributes. We can make one manually and 
+compare it with one made with `mcdata()`. Let's try this with our transposed 
+quantile array.
+
+First, let's examine the structure of the array object with the `class`
+and `str()` functions.
+
+
+```r
+class(expo.qt)
+```
+
+```
+## [1] "array"
+```
+
+```r
+str(expo.qt)
+```
+
+```
+##  num [1:1001, 1:250, 1] 0.136 0.136 0.136 0.136 0.136 ...
+##  - attr(*, "dimnames")=List of 3
+##   ..$ : chr [1:1001] "0%" "0.1%" "0.2%" "0.3%" ...
+##   ..$ : NULL
+##   ..$ : chr "NoInc"
+```
+
+So, this is a three-dimensional numerical array with three a list of 
+three `dimnames` as its only attribute.
+
+To make this into a `mcnode` object, we assign the `mcnode` class and two 
+attributes (`type` and `outm`). We also remove the `dimnames` list attribute.
+
+
+```r
+class(expo.qt) <- 'mcnode'
+attr(expo.qt, 'dimnames') <- NULL
+attr(expo.qt, 'type') <- 'VU'
+attr(expo.qt, 'outm') <- 'each'
+```
+
+The same "ecdf" plot that we just made previously can now be created by 
+plotting the new `mcnode` object made from the transposed quantile array.
+
+
+```r
+plot(expo.qt)
+```
+
+![](./ex0618prob2d_files/figure-html/plot-expo-qt-1.png) 
+
+The two plots are identical because the two objects from which they were made 
+are identical. 
+
+
+```r
+class(expo.mc2d)
+```
+
+```
+## [1] "mcnode"
+```
+
+```r
+str(expo.mc2d)
+```
+
+```
+##  mcnode [1:1001, 1:250, 1] 0.136 0.136 0.136 0.136 0.136 ...
+##  - attr(*, "type")= chr "VU"
+##  - attr(*, "outm")= chr "each"
+```
+
+```r
+class(expo.qt)
+```
+
+```
+## [1] "mcnode"
+```
+
+```r
+str(expo.qt)
+```
+
+```
+##  mcnode [1:1001, 1:250, 1] 0.136 0.136 0.136 0.136 0.136 ...
+##  - attr(*, "type")= chr "VU"
+##  - attr(*, "outm")= chr "each"
+```
+
+Our procedure for manually creating a `mcnode` object actually produced an 
+object exactly identical in every way to the one made with `mcdata()`. We can 
+verify this with the `identical()` function.
+
+
+```r
+identical(expo.mc2d, expo.qt)
+```
+
+```
+## [1] TRUE
+```
+
+We do not recommend creating objects manually like this, but gaining a little
+understanding of what objects are made of helps to dispel some of the mystery.
