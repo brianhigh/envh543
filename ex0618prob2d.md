@@ -113,7 +113,7 @@ Plot the kernel density estimates for surface water ingestion rate.
 plot(density(sw.d.IR))
 ```
 
-![](./ex0618prob2d_files/figure-html/kernel-density-plot-1.png) 
+![](ex0618prob2d_files/figure-html/kernel-density-plot-1.png) 
 
 ### Define exposure risk function
 
@@ -225,7 +225,7 @@ expo.mc <- mcdata(Risk.mat, type = 'VU', nsv = nsv, nsu = nsu)
 plot(expo.mc)     # This actually calls plot.mcnode().
 ```
 
-![](./ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png) 
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png) 
 
 ## Repeat the simulation with mc2d
 
@@ -242,7 +242,7 @@ define the model with `mcmodel()` and evaluate it with `evalmcmod()`.
 
 ### Load packages
 
-We did this earlier in the document, but add it again here as a reminder of
+We did this earlier in the document, but will add it again here as a reminder of
 what packages are needed for this example.
 
 
@@ -448,7 +448,7 @@ summary(expo.ev1)
 plot(expo.ev1)
 ```
 
-![](./ex0618prob2d_files/figure-html/results-ev1-1.png) 
+![](ex0618prob2d_files/figure-html/results-ev1-1.png) 
 
 Report the mean and median of the means with a 95% confidence interval (CI95). 
 
@@ -480,7 +480,7 @@ Plot the empirical cumulative distribution function (ecdf) of the exposure model
 plot(expo.ev1$expo.mc1)
 ```
 
-![](./ex0618prob2d_files/figure-html/plot-mc1-1.png) 
+![](ex0618prob2d_files/figure-html/plot-mc1-1.png) 
 
 ## Repeat 2-D simulation again with a loop
 
@@ -497,7 +497,7 @@ of very high dimensional models on relatively modest computer systems.
 
 ### Load packages
 
-We did this earlier in the document, but add it again here as a reminder of
+We did this earlier in the document, but will add it again here as a reminder of
 what packages are needed for this example.
 
 
@@ -643,9 +643,9 @@ Evaluate the model with 5000 iterations in the variability dimension and
 250 iterations in the uncertainty dimesion. Save the evaluation results as 
 `expo.ev2`. 
 
-Since the `evalmccut()` function produces a lot of text output  
-that we do not want in our report, we capture the text output with the 
-`capture.output()` function and print a summary when finished.
+Since the `evalmccut()` function produces a lot of text output that we do not 
+want in our report, we capture the text output with the `capture.output()` 
+function and print a summary when finished.
 
 
 ```r
@@ -723,7 +723,7 @@ summary(expo.ev2)
 plot(expo.ev2)
 ```
 
-![](./ex0618prob2d_files/figure-html/results-ev2-1.png) 
+![](ex0618prob2d_files/figure-html/results-ev2-1.png) 
 
 Report the mean and median of the means with a 95% confidence interval (CI95).
 
@@ -764,7 +764,7 @@ expo.mc2d <- mcdata(expo.qt, type='VU', nsv='1001', nsu='250')
 plot(expo.mc2d)
 ```
 
-![](./ex0618prob2d_files/figure-html/plot-mc2d-1.png) 
+![](ex0618prob2d_files/figure-html/plot-mc2d-1.png) 
 
 ## Appendix: A look inside an `mcnode` object
 
@@ -819,7 +819,7 @@ plotting the new `mcnode` object made from the transposed quantile array.
 plot(expo.qt)
 ```
 
-![](./ex0618prob2d_files/figure-html/plot-expo-qt-1.png) 
+![](ex0618prob2d_files/figure-html/plot-expo-qt-1.png) 
 
 The two plots are identical because the two objects from which they were made 
 are identical. 

@@ -225,7 +225,7 @@ define the model with `mcmodel()` and evaluate it with `evalmcmod()`.
 
 ### Load packages
 
-We did this earlier in the document, but add it again here as a reminder of
+We did this earlier in the document, but will add it again here as a reminder of
 what packages are needed for this example.
 
 ```{r warning=FALSE}
@@ -376,7 +376,7 @@ of very high dimensional models on relatively modest computer systems.
 
 ### Load packages
 
-We did this earlier in the document, but add it again here as a reminder of
+We did this earlier in the document, but will add it again here as a reminder of
 what packages are needed for this example.
 
 ```{r warning=FALSE}
@@ -489,9 +489,9 @@ Evaluate the model with 5000 iterations in the variability dimension and
 250 iterations in the uncertainty dimesion. Save the evaluation results as 
 `expo.ev2`. 
 
-Since the `evalmccut()` function produces a lot of text output  
-that we do not want in our report, we capture the text output with the 
-`capture.output()` function and print a summary when finished.
+Since the `evalmccut()` function produces a lot of text output that we do not 
+want in our report, we capture the text output with the `capture.output()` 
+function and print a summary when finished.
 
 ```{r}
 capture.output(expo.ev2 <- evalmccut(expo.mcmcut, seed = seed))
