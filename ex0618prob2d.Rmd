@@ -499,8 +499,8 @@ mean.risk2 <- expo.ev2$sum$expo.mc2[, , "mean"]
 quantile(mean.risk2, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
-We would like to print the plot the empirical cumulative distribution function 
-of the risk estimate, as we did before. But this example only provides uw with
+We would like to plot the empirical cumulative distribution function 
+of the risk estimate, as we did before. But this example only provides us with
 summarized data. This gives us the 1001 quantiles to one decimal place for each
 of the nsu=250 uncertainty estimates. So, we will feed this into the `mcdata()` 
 function and plot the resulting `mcnode` object to approximate the ecdf plots 
