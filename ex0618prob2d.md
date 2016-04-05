@@ -88,15 +88,22 @@ normal distribution.
 
 For the uncertainty dimension, generate 250 random samples from a normal 
 distribution to estimate ingestion rate (IR) in mL of surface water while
-swimming. 
+swimming. We want to make sure our values positive, so we will draw from
+a normal distribution which is truncated at 0.
 
 
 ```r
+# Create a function to randomly draw from a truncated normal distribution.
+# From: Author = "Dason"; URL = http://stackoverflow.com/questions/19343133/
+rtnorm <- function(n, mean, sd, min = -Inf, max = Inf){
+    qnorm(runif(n, pnorm(min, mean, sd), pnorm(max, mean, sd)), mean, sd)
+}
+
 # The point estimate of 50 mL/hr for ingestion of surface water while swimming 
 # is taken from the QMRA textbook (Haas et al. 2014), page 215. We set it here
 # as the mean. The standard deviation value of 45 used here is fictitious.
 set.seed(seed)
-sw.d.IR <- rnorm(nsu, mean = 50, sd = 45)
+sw.d.IR <- rtnorm(nsu, mean = 50, sd = 45, min = 0)
 ```
 
 Plot the kernel density estimates for surface water ingestion rate.
@@ -192,7 +199,7 @@ quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 
 ```
 ##    2.5%     50%   97.5% 
-## 0.13683 0.13714 0.13752
+## 0.13699 0.13718 0.13748
 ```
 
 Next, we plot the empirical cumulative distribution function of the risk 
