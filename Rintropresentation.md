@@ -518,7 +518,7 @@ str(tblsdt)
 boxplot(Sepal.Length ~ loc,data = dt)
 ```
 
-![](Rintropresentation_files/figure-html/boxplot-1.png)<!-- -->
+![](Rintropresentation_files/figure-html/boxplot-1.png)
 
 
 
@@ -539,7 +539,7 @@ p <- p + geom_point(aes(x = Petal.Width, y = Sepal.Length,
 p
 ```
 
-![](Rintropresentation_files/figure-html/ggplot-1-1.png)<!-- -->
+![](Rintropresentation_files/figure-html/ggplot-1-1.png)
 
 
 
@@ -563,7 +563,7 @@ p <- p + facet_grid(loc ~ date)
 p
 ```
 
-![](Rintropresentation_files/figure-html/ggplot-3-1.png)<!-- -->
+![](Rintropresentation_files/figure-html/ggplot-3-1.png)
 
 
 
