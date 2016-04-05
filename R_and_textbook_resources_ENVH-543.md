@@ -56,6 +56,9 @@ What You Will Learn:
 
 [Mastering Scientific Computing with R](http://shop.oreilly.com/product/9781783555253.do), Gerrard P., Johnson R. M. 2015 Packt Publishing.
 
+You can [access this eBook without  cost](http://ezproxy.spl.org:2048/login?url=http://proquest.safaribooksonline.com/9781783555253) 
+if you have a Seattle Public Library [card](http://www.spl.org/using-the-library/get-started/get-a-library-card).
+
 ### Microbiological Risk Assessment in Food Processing
 
 - Provides a detailed coverage of the key steps in MRA and how it can be used to improve food safety
