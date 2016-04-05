@@ -42,16 +42,14 @@ tried to load it with `library()` or `require()` before it had been installed,
 our program would end with errors. (That would not be very friendly.)
 
 ```{r}
-# Define a function to conditionally install and load a package.
-load.pkg <- function(pkg) {
-    if (! suppressWarnings(require(pkg, character.only = TRUE)) ) {
-        install.packages(pkg, repos = 'http://cran.r-project.org')
-        library(pkg, character.only = TRUE, quietly = TRUE)
-    }
+# Load one or more packages into memory, installing as needed.
+load.pkgs <- function(pkgs, repos = "http://cran.r-project.org") {
+    result <- sapply(pkgs, function(pkg) { 
+        if (!suppressWarnings(require(pkg, character.only = TRUE))) {
+            install.packages(pkg, quiet = TRUE, repos = repos)
+            library(pkg, character.only = TRUE, quietly = TRUE)}})
 }
-
-# Load required packages, installing first if necessary.
-suppressMessages(load.pkg("mc2d"))   # Or just use: library(mc2d)
+suppressMessages(load.pkgs(c("mc2d")))    # Or just use: library(mc2d)
 ```
 
 ## Perform a 2-D Monte Carlo simulation
