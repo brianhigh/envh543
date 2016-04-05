@@ -483,6 +483,26 @@ what packages are needed for this example.
 library(mc2d)
 ```
 
+Set the number of simulations for the variability and uncertainty dimensions. 
+Again, we did this before, but want to include it with this example, explicitly.
+
+
+```r
+ndvar(5000)  # Variability
+```
+
+```
+## [1] 5000
+```
+
+```r
+ndunc(250)   # Uncertainty
+```
+
+```
+## [1] 250
+```
+
 ### Define variables
 
 Define the variables we will use to set the `seed` for random sampling and the 
@@ -701,12 +721,14 @@ summarized data. This gives us the 1001 quantiles to one decimal place for each
 of the nsu=250 uncertainty estimates. So, we will feed this into the `mcdata()` 
 function and plot the resulting `mcnode` object to approximate the ecdf plots 
 we have produced for the previous 2-D Monte Carlo examples in this document, 
-just for comparison.
+just for comparison. You will note that we transpose the dataset to get the 
+array dimensions in the order expected by `mcdata()` and we set `nsv='1001'` 
+to match the dimensions of this dataset.
 
 
 ```r
-expo.x <- expo.ev2$plot$expo.mc2
-expo.mc2d <- mcdata(aperm(expo.x, c(3, 2, 1)), type='VU', nsv='1001', nsu='250')
+expo.q <- expo.ev2$plot$expo.mc2
+expo.mc2d <- mcdata(aperm(expo.q, c(3, 2, 1)), type='VU', nsv='1001', nsu='250')
 plot(expo.mc2d)
 ```
 
