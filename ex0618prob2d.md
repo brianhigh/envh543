@@ -188,12 +188,21 @@ estimate of the microbial exposure risk.
 
 We will use the 50th percentile (median) of the means of each iteration in the
 uncertainty dimension as our point estimate. The 2.5th and 97.5th percentiles 
-are used to establish a 95% confidence interval (CI95).
+are used to establish a 95% confidence interval (CI95). We will also report the
+mean of the means.
 
 
 ```r
-# Report the median of the means with a 95% confidence interval (CI95).
+# Report the mean and median of the means with a 95% confidence interval (CI95).
 mean.risk <- sapply(1:nsu, function(j) mean(Risk.mat[, j]))
+mean(mean.risk)
+```
+
+```
+## [1] 0.1372
+```
+
+```r
 quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
@@ -441,18 +450,26 @@ plot(expo.ev1)
 
 ![](./ex0618prob2d_files/figure-html/results-ev1-1.png) 
 
-Report the median of the means with a 95% confidence interval (CI95). 
+Report the mean and median of the means with a 95% confidence interval (CI95). 
 
 
 ```r
 # Report the median of the means with a 95% confidence interval (CI95).
 mean.risk1 <- sapply(1:ndunc(), function(j) mean(expo.ev1$expo.mc1[, j, ]))
+mean(mean.risk1)
+```
+
+```
+## [1] 0.1372
+```
+
+```r
 quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
 ```
 ##    2.5%     50%   97.5% 
-## 0.13699 0.13718 0.13748
+## 0.13699 0.13718 0.13745
 ```
 
 Plot the empirical cumulative distribution function (ecdf) of the exposure model 
@@ -709,11 +726,19 @@ plot(expo.ev2)
 
 ![](./ex0618prob2d_files/figure-html/results-ev2-1.png) 
 
-Report the median of the means with a 95% confidence interval (CI95).
+Report the mean and median of the means with a 95% confidence interval (CI95).
 
 
 ```r
 mean.risk2 <- expo.ev2$sum$expo.mc2[, , "mean"]
+mean(mean.risk2)
+```
+
+```
+## [1] 0.1372
+```
+
+```r
 quantile(mean.risk2, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
