@@ -56,6 +56,8 @@ What You Will Learn:
 
 [Mastering Scientific Computing with R](http://shop.oreilly.com/product/9781783555253.do), Gerrard P., Johnson R. M. 2015 Packt Publishing.
 
+See [Chapter 8. Simulations](https://books.google.com/books?id=MI92BgAAQBAJ&lpg=PA285&ots=FRoO7PRGIU&dq=%22Chapter%208.%20Simulations%22&pg=PA285#v=onepage&q=%22Chapter%208.%20Simulations%22&f=false) for details on the use of the mc2d package and several examples.
+
 You can [access this eBook without  cost](http://ezproxy.spl.org:2048/login?url=http://proquest.safaribooksonline.com/9781783555253) 
 if you have a Seattle Public Library [card](http://www.spl.org/using-the-library/get-started/get-a-library-card).
 
