@@ -91,23 +91,23 @@ estimate for the ingestion rate of surface water while swimming. Now, for our
 2-D simulation, we will represent the uncertainty around this estimate with a 
 normal distribution.
 
-For the uncertainty dimension, generate 250 random samples from a normal 
-distribution to estimate ingestion rate (IR) in mL of surface water while
+For the uncertainty dimension, generate 250 random samples from a truncated 
+normal distribution to estimate ingestion rate (IR) in mL of surface water while
 swimming. We want to make sure our values are positive, so we will draw from
-a normal distribution which is truncated at 0.
+a normal distribution which is truncated at lower truncation point of 0.
 
 ```{r}
 # Create a function to randomly draw from a truncated normal distribution.
 # From: Author = "Dason"; URL = http://stackoverflow.com/questions/19343133/
-rtnorm <- function(n, mean, sd, min = -Inf, max = Inf){
-    qnorm(runif(n, pnorm(min, mean, sd), pnorm(max, mean, sd)), mean, sd)
+rtnorm <- function(n, mean = 0, sd = 1, lower = -Inf, upper = Inf) {
+    qnorm(runif(n, pnorm(lower, mean, sd), pnorm(upper, mean, sd)), mean, sd)
 }
 
 # The point estimate of 50 mL/hr for ingestion of surface water while swimming 
 # is taken from the QMRA textbook (Haas et al. 2014), page 215. We set it here
 # as the mean. The standard deviation value of 45 used here is fictitious.
 set.seed(seed)
-sw.d.IR <- rtnorm(nsu, mean = 50, sd = 45, min = 0)
+sw.d.IR <- rtnorm(nsu, mean = 50, sd = 45, lower = 0)
 ```
 
 Plot the kernel density estimates for surface water ingestion rate.
