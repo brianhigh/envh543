@@ -468,7 +468,7 @@ quantile(mean.risk1, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 
 ```
 ##    2.5%     50%   97.5% 
-## 0.13699 0.13718 0.13745
+## 0.13699 0.13718 0.13748
 ```
 
 Plot the empirical cumulative distribution function (ecdf) of the exposure model 
