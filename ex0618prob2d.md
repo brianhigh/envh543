@@ -88,7 +88,7 @@ normal distribution.
 
 For the uncertainty dimension, generate 250 random samples from a normal 
 distribution to estimate ingestion rate (IR) in mL of surface water while
-swimming. We want to make sure our values positive, so we will draw from
+swimming. We want to make sure our values are positive, so we will draw from
 a normal distribution which is truncated at 0.
 
 
