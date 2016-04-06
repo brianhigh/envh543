@@ -22,7 +22,7 @@ health effects assessment, risk characterization, and risk communication.
 - Examples
     * [R code provided in QMRA, 2nd ed. textbook](QMRA_R_Code.md)
     * Example 6.18
-        + [Solution in Excel](ex0618prob.xls)
+        + [Solution in Excel](ex0618.xls)
         + [Solution in R](ex0618.md)
         + [Probabilistic Solution (1-D M.C.) in R](ex0618prob.md)
         + [Probabilistic Solution (2-D M.C.) in R](ex0618prob2d.md)
