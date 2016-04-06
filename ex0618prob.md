@@ -87,8 +87,8 @@ Risk.fcn <- function(shellfish.vl, shellfish.cons.g, water.cons.L, dw.vl, sw.vl,
 
 # Compute 5000 simulated daily dose results and store as a vector.
 daily.dose <- sapply(1:5000, 
-                     function(j) Risk.fcn(water.cons.L = water.cons.L[j], 
-                                          sw.duration = swim.duration[j], 
+                     function(i) Risk.fcn(water.cons.L = water.cons.L[i], 
+                                          sw.duration = swim.duration[i], 
                                           shellfish.vl = shellfish.viral.load, 
                                           dw.vl = dw.viral.load, 
                                           shellfish.cons.g = shellfish.cons.g, 
