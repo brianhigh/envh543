@@ -100,3 +100,4 @@ Robert A. Muenchen, Joseph M. Hilbe. 2010 New York : Springer.
 - [Cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
 - [Swirl](http://swirlstats.com/students.html)
 - [R Markdown](http://rmarkdown.rstudio.com/)
+- [Udemy course on Monte Carlo Simulation with R](https://www.udemy.com/r-programming-for-simulation-and-monte-carlo-methods/learn/v4/overview)
