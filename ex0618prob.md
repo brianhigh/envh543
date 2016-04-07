@@ -4,10 +4,11 @@ Jane Pouzou and Brian High
 
 ## Introduction
 
-This document offers a 1-D Monte Carlo probabilistic solution in R for the 
-daily microbial exposure from drinking water consumption, swimming in surface 
-water and shellfish consumption for [Example 6.18](images/ex0618.png) from pages 
-215-216 of:
+This document offers a 1-D 
+[Monte Carlo](https://en.wikipedia.org/wiki/Monte_Carlo_method) probabilistic 
+solution in R for the daily microbial exposure from drinking water consumption, 
+swimming in surface water and shellfish consumption for 
+[Example 6.18](images/ex0618.png) from pages 215-216 of:
 
 [Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
 by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).

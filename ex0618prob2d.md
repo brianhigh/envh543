@@ -4,10 +4,11 @@ Jane Pouzou and Brian High
 
 ## Introduction
 
-This document offers three 2-D Monte Carlo probabilistic solutions in R for the 
-daily microbial exposure from drinking water consumption, swimming in surface 
-water and shellfish consumption for [Example 6.18](images/ex0618.png) from 
-pages 215-216 of:
+This document offers three 2-D 
+[Monte Carlo](https://en.wikipedia.org/wiki/Monte_Carlo_method) probabilistic 
+solutions in R for the daily microbial exposure from drinking water consumption, 
+swimming in surface water and shellfish consumption for 
+[Example 6.18](images/ex0618.png) from pages 215-216 of:
 
 [Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
 by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
@@ -514,8 +515,18 @@ If the results had not been identical, you could view the differences with:
 ```r
 # Print results to 20 decimal places to help spot even small differences.
 differences <- which(expo.mc != expo.ev1$expo.mc1)
-print(expo.mc[differences], digits = 20)
-print(expo.ev1$expo.mc1[differences], digits = 20)
+sum(differences)
+```
+
+```
+## [1] 0
+```
+
+```r
+if (sum(differences) > 0) {
+    print(head(expo.mc[differences]), digits = 20)
+    print(head(expo.ev1$expo.mc1[differences]), digits = 20)
+}
 ```
 
 ## Repeat 2-D simulation again with an `mccut` loop
