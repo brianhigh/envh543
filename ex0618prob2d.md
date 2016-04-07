@@ -480,10 +480,47 @@ plot(expo.ev1$expo.mc1)
 
 ![](ex0618prob2d_files/figure-html/plot-mc1-1.png)
 
-## Repeat 2-D simulation again with a loop
+## Compare manual and mc2d simulations
 
-This time we will use another pair of functions from the 
-[mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) 
+How do our results from mc2d compare with the "manual" method we tried first?
+
+You can check the means, medians, etc., that were reported above, and you should
+find that they match. How is the possible with probabalistic methods?  
+
+We used _pseudo-random_ number generation by setting the same _seed_ before 
+random sampling from our model's probability distributions. So, this means that 
+all of the random input data should match. Since we used the same mathematical 
+model, the same parameters, and the same data, all of the simulated estimates 
+should match, too. But how will we check all 250 * 5000 = 1,250,000 numbers?
+
+We can compare with the `identical()` function, which checks all values to 
+all stored decimal places, not just the ones displayed with `print()`. A result
+of `TRUE` means they match.
+
+
+```r
+identical(expo.mc, expo.ev1$expo.mc1)  # Should be "TRUE" if same seed was used.
+```
+
+```
+## [1] TRUE
+```
+
+If the results had not been identical, you could view the differences with:
+
+
+```r
+# Print results to 20 decimal places to help spot even small differences.
+differences <- which(expo.mc != expo.ev1$expo.mc1)
+print(expo.mc[differences], digits = 20)
+print(expo.ev1$expo.mc1[differences], digits = 20)
+```
+
+## Repeat 2-D simulation again with an `mccut` loop
+
+This time we will use another 
+[pair of functions](http://www.inside-r.org/packages/cran/mc2d/docs/mccut) 
+from the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) 
 package, `mcmodelcut()` and `evalmccut()`, to get a different 
 style of summary output. They implement the uncertainty dimension of the 
 2-D simulation with a processing _loop_.
@@ -764,9 +801,9 @@ plot(expo.mc2d)
 
 ![](ex0618prob2d_files/figure-html/plot-mc2d-1.png)
 
-## Appendix: A look inside an `mcnode` object
+## A look inside an `mcnode` object
 
-You may have wondered, "What is an `mcnode` anyway?" It is a object containing 
+You may have wondered, "What is an `mcnode` anyway?" It is an object containing 
 an array of class `mcnode` and some attributes. We can make one manually and 
 compare it with one made with `mcdata()`. Let's try this with our transposed 
 quantile array.
