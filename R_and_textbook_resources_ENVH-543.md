@@ -1,6 +1,6 @@
 # R and textbook resources for ENV H 543
 Brian High  
-4/04/2016  
+4/07/2016  
 
 ## RStudio Server: "Phage"
 
@@ -46,7 +46,7 @@ package R.
 statistical analyses of environmental data.
 - Includes extensive examples using data sets from regulatory guidance documents.
 
-[EnvStats](http://offcampus.lib.washington.edu/login?url=http://link.springer.com/book/10.1007/978-1-4614-8456-1), An R Package for Environmental Statistics, Steven P. Millard, 2013 New York: Springer.
+[EnvStats](http://offcampus.lib.washington.edu/login?url=http://link.springer.com/book/10.1007/978-1-4614-8456-1), An R Package for Environmental Statistics, Steven P. Millard. 2013 New York: Springer.
 
 ### Beginning Data Science with R
 
@@ -63,7 +63,7 @@ statistical analyses of environmental data.
 - R functions are presented in the context of interesting applications with real data
 
 [R by Example](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71109296790001451), 
-Jim Albert; Maria L. Rizzo, 2012 New York : Springer.
+Jim Albert; Maria L. Rizzo. 2012 New York : Springer.
 
 [Code samples](http://personal.bgsu.edu/~mrizzo/Rx/Rx.code.R) at instructor's website.
 
@@ -78,7 +78,7 @@ The book covers:
 - Convergence diagnoses
 - Markov chain Monte Carlo methods
 
-[Introducing Monte Carlo Methods with R](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71173371900001451), Christian P. Robert; George Casella, 2010 New York : Springer.
+[Introducing Monte Carlo Methods with R](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71173371900001451), Christian P. Robert; George Casella. 2010 New York : Springer.
 
 ### Mastering Scientific Computing with R
 
