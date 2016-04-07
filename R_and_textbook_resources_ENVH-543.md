@@ -29,6 +29,14 @@ recreational water, food and pathogens in the indoor environment
 
 [Quantitative microbial risk assessment](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP51230982940001451), Charles N. Haas Joan B. Rose; Charles P. Gerba. 2014  Hoboken, New Jersey: Wiley.
 
+### Microbiological Risk Assessment in Food Processing
+
+- Provides a detailed coverage of the key steps in MRA and how it can be used to improve food safety
+- A standard work on one of the most important aspects of food safety management
+
+[Microbiological Risk Assessment in Food Processing](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71155643330001451), Martyn Brown; Michael Stringer, 1950-.
+2002 Boca Raton, Fla. : CRC Press ; Cambridge, England : Woodhead Pub.
+
 ### EnvStats
 
 - EnvStats is a comprehensive R software library for environmental scientists,
@@ -39,6 +47,38 @@ statistical analyses of environmental data.
 - Includes extensive examples using data sets from regulatory guidance documents.
 
 [EnvStats](http://offcampus.lib.washington.edu/login?url=http://link.springer.com/book/10.1007/978-1-4614-8456-1), An R Package for Environmental Statistics, Steven P. Millard, 2013 New York: Springer.
+
+### Beginning Data Science with R
+
+- Introduces fundamental data science methodologies using the R programming language
+- Covers concepts through real-world datasets and case studies
+- Examines cutting edge topics in both research and commercial applications
+
+[Beginning Data Science with R](http://alliance-primo.hosted.exlibrisgroup.com/primo_library/libweb/action/dlDisplay.do?vid=UW&search_scope=all&docId=dedupmrg490691634&fn=permalink), Manas A. Pathak. 2014 Cham: Springer International Publishing.
+
+### R by Example
+
+- Example-based introduction to the statistical computing environment
+- Does not assume any previous familiarity with R or other software packages
+- R functions are presented in the context of interesting applications with real data
+
+[R by Example](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71109296790001451), 
+Jim Albert; Maria L. Rizzo, 2012 New York : Springer.
+
+[Code samples](http://personal.bgsu.edu/~mrizzo/Rx/Rx.code.R) at instructor's website.
+
+[Udemy course on Monte Carlo Simulation with R](https://www.udemy.com/r-programming-for-simulation-and-monte-carlo-methods/learn/v4/overview) based on _R by Example_
+
+### Introducing Monte Carlo Methods with R
+
+The book covers:
+
+- Basic random generation algorithms
+- Monte Carlo techniques for integration and optimization
+- Convergence diagnoses
+- Markov chain Monte Carlo methods
+
+[Introducing Monte Carlo Methods with R](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71173371900001451), Christian P. Robert; George Casella, 2010 New York : Springer.
 
 ### Mastering Scientific Computing with R
 
@@ -61,22 +101,6 @@ See [Chapter 8. Simulations](https://books.google.com/books?id=MI92BgAAQBAJ&lpg=
 You can [access this eBook without  cost](http://ezproxy.spl.org:2048/login?url=http://proquest.safaribooksonline.com/9781783555253) 
 if you have a Seattle Public Library [card](http://www.spl.org/using-the-library/get-started/get-a-library-card).
 
-### Microbiological Risk Assessment in Food Processing
-
-- Provides a detailed coverage of the key steps in MRA and how it can be used to improve food safety
-- A standard work on one of the most important aspects of food safety management
-
-[Microbiological Risk Assessment in Food Processing](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71155643330001451), Martyn Brown; Michael Stringer, 1950-.
-2002 Boca Raton, Fla. : CRC Press ; Cambridge, England : Woodhead Pub.
-
-### Beginning Data Science with R
-
-- Introduces fundamental data science methodologies using the R programming language
-- Covers concepts through real-world datasets and case studies
-- Examines cutting edge topics in both research and commercial applications
-
-[Beginning Data Science with R](http://alliance-primo.hosted.exlibrisgroup.com/primo_library/libweb/action/dlDisplay.do?vid=UW&search_scope=all&docId=dedupmrg490691634&fn=permalink), Manas A. Pathak. 2014 Cham: Springer International Publishing.
-
 ### R for Stata Users
 
 - This book shows you how to extend the power of Stata through the use of R. 
@@ -92,4 +116,3 @@ Robert A. Muenchen, Joseph M. Hilbe. 2010 New York : Springer.
 - [Cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
 - [Swirl](http://swirlstats.com/students.html)
 - [R Markdown](http://rmarkdown.rstudio.com/)
-- [Udemy course on Monte Carlo Simulation with R](https://www.udemy.com/r-programming-for-simulation-and-monte-carlo-methods/learn/v4/overview)
