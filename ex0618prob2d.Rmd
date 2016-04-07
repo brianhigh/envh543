@@ -363,8 +363,10 @@ plot(expo.ev1$expo.mc1)
 
 How do our results from mc2d compare with the "manual" method we tried first?
 
-You can check the means, medians, etc., that were reported above, and you should
-find that they match. How is the possible with probabalistic methods?  
+You can check the means, medians, etc. that were reported above, and you should
+find that they match. How is this possible with probabalistic methods? You might
+think that with more decimal places we might see a difference, but rounding of 
+the printed values is not the explanation.
 
 We used _pseudo-random_ number generation by setting the same _seed_ before 
 random sampling from our model's probability distributions. So, this means that 
