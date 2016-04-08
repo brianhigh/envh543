@@ -42,7 +42,7 @@ recreational water, food and pathogens in the indoor environment
 - Provides a detailed coverage of the key steps in MRA and how it can be used to improve food safety
 - A standard work on one of the most important aspects of food safety management
 
-[Microbiological Risk Assessment in Food Processing](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71155643330001451), Martyn Brown; Michael Stringer, 1950-.
+[Microbiological Risk Assessment in Food Processing](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71155643330001451), Martyn Brown; Michael Stringer.
 2002 Boca Raton, Fla. : CRC Press ; Cambridge, England : Woodhead Pub.
 
 ### EnvStats
@@ -69,6 +69,7 @@ statistical analyses of environmental data.
 - Example-based introduction to the statistical computing environment
 - Does not assume any previous familiarity with R or other software packages
 - R functions are presented in the context of interesting applications with real data
+- Probabilistic simulation with the Monte Carlo Method
 
 [R by Example](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71109296790001451), 
 Jim Albert; Maria L. Rizzo. 2012 New York : Springer.
@@ -90,8 +91,6 @@ The book covers:
 
 ### Mastering Scientific Computing with R
 
-What You Will Learn:
-
 - Master data management in R
 - Perform hypothesis tests using both parametric and nonparametric methods
 - Understand how to perform statistical modeling using linear methods
@@ -99,10 +98,10 @@ What You Will Learn:
 - Use matrix operations to improve coding productivity
 - Utilize the observed data to model unobserved variables
 - Deal with missing data using multiple imputations
-- Simplify high-dimensional data using principal components, singular value decomposition, and factor analysis
-- Monte Carlo simulation in one and two dimensions with the mc2d package
+- Simplify high-dimensional data
+- Use Monte Carlo simulation in one and two dimensions with the mc2d package
 
-[Mastering Scientific Computing with R](http://shop.oreilly.com/product/9781783555253.do), Gerrard P., Johnson R. M. 2015 Packt Publishing.
+[Mastering Scientific Computing with R](http://shop.oreilly.com/product/9781783555253.do), Gerrard P.; Johnson R. M. 2015 Packt Publishing.
 
 See [Chapter 8. Simulations](https://books.google.com/books?id=MI92BgAAQBAJ&lpg=PA285&ots=FRoO7PRGIU&dq=%22Chapter%208.%20Simulations%22&pg=PA285#v=onepage&q=%22Chapter%208.%20Simulations%22&f=false) for details on the use of the mc2d package and several examples.
 
