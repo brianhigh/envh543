@@ -1,0 +1,12 @@
+dose	positive_response	negative_response		
+90000	3	0		
+9000	5	2		
+900	7	1		
+90	8	1		
+9	8	3		
+0.9	1	6		
+0.09	0	7		
+0.009	0	7		
+		
+				
+				
