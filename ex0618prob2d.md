@@ -816,9 +816,9 @@ plot(expo.mc2d)
 
 ## A look inside an `mcnode` object
 
-You may have wondered, "What is an `mcnode` anyway?" It is an object containing 
-an array of class `mcnode` and some attributes. We can make one manually and 
-compare it with one made with `mcdata()`. Let's try this with our transposed 
+You may have wondered, "What is an `mcnode` anyway?" It is an object of class 
+`mcnode` containing an array and a list of attributes. We can make one manually 
+and compare it with one made with `mcdata()`. Let's try this with our transposed 
 quantile array.
 
 First, let's examine the structure of the array object with the `class`
