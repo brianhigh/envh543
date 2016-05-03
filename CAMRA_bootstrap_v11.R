@@ -15,8 +15,12 @@
 #--Draw in dose response data and assign the needed values from the data---|
 #==========================================================================|
 
-#--Make sure this CAMRA_bootstrap_v11.R file and XXX_dr_all.txt file are in the same directory--|
+#--Make sure this CAMRA_bootstrap_v11.R file and XXX_dr_all.txt file are in 
+#  the same directory--|
+stopifnot(file.exists("RoV_dr_all.txt"))
+
 #--Make sure 'output' folder exists in same directory--|
+dir.create('output', showWarnings = FALSE, recursive = TRUE)
 
 DR_Data <- read.table("RoV_dr_all.txt",header=TRUE)				  
 	dose <- DR_Data$dose									  
