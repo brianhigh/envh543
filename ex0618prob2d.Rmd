@@ -234,11 +234,10 @@ quant.melt <- suppressMessages(melt(quant))
 names(quant.melt) <- c('q', 'x')
 
 ggplot(quant.melt, aes(x = x)) + 
-    stat_ecdf(aes(group = q, colour = q)) + xlab('x') + ylab('Fn(x)') + 
+    stat_ecdf(aes(group = q, color = q)) + xlab('x') + ylab('Fn(x)') + 
     theme_bw() + theme(legend.position = 'none') + scale_colour_manual(
         values = c('gray75', 'gray35', 'black', 'gray35', 'gray75')) + 
-    geom_hline(yintercept=c(0), linetype="dashed", color = 'gray') + 
-    geom_hline(yintercept=c(1), linetype="dashed", color = 'gray')
+    geom_hline(yintercept=c(0, 1), linetype="dashed", color = 'gray')
 ```
 
 Finally, we can produce this same sort of plot by using the `plot.mcnode()` 
