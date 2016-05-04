@@ -226,31 +226,51 @@ plot(ecdf(rowMedians(Risk.mat)))
 
 ![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-basic-1.png)
 
-We can also use `ggplot()` and show the quantiles, but it takes a little more 
-work. We will need to store the quantiles for each row in a data frame.
+We can plot more of quantiles, but it takes a little more work. We will need to 
+store the quantiles for each row in a data frame. Then we plot a line for the 
+ECDF of each quantile.
+
+
+```r
+quant <- as.data.frame(t(apply(Risk.mat, 1, quantile, 
+                       probs = c(0.025, 0.25, 0.50, 0.75, 0.975))))
+
+plot(ecdf(quant$`2.5%`), col = 'gray75', main = '')
+lines(ecdf(quant$`25%`), col = 'gray35')
+lines(ecdf(quant$`50%`), col = 'black')
+lines(ecdf(quant$`75%`), col = 'gray35')
+lines(ecdf(quant$`97.5%`), col = 'gray75')
+```
+
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-quantiles-1.png)
+
+Alternatively, we can produce a similar plot with _ggplot2_. First we need to
+reshape the data frame with `melt()` (from the _reshape_ package), then we can
+plot with `ggplot()`.
 
 
 ```r
 load.pkgs(c("reshape", "ggplot2"))
-quantiles <- as.data.frame(t(apply(Risk.mat, 1, quantile, 
-                           probs = c(0.025, 0.25, 0.50, 0.75, 0.975))))
-quantiles <- suppressMessages(melt(quantiles))
-names(quantiles) <- c('q', 'x')
+quant.melt <- suppressMessages(melt(quant))
+names(quant.melt) <- c('q', 'x')
 
-gray_colors <- c('gray75', 'gray35', 'black', 'gray35', 'gray75')
-ggplot(quantiles, aes(x = x)) + stat_ecdf(aes(group = q, colour = q)) + 
-    xlab('x') + ylab('Fn(x)') + theme_bw() + 
-    scale_colour_manual(values = gray_colors) + 
-    theme(legend.position = 'none') 
+ggplot(quant.melt, aes(x = x)) + 
+    stat_ecdf(aes(group = q, colour = q)) + xlab('x') + ylab('Fn(x)') + 
+    theme_bw() + theme(legend.position = 'none') + scale_colour_manual(
+        values = c('gray75', 'gray35', 'black', 'gray35', 'gray75')) + 
+    geom_hline(yintercept=c(0), linetype="dashed", color = 'gray') + 
+    geom_hline(yintercept=c(1), linetype="dashed", color = 'gray')
 ```
 
 ![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-ggplot2-1.png)
 
-Finally, we can produce the same sort of plot by using the `plot.mcnode()` 
+Finally, we can produce this same sort of plot by using the `plot.mcnode()` 
 function of the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) 
 package. With this, we may easily compare with plots from later examples. This 
 function requires us to convert our matrix to a "mcnode", which we will do 
-using the `mcdata()` function.
+using the `mcdata()` function. This plotting approach requires far less coding
+than the two previous plots, but does not offer quite as much control over how
+the plot is displayed.
 
 
 ```r
