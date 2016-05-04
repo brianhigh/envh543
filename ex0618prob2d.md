@@ -226,20 +226,20 @@ plot(ecdf(rowMedians(Risk.mat)))
 
 ![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-basic-1.png)
 
-We can plot more of quantiles, but it takes a little more work. We will need to 
-store the quantiles for each row in a data frame. Then we plot a line for the 
-ECDF of each quantile.
+We can plot more quantiles, but it takes a little more work. We will need to 
+store the quantiles for each row in a data frame. We begin constructing our 
+plot with the ECDF of the median (50% percentile) using `plot()` and `ecdf()`. 
+Then we add a line for the ECDF of each of the other quantiles using 
+`mapply()` and `lines()`.
 
 
 ```r
-quant <- as.data.frame(t(apply(Risk.mat, 1, quantile, 
-                       probs = c(0.025, 0.25, 0.50, 0.75, 0.975))))
+probs <- c(0.025, 0.25, 0.50, 0.75, 0.975)
+grays <- c('gray75', 'gray35', 'black', 'gray35', 'gray75')
+quant <- as.data.frame(t(apply(Risk.mat, 1, quantile, probs = probs)))
 
-plot(ecdf(quant$`2.5%`), col = 'gray75', main = '')
-lines(ecdf(quant$`25%`), col = 'gray35')
-lines(ecdf(quant$`50%`), col = 'black')
-lines(ecdf(quant$`75%`), col = 'gray35')
-lines(ecdf(quant$`97.5%`), col = 'gray75')
+plot(ecdf(quant[['50%']]), main = '')  # Plot the ECDF of the median first.
+m <- mapply(function(q, g) lines(ecdf(quant[[q]]), col = g), names(quant), grays)
 ```
 
 ![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-quantiles-1.png)
@@ -254,11 +254,10 @@ load.pkgs(c("reshape", "ggplot2"))
 quant.melt <- suppressMessages(melt(quant))
 names(quant.melt) <- c('q', 'x')
 
-ggplot(quant.melt, aes(x = x)) + 
+ggplot(quant.melt, aes(x = x)) + theme_bw() + theme(legend.position = 'none') + 
+    geom_hline(yintercept = c(0, 1), linetype = "dashed", color = 'gray') +
     stat_ecdf(aes(group = q, color = q)) + xlab('x') + ylab('Fn(x)') + 
-    theme_bw() + theme(legend.position = 'none') + scale_colour_manual(
-        values = c('gray75', 'gray35', 'black', 'gray35', 'gray75')) + 
-    geom_hline(yintercept = c(0, 1), linetype = "dashed", color = 'gray')
+    scale_colour_manual(values = grays)
 ```
 
 ![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-ggplot2-1.png)
