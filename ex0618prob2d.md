@@ -234,12 +234,17 @@ Then we add a line for the ECDF of each of the other quantiles using
 
 
 ```r
+# Construct a data frame of quantiles and another data frame for their ECDFs.
 probs <- c(0.025, 0.25, 0.50, 0.75, 0.975)
-grays <- c('gray75', 'gray35', 'black', 'gray35', 'gray75')
 quant <- as.data.frame(t(apply(Risk.mat, 1, quantile, probs = probs)))
+ecdfs <- sapply(names(quant), function(q) ecdf(quant[[q]]))
 
-plot(ecdf(quant[['50%']]), main = '')  # Plot the ECDF of the median first.
-m <- mapply(function(q, g) lines(ecdf(quant[[q]]), col = g), names(quant), grays)
+# Plot the ECDF of the median first to create the border, scales and labels.
+plot(ecdfs[['50%']], main = '')
+
+# Plot a line for each of the quantiles, using shades of gray for line colors.
+grays <- c('gray75', 'gray35', 'black', 'gray35', 'gray75')
+lines <- mapply(function(e, g) lines(e, col = g), ecdfs, grays)
 ```
 
 ![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-quantiles-1.png)
@@ -251,9 +256,12 @@ plot with `ggplot()`.
 
 ```r
 load.pkgs(c("reshape", "ggplot2"))
+
+# Reshape the "wide" format of the data frame to a "long" format with `melt()`.
 quant.melt <- suppressMessages(melt(quant))
 names(quant.melt) <- c('q', 'x')
 
+# Calculate ECDFs and plot lines for them, using our custom gray palette.
 ggplot(quant.melt, aes(x = x)) + theme_bw() + theme(legend.position = 'none') + 
     geom_hline(yintercept = c(0, 1), linetype = "dashed", color = 'gray') +
     stat_ecdf(aes(group = q, color = q)) + xlab('x') + ylab('Fn(x)') + 
