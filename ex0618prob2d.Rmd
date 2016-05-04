@@ -196,10 +196,40 @@ mean(mean.risk)
 quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ```
 
-Next, we plot the empirical cumulative distribution function of the risk 
-estimate. We will use the `plot.mcnode()` function of the 
-the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) package
-so that we may easily compare with plots from later examples. This 
+Next, we plot the empirical cumulative distribution function (ECDF) of the risk 
+estimate. 
+
+Find the median for each row of the risk matrix using the 
+`rowMedians()` function (from the _miscTools_ package), calculate the ECDF with 
+the `ecdf()` function (from the _stats_ package), and then plot with the 
+`plot()` function (from the _graphics_ package). 
+
+```{r ecdf-plot-risk-mat-basic}
+load.pkgs(c("miscTools"))
+plot(ecdf(rowMedians(Risk.mat)))
+```
+
+We can also use `ggplot()` and show the quantiles, but it takes a little more 
+work. We will need to store the quantiles for each row in a data frame.
+
+```{r ecdf-plot-risk-mat-ggplot2}
+load.pkgs(c("reshape", "ggplot2"))
+quantiles <- as.data.frame(t(apply(Risk.mat, 1, quantile, 
+                           probs = c(0.025, 0.25, 0.50, 0.75, 0.975))))
+quantiles <- suppressMessages(melt(quantiles))
+names(quantiles) <- c('q', 'x')
+
+gray_colors <- c('gray75', 'gray35', 'black', 'gray35', 'gray75')
+ggplot(quantiles, aes(x = x)) + stat_ecdf(aes(group = q, colour = q)) + 
+    xlab('x') + ylab('Fn(x)') + theme_bw() + 
+    scale_colour_manual(values = gray_colors) + 
+    theme(legend.position = 'none') 
+     
+```
+
+Finally, we can produce the same sort of plot by using the `plot.mcnode()` 
+function of the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) 
+package. With this, we may easily compare with plots from later examples. This 
 function requires us to convert our matrix to a "mcnode", which we will do 
 using the `mcdata()` function.
 

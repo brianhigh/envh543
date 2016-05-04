@@ -112,7 +112,7 @@ Plot the kernel density estimates for surface water ingestion rate.
 plot(density(sw.d.IR))
 ```
 
-![](ex0618prob2d_files/figure-html/kernel-density-plot-1.png)
+![](ex0618prob2d_files/figure-html/kernel-density-plot-1.png)<!-- -->
 
 ### Define exposure risk function
 
@@ -210,10 +210,45 @@ quantile(mean.risk, probs = seq(0, 1, 0.025))[c("2.5%", "50%", "97.5%")]
 ## 0.13699 0.13718 0.13748
 ```
 
-Next, we plot the empirical cumulative distribution function of the risk 
-estimate. We will use the `plot.mcnode()` function of the 
-the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) package
-so that we may easily compare with plots from later examples. This 
+Next, we plot the empirical cumulative distribution function (ECDF) of the risk 
+estimate. 
+
+Find the median for each row of the risk matrix using the 
+`rowMedians()` function (from the _miscTools_ package), calculate the ECDF with 
+the `ecdf()` function (from the _stats_ package), and then plot with the 
+`plot()` function (from the _graphics_ package). 
+
+
+```r
+load.pkgs(c("miscTools"))
+plot(ecdf(rowMedians(Risk.mat)))
+```
+
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-basic-1.png)<!-- -->
+
+We can also use `ggplot()` and show the quantiles, but it takes a little more 
+work. We will need to store the quantiles for each row in a data frame.
+
+
+```r
+load.pkgs(c("reshape", "ggplot2"))
+quantiles <- as.data.frame(t(apply(Risk.mat, 1, quantile, 
+                           probs = c(0.025, 0.25, 0.50, 0.75, 0.975))))
+quantiles <- suppressMessages(melt(quantiles))
+names(quantiles) <- c('q', 'x')
+
+gray_colors <- c('gray75', 'gray35', 'black', 'gray35', 'gray75')
+ggplot(quantiles, aes(x = x)) + stat_ecdf(aes(group = q, colour = q)) + 
+    xlab('x') + ylab('Fn(x)') + theme_bw() + 
+    scale_colour_manual(values = gray_colors) + 
+    theme(legend.position = 'none') 
+```
+
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-ggplot2-1.png)<!-- -->
+
+Finally, we can produce the same sort of plot by using the `plot.mcnode()` 
+function of the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) 
+package. With this, we may easily compare with plots from later examples. This 
 function requires us to convert our matrix to a "mcnode", which we will do 
 using the `mcdata()` function.
 
@@ -224,7 +259,7 @@ expo.mc <- mcdata(Risk.mat, type = 'VU', nsv = nsv, nsu = nsu)
 plot(expo.mc)     # This actually calls plot.mcnode().
 ```
 
-![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png)
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png)<!-- -->
 
 ## Repeat the simulation with mc2d
 
@@ -447,7 +482,7 @@ summary(expo.ev1)
 plot(expo.ev1)
 ```
 
-![](ex0618prob2d_files/figure-html/results-ev1-1.png)
+![](ex0618prob2d_files/figure-html/results-ev1-1.png)<!-- -->
 
 Report the mean and median of the means with a 95% confidence interval (CI95). 
 
@@ -479,7 +514,7 @@ Plot the empirical cumulative distribution function (ecdf) of the exposure model
 plot(expo.ev1$expo.mc1)
 ```
 
-![](ex0618prob2d_files/figure-html/plot-mc1-1.png)
+![](ex0618prob2d_files/figure-html/plot-mc1-1.png)<!-- -->
 
 ## Compare manual and mc2d simulations
 
@@ -771,7 +806,7 @@ summary(expo.ev2)
 plot(expo.ev2)
 ```
 
-![](ex0618prob2d_files/figure-html/results-ev2-1.png)
+![](ex0618prob2d_files/figure-html/results-ev2-1.png)<!-- -->
 
 Report the mean and median of the means with a 95% confidence interval (CI95).
 
@@ -812,7 +847,7 @@ expo.mc2d <- mcdata(expo.qt, type='VU', nsv='1001', nsu='250')
 plot(expo.mc2d)
 ```
 
-![](ex0618prob2d_files/figure-html/plot-mc2d-1.png)
+![](ex0618prob2d_files/figure-html/plot-mc2d-1.png)<!-- -->
 
 ## A look inside an `mcnode` object
 
@@ -867,7 +902,7 @@ plotting the new `mcnode` object made from the transposed quantile array.
 plot(expo.qt)
 ```
 
-![](ex0618prob2d_files/figure-html/plot-expo-qt-1.png)
+![](ex0618prob2d_files/figure-html/plot-expo-qt-1.png)<!-- -->
 
 The two plots are identical because the two objects from which they were made 
 are identical. 
