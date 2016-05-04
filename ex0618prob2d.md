@@ -258,7 +258,7 @@ ggplot(quant.melt, aes(x = x)) +
     stat_ecdf(aes(group = q, color = q)) + xlab('x') + ylab('Fn(x)') + 
     theme_bw() + theme(legend.position = 'none') + scale_colour_manual(
         values = c('gray75', 'gray35', 'black', 'gray35', 'gray75')) + 
-    geom_hline(yintercept=c(0, 1), linetype="dashed", color = 'gray')
+    geom_hline(yintercept = c(0, 1), linetype = "dashed", color = 'gray')
 ```
 
 ![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-ggplot2-1.png)
