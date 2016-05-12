@@ -58,7 +58,7 @@ statistical analyses of environmental data.
 
 ### Understanding Statistics Using R
 
-- Written to provide resource materials statistics classes
+- Written to provide resource materials for statistics classes
 - Ordered along the lines of many popular statistics books
 - Contains R script programs to demonstrate important topics and concepts
 - Contains T/F quizzes to test basic knowledge of the topics covered
