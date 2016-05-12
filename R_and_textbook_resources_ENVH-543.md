@@ -56,7 +56,7 @@ statistical analyses of environmental data.
 - Contains T/F quizzes to test basic knowledge of the topics covered
 - Contains numerous exercises with answers or solutions
 
-[Understanding Statistics Using R](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71118536020001451), Schumacker, R. E., & Tomek, S. 2013 New York: Springer. 
+[Understanding Statistics Using R](http://offcampus.lib.washington.edu/login?url=http://link.springer.com/book/10.1007%2F978-1-4614-6227-9), Schumacker, R. E., & Tomek, S. 2013 New York: Springer. 
 
 ### Beginning Data Science with R
 
