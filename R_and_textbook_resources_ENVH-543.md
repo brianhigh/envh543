@@ -48,6 +48,16 @@ statistical analyses of environmental data.
 
 [EnvStats](http://offcampus.lib.washington.edu/login?url=http://link.springer.com/book/10.1007/978-1-4614-8456-1), An R Package for Environmental Statistics, Steven P. Millard. 2013 New York: Springer.
 
+### Understanding Statistics Using R
+
+- Written to provide resource materials statistics classes
+- Ordered along the lines of many popular statistics books
+- Contains R script programs to demonstrate important topics and concepts
+- Contains T/F quizzes to test basic knowledge of the topics covered
+- Contains numerous exercises with answers or solutions
+
+[Understanding Statistics Using R](http://alliance-primo.hosted.exlibrisgroup.com/UW:all:CP71118536020001451), Schumacker, R. E., & Tomek, S. 2013 New York: Springer. 
+
 ### Beginning Data Science with R
 
 - Introduces fundamental data science methodologies using the R programming language
