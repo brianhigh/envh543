@@ -128,6 +128,16 @@ See [Chapter 8. Simulations](https://books.google.com/books?id=MI92BgAAQBAJ&lpg=
 You can [access this eBook without  cost](http://ezproxy.spl.org:2048/login?url=http://proquest.safaribooksonline.com/9781783555253) 
 if you have a Seattle Public Library [card](http://www.spl.org/using-the-library/get-started/get-a-library-card).
 
+### Chemometrics with R: Multivariate Data Analysis in the Natural Sciences and Life Sciences
+
+- An accessible introduction to the world of multivariate statistics in the life sciences
+- Provides a complete description of the general data analysis paradigm
+- Specific topics from the area of chemometrics are included in a special section
+- R code is provided for all the examples in the book
+- Scripts, functions and data are available in a separate, publicly available R package
+
+[Chemometrics with R: Multivariate Data Analysis in the Natural Sciences and Life Sciences](http://offcampus.lib.washington.edu/login?url=http://link.springer.com/book/10.1007%2F978-3-642-17841-2), Ron Wehrens. 2011 Heidelberg ; New York : Springer.
+
 ### R for Stata Users
 
 - This book shows you how to extend the power of Stata through the use of R. 
