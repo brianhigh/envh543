@@ -56,6 +56,16 @@ statistical analyses of environmental data.
 
 [EnvStats](http://offcampus.lib.washington.edu/login?url=http://link.springer.com/book/10.1007/978-1-4614-8456-1), An R Package for Environmental Statistics, Steven P. Millard. 2013 New York: Springer.
 
+
+### Introduction to Data Analysis and Graphical Presentation in Biostatistics 
+
+- An introduction to the use of R in biostatistics
+- Structured to demonstrate the use of R syntax
+- Small and easy-to-follow confidence-building examples
+- For students of informatics, medicine, biology, biostatistics and bioinformatics
+
+[Introduction to data analysis and graphical presentation in biostatistics with R](http://offcampus.lib.washington.edu/login?url=http://link.springer.com/book/10.1007%2F978-3-319-02532-2), MacFarland, Thomas W. 2014 Cham : Springer.
+
 ### Understanding Statistics Using R
 
 - Written to provide resource materials for statistics classes
