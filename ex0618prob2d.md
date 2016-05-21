@@ -542,6 +542,33 @@ plot(expo.ev1$expo.mc1)
 
 ![](ex0618prob2d_files/figure-html/plot-mc1-1.png)
 
+As before, we can also plot with other functions like `ggplot()`.
+
+
+```r
+# Create the risk matrix from the mcnode.
+Risk.mat <- expo.ev1$expo.mc1[,,]
+
+# Calculate quantiles.
+probs <- c(0.025, 0.25, 0.50, 0.75, 0.975)
+quant <- as.data.frame(t(apply(Risk.mat, 1, quantile, probs = probs)))
+
+# Define a palette of shades of gray for plotting quantiles.
+grays <- c('gray75', 'gray35', 'black', 'gray35', 'gray75')
+
+# Reshape from "wide" to "long" format.
+quant.melt <- suppressMessages(melt(quant))
+names(quant.melt) <- c('q', 'x')
+
+# Calculate ECDFs and plot lines for them, using our custom gray palette.
+ggplot(quant.melt, aes(x = x)) + theme_bw() + theme(legend.position = 'none') + 
+    geom_hline(yintercept = c(0, 1), linetype = "dashed", color = 'gray') +
+    stat_ecdf(aes(group = q, color = q)) + xlab('x') + ylab('Fn(x)') + 
+    scale_colour_manual(values = grays)
+```
+
+![](ex0618prob2d_files/figure-html/plot-mc1-ggplot-1.png)
+
 ## Compare manual and mc2d simulations
 
 How do our results from mc2d compare with the "manual" method we tried first?
