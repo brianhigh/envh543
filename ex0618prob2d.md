@@ -270,6 +270,18 @@ ggplot(quant.melt, aes(x = x)) + theme_bw() + theme(legend.position = 'none') +
 
 ![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-ggplot2-1.png)
 
+We can also use the `Ecdf()` plotting function from the _Hmisc_ package.
+
+
+```r
+load.pkgs(c("Hmisc"))
+Ecdf(x = quant.melt$x, group = quant.melt$q, col = grays, 
+     label.curves = FALSE, xlab = 'x', ylab = 'Fn(x)', subtitles = FALSE)
+abline(h = 0:1, col = "gray", lty = 2)
+```
+
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-hmisc-ecdf-1.png)
+
 Finally, we can produce this same sort of plot by using the `plot.mcnode()` 
 function of the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) 
 package. With this, we may easily compare with plots from later examples. This 
