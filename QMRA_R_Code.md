@@ -40,16 +40,26 @@ result as PDF.
 
 ![](print_code_from_qmra_book.png)
 
+An alternative way to extract the pages containing R code using `bash` is to use 
+`wget` to fetch the PDF ebook file from the web and extract pages with `pdftk`. 
+For this, we can use a link the PDF ebook file on the web as provided by Wiley.
+
+
+```bash
+wget -O QMRA2.pdf 'https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781118910030'
+pdftk QMRA2.pdf cat 234 257 259 321 338-340 342 output QMRA2_extract.pdf
+```
+
 These `bash` commands will extract the R code from the PDF and list the figures. 
 
 
 ```bash
 pdftotext \
-    "Quantitative Microbial Risk Assessment.pdf" \
-    "Quantitative Microbial Risk Assessment.txt"
+    "QMRA2_extract.pdf" \
+    "QMRA2_extract.txt"
 
 egrep -i 'R function|R code|R listing|listing in R|code snippet' \
-    "Quantitative Microbial Risk Assessment.txt"
+    "QMRA2_extract.txt"
 ```
 
 After that, any extra text may be removed using a text editor.
