@@ -36,8 +36,8 @@ opts_chunk$set(cache=TRUE, message=FALSE)
 # Define variables provided in the example for three exposure types.
 
 # Shellfish consumption
-shellfish.viral.load <- 1
-shellfish.cons.g <- 9e-4 * 150  # 9e-4 days/year * 150 g/day
+sf.viral.load <- 1
+sf.cons.g <- 9e-4 * 150  # 9e-4 days/year * 150 g/day
 
 # Drinking water consumption
 dw.viral.load <- 0.001
@@ -56,10 +56,10 @@ sw.frequency <- 7               # Exposure frequency of 7 swims per year
 # mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
 # are from the QMRA textbook (Haas, 2014), page 216, Table 6.30.
 set.seed(1)
-water.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
+dw.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
 
 # Plot the kernal density curve of the generated values just as a check.
-plot(density(water.cons.L))
+plot(density(dw.cons.L))
 
 # Sample 5000 times from a discrete distribution of swim duration with 
 # assigned probabilities of each outcome. These values are hypothetical 
@@ -79,19 +79,19 @@ Calculate estimated daily dose using a probabilistic simulation model.
 
 ```{r}
 # Define a function to calculate microbial exposure risk.
-Risk.fcn <- function(shellfish.vl, shellfish.cons.g, water.cons.L, dw.vl, sw.vl, 
+Risk.fcn <- function(sf.vl, sf.cons.g, dw.cons.L, dw.vl, sw.vl, 
                      sw.daily.IR, sw.duration, sw.frequency) {
-    ((shellfish.vl * shellfish.cons.g) + (water.cons.L * dw.vl) + 
+    ((sf.vl * sf.cons.g) + (dw.cons.L * dw.vl) + 
          ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
 }
 
 # Compute 5000 simulated daily dose results and store as a vector.
 daily.dose <- sapply(1:5000, 
-                     function(i) Risk.fcn(water.cons.L = water.cons.L[i], 
+                     function(i) Risk.fcn(dw.cons.L = dw.cons.L[i], 
                                           sw.duration = swim.duration[i], 
-                                          shellfish.vl = shellfish.viral.load, 
+                                          sf.vl = sf.viral.load, 
                                           dw.vl = dw.viral.load, 
-                                          shellfish.cons.g = shellfish.cons.g, 
+                                          sf.cons.g = sf.cons.g, 
                                           sw.vl = sw.viral.load, 
                                           sw.daily.IR = sw.daily.IR, 
                                           sw.frequency = sw.frequency))

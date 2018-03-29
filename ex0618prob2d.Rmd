@@ -70,11 +70,11 @@ suppressMessages(load.pkgs(c("mc2d")))    # Or just use: library(mc2d)
 # Values from Example 6.18 from Quantitative Microbial Risk Assessment, 
 # 2nd Edition by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. 
 # (Wiley, 2014), pp. 215-216.
-shellfish.viral.load  <- 1        # Shellfish viral loading (viruses/g)
-dw.viral.load         <- 0.001    # Drinking water viral loading (viruses/L)
-shellfish.cons.g      <- 0.135    # Shellfish consumption (viruses/day)
-sw.viral.load         <- 0.1      # Swimming in viral loading (viruses/L)
-sw.frequency          <- 7        # Swimming frequency (swims/year)
+sf.viral.load  <- 1          # Shellfish viral loading (viruses/g)
+dw.viral.load  <- 0.001      # Drinking water viral loading (viruses/L)
+sf.cons.g      <- 0.135      # Shellfish consumption (viruses/day)
+sw.viral.load  <- 0.1        # Swimming in viral loading (viruses/L)
+sw.frequency   <- 7          # Swimming frequency (swims/year)
 
 # Define an integer to use when setting the seed of the random number generator.
 seed <- 1
@@ -121,9 +121,9 @@ plot(density(sw.d.IR))
 Define a risk function to calculate estimated microbial exposure.
 
 ```{r}
-Risk.fcn <- function(shellfish.vl, shellfish.cons.g, water.cons.L, dw.vl, 
+Risk.fcn <- function(sf.vl, sf.cons.g, dw.cons.L, dw.vl, 
                      sw.vl, sw.daily.IR, sw.duration, sw.frequency) {
-    ((shellfish.vl * shellfish.cons.g) + (water.cons.L * dw.vl) + 
+    ((sf.vl * sf.cons.g) + (dw.cons.L * dw.vl) + 
          ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
 }
 ```
@@ -155,7 +155,7 @@ for (j in 1:nsu) {
     #    mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
     #    are from the QMRA textbook (Haas et al. 2014), page 216, Table 6.30.
     set.seed(seed)
-    water.cons.L <- rlnorm(n = nsv, meanlog = 7.49, sdlog = 0.407) / 1000
+    dw.cons.L <- rlnorm(n = nsv, meanlog = 7.49, sdlog = 0.407) / 1000
     
     # 2. Sample 5000 times from a discrete distribution of swim duration with 
     #    assigned probabilities of each outcome. These values are hypothetical 
@@ -169,11 +169,11 @@ for (j in 1:nsu) {
     # Compute 5000 daily simulations and store as a vector in a matrix.
     Risk.mat[, j] <- sapply(1:nsv, function(i) 
         # Define a function to calculate esimated microbial exposure risk.
-        Risk.fcn(water.cons.L = water.cons.L[i],
+        Risk.fcn(dw.cons.L = dw.cons.L[i],
                  sw.duration = swim.duration[i],
-                 shellfish.vl = shellfish.viral.load,
+                 sf.vl = sf.viral.load,
                  dw.vl = dw.viral.load,
-                 shellfish.cons.g = shellfish.cons.g,
+                 sf.cons.g = sf.cons.g,
                  sw.vl = sw.viral.load,
                  sw.daily.IR = sw.d.IR[j],
                  sw.frequency = sw.frequency))
@@ -347,10 +347,10 @@ expo.mod1 <- mcmodel({
     # (Wiley, 2014), pp. 215-216. Other fictitious values are noted below.
         
     # Shellfish viral loading (viruses/g):
-    shellfish.vl <- mcdata(1, type = "0")
+    sf.vl <- mcdata(1, type = "0")
     
     # Shellfish consumption (g/day):
-    shellfish.cons.g <- mcdata(0.135, type = "0")
+    sf.cons.g <- mcdata(0.135, type = "0")
     
     # Drinking water viral loading (viruses/L):
     dw.vl <- mcdata(0.001, type = "0")
@@ -375,11 +375,11 @@ expo.mod1 <- mcmodel({
     sw.frequency <- mcdata(7, type = "0")
     
     # Estimate the exposure using the 0, V and U nodes to create a VU node.
-    expo.mc1 <- (shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
+    expo.mc1 <- (sf.vl * sf.cons.g) + (dw.vl * dw.cons.L) + 
            ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)
     
     # Build a mc model from all of the mcnode objects.
-    mc(shellfish.vl, shellfish.cons.g, dw.vl, dw.cons.L, sw.vl, sw.daily.IR, 
+    mc(sf.vl, sf.cons.g, dw.vl, dw.cons.L, sw.vl, sw.daily.IR, 
        sw.duration, sw.frequency, expo.mc1) 
 })
 ```
@@ -557,10 +557,10 @@ expo.mcmcut <- mcmodelcut({
         # (Wiley, 2014), pp. 215-216. Other fictitious values are noted below.
         
         # Shellfish viral loading (viruses/g):
-        shellfish.vl <- mcdata(1, type = "0")
+        sf.vl <- mcdata(1, type = "0")
         
         # Shellfish consumption (g/day):
-        shellfish.cons.g <- mcdata(0.135, type = "0")
+        sf.cons.g <- mcdata(0.135, type = "0")
         
         # Drinking water viral loading (viruses/L):
         dw.vl <- mcdata(0.001, type = "0")
@@ -588,11 +588,11 @@ expo.mcmcut <- mcmodelcut({
     # Block2: Evaluate all of the VU nodes. Last statement makes an mc object.
     {
         # Estimate the exposure using the 0, V and U nodes to create a VU node.
-        expo.mc2 <- (shellfish.vl * shellfish.cons.g) + (dw.vl * dw.cons.L) + 
+        expo.mc2 <- (sf.vl * sf.cons.g) + (dw.vl * dw.cons.L) + 
             ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)
    
         # Build a mc model from all of the mcnode objects.
-        expo.mod2 <- mc(shellfish.vl, shellfish.cons.g, dw.vl, dw.cons.L, 
+        expo.mod2 <- mc(sf.vl, sf.cons.g, dw.vl, dw.cons.L, 
                         sw.vl, sw.daily.IR, sw.duration, sw.frequency, expo.mc2)
     }
 
