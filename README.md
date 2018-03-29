@@ -27,3 +27,17 @@ health effects assessment, risk characterization, and risk communication.
         + [Solution in R](ex0618.md)
         + [Probabilistic Solution (1-D M.C.) in R](ex0618prob.md)
         + [Probabilistic Solution (2-D M.C.) in R](ex0618prob2d.md)
+
+## R Introduction
+
+Time   |Session |Topic
+-------|---------------------|---------------------------------------------
+15 min |April 2 |[Using R](https://github.com/brianhigh/computing_bootcamp/blob/master/R/using_r.md) and [Intro to RStudio](https://github.com/brianhigh/computing_bootcamp/blob/master/R/intro_to_rstudio.md)
+10 min |April 2 |[Version Control with RStudio and GitHub](https://github.com/brianhigh/computing_bootcamp/blob/master/R/version_control.md)
+10 min |April 2 |[Interactive Prompt](https://github.com/brianhigh/computing_bootcamp/blob/master/R/r_interactive_prompt.md) and [Getting Help](https://github.com/brianhigh/computing_bootcamp/blob/master/R/getting_help.md)
+10 min |April 2 |[R Packages: Installing and Loading](https://github.com/brianhigh/computing_bootcamp/blob/master/R/r_packages_installing_loading.md)
+10 min |April 4 |[R Sessions, Files, and Scripts](https://github.com/brianhigh/computing_bootcamp/blob/master/R/r_sessions_fles_and_scripts.md)
+10 min |April 4 |[Literate Programming with R and RStudio](https://github.com/brianhigh/computing_bootcamp/blob/master/R/literate_programming_with_r_and_rstudio.md)
+10 min |April 4 |[R Language Basics](https://github.com/brianhigh/computing_bootcamp/blob/master/R/R_language_basics.md)
+15 min |April 4 |[R Data Types](https://github.com/brianhigh/computing_bootcamp/blob/master/R/R_data_types.md) and [R Data Structures](https://github.com/brianhigh/computing_bootcamp/blob/master/R/R_data_structures.md)
+
