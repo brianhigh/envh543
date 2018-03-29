@@ -18,6 +18,7 @@ health effects assessment, risk characterization, and risk communication.
 ## Contents of this repository
 
 - [R and textbook resources](R_and_textbook_resources_ENVH-543.md)
+- [Access to QMRA texbook eBook (UW students only)](Downloading_the_QMRA_textbook.pdf)
 - [R Introduction Lab Presentation](Rintropresentation.md)
 - Examples
     * [R code provided in QMRA, 2nd ed. textbook](QMRA_R_Code.md)
