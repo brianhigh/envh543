@@ -8,7 +8,8 @@ This document offers a 1-D
 [Monte Carlo](https://en.wikipedia.org/wiki/Monte_Carlo_method) probabilistic 
 solution in R for the daily microbial exposure from drinking water consumption, 
 swimming in surface water and shellfish consumption for 
-[Example 6.18](images/ex0618.png) from pages 215-216 of:
+[Example 6.18](images/ex0618.png) from pages 
+[215-216](https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781118910030.ch6#page=57) of:
 
 [Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
 by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
@@ -56,7 +57,7 @@ water.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
 plot(density(water.cons.L))
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-3-1.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
 ```r
 # Sample 5000 times from a discrete distribution of swim duration with 
@@ -71,7 +72,7 @@ swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE,
 hist(swim.duration)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-3-2.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-3-2.png)<!-- -->
 
 ## Estimate daily dose
 
@@ -196,7 +197,7 @@ plot(dens)
 add_lines_and_legend(meas, 0.139, 550)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-8-1.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 ### Plot the empirical cumulative distribution
 
@@ -209,4 +210,4 @@ plot(ecdf(daily.dose))
 add_lines_and_legend(meas, 0.139, 0.8)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-9-1.png)
+![](ex0618prob_files/figure-html/unnamed-chunk-9-1.png)<!-- -->

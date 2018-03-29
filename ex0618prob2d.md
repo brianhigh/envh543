@@ -8,7 +8,8 @@ This document offers three 2-D
 [Monte Carlo](https://en.wikipedia.org/wiki/Monte_Carlo_method) probabilistic 
 solutions in R for the daily microbial exposure from drinking water consumption, 
 swimming in surface water and shellfish consumption for 
-[Example 6.18](images/ex0618.png) from pages 215-216 of:
+[Example 6.18](images/ex0618.png) from pages 
+[215-216](https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781118910030.ch6#page=57) of:
 
 [Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
 by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
@@ -112,7 +113,7 @@ Plot the kernel density estimates for surface water ingestion rate.
 plot(density(sw.d.IR))
 ```
 
-![](ex0618prob2d_files/figure-html/kernel-density-plot-1.png)
+![](ex0618prob2d_files/figure-html/kernel-density-plot-1.png)<!-- -->
 
 ### Define exposure risk function
 
@@ -224,7 +225,7 @@ load.pkgs(c("miscTools"))
 plot(ecdf(rowMedians(Risk.mat)))
 ```
 
-![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-basic-1.png)
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-basic-1.png)<!-- -->
 
 We can plot more quantiles, but it takes a little more work. We will need to 
 store the quantiles for each row in a data frame. We begin constructing our 
@@ -247,7 +248,7 @@ grays <- c('gray75', 'gray35', 'black', 'gray35', 'gray75')
 lines <- mapply(function(e, g) lines(e, col = g), ecdfs, grays)
 ```
 
-![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-quantiles-1.png)
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-quantiles-1.png)<!-- -->
 
 Alternatively, we can produce a similar plot with _ggplot2_. First we need to
 reshape the data frame with `melt()` (from the _reshape_ package), then we can
@@ -268,7 +269,7 @@ ggplot(quant.melt, aes(x = x)) + theme_bw() + theme(legend.position = 'none') +
     scale_colour_manual(values = grays)
 ```
 
-![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-ggplot2-1.png)
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-ggplot2-1.png)<!-- -->
 
 We can also use the `Ecdf()` plotting function from the _Hmisc_ package.
 
@@ -280,7 +281,7 @@ Ecdf(x = quant.melt$x, group = quant.melt$q, col = grays,
 abline(h = 0:1, col = "gray", lty = 2)
 ```
 
-![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-hmisc-ecdf-1.png)
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-hmisc-ecdf-1.png)<!-- -->
 
 Finally, we can produce this same sort of plot by using the `plot.mcnode()` 
 function of the [mc2d](https://cran.r-project.org/web/packages/mc2d/index.html) 
@@ -297,7 +298,7 @@ expo.mc <- mcdata(Risk.mat, type = 'VU', nsv = nsv, nsu = nsu)
 plot(expo.mc)     # This actually calls plot.mcnode().
 ```
 
-![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png)
+![](ex0618prob2d_files/figure-html/ecdf-plot-risk-mat-1.png)<!-- -->
 
 ## Repeat the simulation with mc2d
 
@@ -520,7 +521,7 @@ summary(expo.ev1)
 plot(expo.ev1)
 ```
 
-![](ex0618prob2d_files/figure-html/results-ev1-1.png)
+![](ex0618prob2d_files/figure-html/results-ev1-1.png)<!-- -->
 
 Report the mean and median of the means with a 95% confidence interval (CI95). 
 
@@ -552,7 +553,7 @@ Plot the empirical cumulative distribution function (ecdf) of the exposure model
 plot(expo.ev1$expo.mc1)
 ```
 
-![](ex0618prob2d_files/figure-html/plot-mc1-1.png)
+![](ex0618prob2d_files/figure-html/plot-mc1-1.png)<!-- -->
 
 As before, we can also plot with other functions like `ggplot()`.
 
@@ -579,7 +580,7 @@ ggplot(quant.melt, aes(x = x)) + theme_bw() + theme(legend.position = 'none') +
     scale_colour_manual(values = grays)
 ```
 
-![](ex0618prob2d_files/figure-html/plot-mc1-ggplot-1.png)
+![](ex0618prob2d_files/figure-html/plot-mc1-ggplot-1.png)<!-- -->
 
 ## Compare manual and mc2d simulations
 
@@ -871,7 +872,7 @@ summary(expo.ev2)
 plot(expo.ev2)
 ```
 
-![](ex0618prob2d_files/figure-html/results-ev2-1.png)
+![](ex0618prob2d_files/figure-html/results-ev2-1.png)<!-- -->
 
 Report the mean and median of the means with a 95% confidence interval (CI95).
 
@@ -912,7 +913,7 @@ expo.mc2d <- mcdata(expo.qt, type='VU', nsv='1001', nsu='250')
 plot(expo.mc2d)
 ```
 
-![](ex0618prob2d_files/figure-html/plot-mc2d-1.png)
+![](ex0618prob2d_files/figure-html/plot-mc2d-1.png)<!-- -->
 
 ## A look inside an `mcnode` object
 
@@ -967,7 +968,7 @@ plotting the new `mcnode` object made from the transposed quantile array.
 plot(expo.qt)
 ```
 
-![](ex0618prob2d_files/figure-html/plot-expo-qt-1.png)
+![](ex0618prob2d_files/figure-html/plot-expo-qt-1.png)<!-- -->
 
 The two plots are identical because the two objects from which they were made 
 are identical. 
