@@ -32,17 +32,25 @@ options(digits=3)
 
 ## Enter input data
 
+Store the data provided in the textbook into one vector per variable. 
+
 ```{r}
 # Create a data frame with input data.
 exposure.source <- c("drinking water", "swimming", "shellfish")
 viral.load <- c(0.001, 0.1, 1)
 load.units <- c("viruses/L", "viruses/L", "viruses/g")
-IR <- c(NA, 50, NA)                 # units: mL/hr; "IR" = "ingestion rate"
+IR <- c(NA, 50/1000, NA)            # units: L/hr; "IR" = "ingestion rate"
 duration <- c(NA, 2.6, NA)          # units: hrs
-frequency <- c(NA, 7, NA)           # units: days/yr
-avg.daily.IR <- c(1.4, NA, 0.135)   # units: L/day or g/day; see: load.units
+cons <- c(NA, NA, 150)              # units: L or g
+freq <- c(NA, 7, .0009*365)         # units: days/yr
+avg.daily.IR <- c(1.4, NA, NA)      # units: L/day or g/day; see: load.units
+```
+
+Combine the vectors into a data frame, where each vector becomes a column.
+
+```{r}
 df <- data.frame(exposure.source, viral.load, load.units, IR, duration, 
-                 frequency, avg.daily.IR)
+                 cons, freq, avg.daily.IR)
 ```
 
 ## View the input data
@@ -50,27 +58,54 @@ df <- data.frame(exposure.source, viral.load, load.units, IR, duration,
 ```{r}
 # Display the dataset, using scientific notation for the viral load.
 df$v.load.sn <- format(df$viral.load, scientific = TRUE)
-print(df[, c(1, 8, 3:7)])
+knitr::kable(df[, c(1, 9, 3:8)])
 ```
 
+## Estimate amount consumed
 
-## Calculate ingestion rate
+Before estimating the average daily ingestion rate, estimate the amount
+of medium which has been consumed per occurence. Calculate the estimated 
+consumption for those exposure sources which are missing both the ingestion 
+rate and the consumption.
 
 ```{r}
-# Function: Calculate the avg. daily IR given the IR, duration, and frequency.
-calc.avg.daily.IR <- function(IR, duration, frequency) {
-    # Multiply the IR in mL/hr, duration in hrs and frequency in days/yr and 
-    # then divide by 365 days/year and 1000 mL/L.
-    IR * duration * frequency / 365 / 1000
+# Function: Calculate the consumption (amount of medium consumed) per occurence.
+calc.cons.per.occur <- function(IR, duration) {
+    # Multiply the IR in L/hr by the duration in hrs.
+    IR * duration
+}
+
+# Calculate the consumption for those exposure sources missing this value.
+missing.cons <- is.na(df$avg.daily.IR) & is.na(df$cons)
+df[missing.cons, "cons"] <- with(df[missing.cons, ], 
+                                 calc.cons.per.occur(IR, duration))
+knitr::kable(df[, c(1, 9, 3:8)])
+```
+
+## Estimate average daily ingestion rate
+
+Calculate the estimated average daily ingestion rate for those exposure sources 
+which are missing it.
+
+```{r}
+# Function: Calculate the avg. daily IR given the consumption and frequency.
+calc.avg.daily.IR <- function(cons, frequency) {
+    # Multiply the consumption (L or g) and frequency in days/yr and 
+    # then divide by 365 days/year.
+    cons * frequency / 365
 }
 
 # Calculate the average daily IR for those exposure sources missing this value.
-df[is.na(df$avg.daily.IR), "avg.daily.IR"] <- with(
-    df[is.na(df$avg.daily.IR), ], calc.avg.daily.IR(IR, duration, frequency))
-print(df[, c(1, 8, 3:7)])
+missing.IR <- is.na(df$avg.daily.IR)
+df[missing.IR, "avg.daily.IR"] <- with(df[missing.IR, ], 
+                                       calc.avg.daily.IR(cons, freq))
+knitr::kable(df[, c(1, 9, 3:8)])
 ```
 
 ## Estimate exposures
+
+Estimate the daily exposure for each source by multiplying the viral load by 
+the average daily ingestion rate.
 
 ```{r}
 # Function: Calculate the dose given the viral load and average daily IR.
@@ -84,21 +119,28 @@ calc.dose <- function(viral.load, avg.daily.IR) {
 df$dose <- with(df, calc.dose(viral.load, avg.daily.IR))
 df$dose.sn <- format(df$dose, scientific = TRUE)  # Use scientific notation.
 df$dose.units <- "viruses/day"
-print(df[, c(1, 8, 3, 7, 10, 11)])
+knitr::kable(df[, c(1, 9, 3, 8, 11, 12)])
 ```
 
 ## Estimate total exposure
 
+Estimate the total daily exposure by calculating the sum of the estimated 
+exposures for all of the sources.
+
 ```{r}
 # Calculate the total average daily dose for all exposure sources combined.
 daily.dose <- sum(df$dose)
-print(format(daily.dose, scientific = TRUE))  # Use scientific notation.
+knitr::kable(format(daily.dose, scientific = TRUE))  # Use scientific notation.
 ```
 
 ## Estimate exposures as fraction of total
 
+Estimate the fraction of the total daily exposure due to each source by 
+dividing the estimated exposure per source by the total estimated daily 
+exposure.
+
 ```{r}
 # Calculate the average daily dose by source as a fraction of the total.
 df$fraction <- round(df$dose / daily.dose, digits = 3)
-print(df[, c(1, 12)])
+knitr::kable(df[, c(1, 13)], format = "html", table.attr = "style='width:30%;'")
 ```
