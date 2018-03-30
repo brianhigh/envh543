@@ -58,7 +58,8 @@ df <- data.frame(exposure.source, viral.load, load.units, IR, duration,
 ```{r}
 # Display the dataset, using scientific notation for the viral load.
 df$v.load.sn <- format(df$viral.load, scientific = TRUE)
-knitr::kable(df[, c(1, 9, 3:8)], format = "html")
+knitr::kable(df[, c(1, 9, 3:8)], format = "html", 
+             table.attr = "style='width:100%;'")
 ```
 
 ## Estimate amount consumed
@@ -79,7 +80,8 @@ calc.cons.per.occur <- function(IR, duration) {
 missing.cons <- is.na(df$avg.daily.IR) & is.na(df$cons)
 df[missing.cons, "cons"] <- with(df[missing.cons, ], 
                                  calc.cons.per.occur(IR, duration))
-knitr::kable(df[, c(1, 9, 3:8)], format = "html")
+knitr::kable(df[, c(1, 9, 3:8)], format = "html", 
+             table.attr = "style='width:100%;'")
 ```
 
 ## Estimate average daily ingestion rate
@@ -99,7 +101,8 @@ calc.avg.daily.IR <- function(cons, frequency) {
 missing.IR <- is.na(df$avg.daily.IR)
 df[missing.IR, "avg.daily.IR"] <- with(df[missing.IR, ], 
                                        calc.avg.daily.IR(cons, freq))
-knitr::kable(df[, c(1, 9, 3:8)], format = "html")
+knitr::kable(df[, c(1, 9, 3:8)], format = "html", 
+             table.attr = "style='width:100%;'")
 ```
 
 ## Estimate exposures
@@ -119,7 +122,8 @@ calc.dose <- function(viral.load, avg.daily.IR) {
 df$dose <- with(df, calc.dose(viral.load, avg.daily.IR))
 df$dose.sn <- format(df$dose, scientific = TRUE)  # Use scientific notation.
 df$dose.units <- "viruses/day"
-knitr::kable(df[, c(1, 9, 3, 8, 11, 12)], format = "html")
+knitr::kable(df[, c(1, 9, 3, 8, 11, 12)], format = "html", 
+             table.attr = "style='width:80%;'")
 ```
 
 ## Estimate total exposure
