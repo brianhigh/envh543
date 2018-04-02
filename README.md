@@ -31,7 +31,7 @@ health effects assessment, risk characterization, and risk communication.
 ## R Introduction
 
 Time   |Session |Topic
--------|---------------------|---------------------------------------------
+-------|--------|---------------------------------------------
 15 min |April 2 |[Using R](https://github.com/brianhigh/computing_bootcamp/blob/master/R/using_r.md) and [Intro to RStudio](https://github.com/brianhigh/computing_bootcamp/blob/master/R/intro_to_rstudio.md)
 10 min |April 2 |[Version Control with RStudio and GitHub](https://github.com/brianhigh/computing_bootcamp/blob/master/R/version_control.md)
 10 min |April 2 |[Interactive Prompt](https://github.com/brianhigh/computing_bootcamp/blob/master/R/r_interactive_prompt.md) and [Getting Help](https://github.com/brianhigh/computing_bootcamp/blob/master/R/getting_help.md)
@@ -41,3 +41,10 @@ Time   |Session |Topic
 10 min |April 4 |[R Language Basics](https://github.com/brianhigh/computing_bootcamp/blob/master/R/R_language_basics.md)
 15 min |April 4 |[R Data Types](https://github.com/brianhigh/computing_bootcamp/blob/master/R/R_data_types.md) and [R Data Structures](https://github.com/brianhigh/computing_bootcamp/blob/master/R/R_data_structures.md)
 
+### R Data Management, Wrangling and Modular Programming
+
+Time   |Topic
+-------|---------------------------------------------
+15 min | [R Data Management](https://github.com/brianhigh/computing_bootcamp/blob/master/R/data_management_in_r.md)
+15 min | [Data Wrangling in R](https://github.com/brianhigh/computing_bootcamp/blob/master/R/data_wrangling_in_r.md)
+30 min | [Modular Programming: Writing Functions and Packages](https://github.com/brianhigh/computing_bootcamp/blob/master/R/modular_programming.md) 
