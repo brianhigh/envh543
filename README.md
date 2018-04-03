@@ -1,13 +1,14 @@
 # envh543
 
 Course materials for ENV H 543: Quantitative Microbial Risk Assessment,
-offered by the University of Washington in Spring, 2016.
+offered by the University of Washington in Spring, 2018.
 
 ## Instructors
 
 * John Scott Meschke
 * John C. Kissel
 * Mary Schoen
+* Brian High
 
 ## Course Description
 
@@ -28,7 +29,9 @@ health effects assessment, risk characterization, and risk communication.
         + [Probabilistic Solution (1-D M.C.) in R](ex0618prob.md)
         + [Probabilistic Solution (2-D M.C.) in R](ex0618prob2d.md)
 
-## R Introduction
+## Supplementary Materials
+
+### R Introduction
 
 Time   |Session |Topic
 -------|--------|---------------------------------------------
