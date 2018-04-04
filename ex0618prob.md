@@ -31,7 +31,7 @@ opts_chunk$set(cache=TRUE, message=FALSE)
 
 # Shellfish consumption
 sf.viral.load <- 1
-sf.cons.g <- 9e-4 * 150  # 9e-4 days/year * 150 g/day
+sf.cons.g <- 9e-4 * 150         # 9e-4 days/year * 150 g/day
 
 # Drinking water consumption
 dw.viral.load <- 0.001
