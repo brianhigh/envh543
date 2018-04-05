@@ -14,6 +14,18 @@ swimming in surface water and shellfish consumption for
 [Quantitative Microbial Risk Assessment, 2nd Edition](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118145291,subjectCd-CH20.html) 
 by Charles N. Haas, Joan B. Rose, and Charles P. Gerba. (Wiley, 2014).
 
+This is the copyright statement for the book:
+
+> © Haas, Charles N.; Rose, Joan B.; Gerba, Charles P., Jun 02, 2014, 
+> Quantitative Microbial Risk Assessment Wiley, Somerset, ISBN: 9781118910528
+
+The data for this example comes from this book, but the R code presented below 
+is an original work, released under a 
+[Creative Commons Attribution-ShareAlike 4.0 International License]( https://creativecommons.org/licenses/by-sa/4.0/). 
+Details may be found at the end of this document.
+
+## Three Solutions
+
 The first solution is coded manually with functionality built into "base" R.
 
 The second and third solutions use the _mc2d_ package.
