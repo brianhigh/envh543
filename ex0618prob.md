@@ -35,10 +35,10 @@ opts_chunk$set(cache=TRUE, message=FALSE)
 
 ## Define variables
 
+Define variables provided in the example for three exposure types.
+
 
 ```r
-# Define variables provided in the example for three exposure types.
-
 # Shellfish consumption
 sf.viral.load <- 1
 sf.cons.g <- 9e-4 * 150         # 9e-4 days/year * 150 g/day
@@ -52,52 +52,79 @@ sw.daily.IR <- 50               # Ingestion rate in mL of surface water
 sw.frequency <- 7               # Exposure frequency of 7 swims per year
 ```
 
-## Sample from probability distributions
+## Sample from probablity distributions
+
+Sample from the probablity distributions for drinking water and swim duration. 
+Also plot from these distributions as a quick visual check.
+
+### Drinking water
+
+Generate 5000 random values from a log-normal distribution to estimate 
+exposure from consumption of drinking water (ml/day). Divide by 1000 
+mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
+are from the QMRA textbook (Haas, 2014), page 216, Table 6.30.
 
 
 ```r
-# Generate 5000 random values from a log-normal distribution to estimate 
-# exposure from consumption of drinking water (ml/day). Divide by 1000 
-# mL/L to get consumption in liters/day.  Values for meanlog and sdlog 
-# are from the QMRA textbook (Haas, 2014), page 216, Table 6.30.
 set.seed(1)
 dw.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
+```
 
-# Plot the kernal density curve of the generated values just as a check.
+Plot the kernal density curve of the generated values just as a check.
+
+
+```r
 plot(density(dw.cons.L))
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](ex0618prob_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
+### Swim duration
+
+Sample 5000 times from a discrete distribution of swim duration with 
+assigned probabilities of each outcome. These values are hypothetical 
+and are not found in the text, but are defined here to provide an 
+example of sampling from a discrete distribution.
+
 
 ```r
-# Sample 5000 times from a discrete distribution of swim duration with 
-# assigned probabilities of each outcome. These values are hypothetical 
-# and are not found in the text, but are defined here to provide an 
-# example of sampling from a discrete distribution.
 set.seed(1)
 swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE, 
                         prob = c(0.1, 0.1, 0.2, 0.6))
+```
 
-# Create a simple histogram of our distribution as a check.
+Create a simple histogram of our distribution as a check.
+
+
+```r
 hist(swim.duration)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-3-2.png)<!-- -->
+![](ex0618prob_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 ## Estimate daily dose
 
 Calculate estimated daily dose using a probabilistic simulation model.
 
+### Define risk function
+
+Define a function to calculate microbial exposure risk.
+
 
 ```r
-# Define a function to calculate microbial exposure risk.
 Risk.fcn <- function(sf.vl, sf.cons.g, dw.cons.L, dw.vl, sw.vl, 
                      sw.daily.IR, sw.duration, sw.frequency) {
     ((sf.vl * sf.cons.g) + (dw.cons.L * dw.vl) + 
          ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
 }
+```
 
-# Compute 5000 simulated daily dose results and store as a vector.
+### Compute the simulation
+
+Compute 5000 simulated daily dose results and store as a vector.
+
+
+```r
 daily.dose <- sapply(1:5000, 
                      function(i) Risk.fcn(dw.cons.L = dw.cons.L[i], 
                                           sw.duration = swim.duration[i], 
@@ -110,6 +137,10 @@ daily.dose <- sapply(1:5000,
 ```
 
 ## Summarize results
+
+For the vector of simulated daily dose results, first report the geometric 
+mean, then plot the kernel density estimates and finally the empirical 
+cumulative distribution.
 
 
 ```r
@@ -126,9 +157,11 @@ print(format(exp(mean(log(daily.dose))), scientific = TRUE))
 
 ### Calculate kernel density estimates
 
+Calculate and print the kernel density estimates using the `density()` function 
+from the *stats* package.
+
 
 ```r
-# Calculate kernel density estimates.
 dens <- density(daily.dose)
 dens
 ```
@@ -140,16 +173,18 @@ dens
 ## 
 ## Data: daily.dose (5000 obs.);	Bandwidth 'bw' = 0.0001264
 ## 
-##        x               y      
-##  Min.   :0.135   Min.   :  0  
-##  1st Qu.:0.137   1st Qu.:  1  
-##  Median :0.140   Median : 11  
-##  Mean   :0.140   Mean   :112  
-##  3rd Qu.:0.142   3rd Qu.:158  
-##  Max.   :0.144   Max.   :577
+##        x                y           
+##  Min.   :0.1352   Min.   :  0.0000  
+##  1st Qu.:0.1374   1st Qu.:  0.5637  
+##  Median :0.1396   Median : 11.3622  
+##  Mean   :0.1396   Mean   :112.0487  
+##  3rd Qu.:0.1418   3rd Qu.:158.3405  
+##  Max.   :0.1441   Max.   :576.7972
 ```
 
 ### Calculate measures of central tendency
+
+Calculate the mean, geometric mean, median, and mode.
 
 
 ```r
@@ -179,7 +214,9 @@ print(meas[1:2])
 ## 4    mode 0.136810
 ```
 
-### Plot the kernel density estimates with measures of central tendency
+### Plot kernel density estimates
+
+Plot the kernel density estimates with measures of central tendency.
 
 
 ```r
@@ -207,9 +244,11 @@ plot(dens)
 add_lines_and_legend(meas, 0.139, 550)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+![](ex0618prob_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
-### Plot the empirical cumulative distribution
+### Plot empirical cumulative distribution
+
+Plot the empirical cumulative distribution with measures of central tendency.
 
 
 ```r
@@ -220,7 +259,7 @@ plot(ecdf(daily.dose))
 add_lines_and_legend(meas, 0.139, 0.8)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![](ex0618prob_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
 
 ## License
 
