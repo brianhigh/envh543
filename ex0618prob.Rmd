@@ -77,7 +77,7 @@ dw.cons.L <- rlnorm(5000, meanlog = 7.49, sdlog = 0.407) / 1000
 
 Plot the kernal density curve of the generated values just as a check.
 
-```{r}
+```{r dw-dens-plot}
 plot(density(dw.cons.L))
 ```
 
@@ -96,7 +96,7 @@ swim.duration <- sample(x = c(0.5, 1, 2, 2.6), 5000, replace = TRUE,
 
 Create a simple histogram of our distribution as a check.
 
-```{r}
+```{r swim-hist-plot}
 hist(swim.duration)
 ```
 
@@ -183,7 +183,7 @@ print(meas[1:2])
 
 Plot the kernel density estimates with measures of central tendency.
 
-```{r}
+```{r kern-dens-plot}
 # Contruct text labels by combining each measure with its value.
 meas$label <- sapply(1:nrow(meas), function(x) 
     paste(meas$measure[x], as.character(meas$value[x]), sep = ' = '))
@@ -212,7 +212,7 @@ add_lines_and_legend(meas, 0.139, 550)
 
 Plot the empirical cumulative distribution with measures of central tendency.
 
-```{r}
+```{r ecdf-plot}
 # Plot the empirical cumulative distribution for the exposure estimates.
 plot(ecdf(daily.dose))
 

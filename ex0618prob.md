@@ -77,7 +77,7 @@ Plot the kernal density curve of the generated values just as a check.
 plot(density(dw.cons.L))
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](ex0618prob_files/figure-html/dw-dens-plot-1.png)<!-- -->
 
 ### Swim duration
 
@@ -100,7 +100,7 @@ Create a simple histogram of our distribution as a check.
 hist(swim.duration)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![](ex0618prob_files/figure-html/swim-hist-plot-1.png)<!-- -->
 
 ## Estimate daily dose
 
@@ -173,13 +173,13 @@ dens
 ## 
 ## Data: daily.dose (5000 obs.);	Bandwidth 'bw' = 0.0001264
 ## 
-##        x                y           
-##  Min.   :0.1352   Min.   :  0.0000  
-##  1st Qu.:0.1374   1st Qu.:  0.5637  
-##  Median :0.1396   Median : 11.3622  
-##  Mean   :0.1396   Mean   :112.0487  
-##  3rd Qu.:0.1418   3rd Qu.:158.3405  
-##  Max.   :0.1441   Max.   :576.7972
+##        x               y      
+##  Min.   :0.135   Min.   :  0  
+##  1st Qu.:0.137   1st Qu.:  1  
+##  Median :0.140   Median : 11  
+##  Mean   :0.140   Mean   :112  
+##  3rd Qu.:0.142   3rd Qu.:158  
+##  Max.   :0.144   Max.   :577
 ```
 
 ### Calculate measures of central tendency
@@ -244,7 +244,7 @@ plot(dens)
 add_lines_and_legend(meas, 0.139, 550)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+![](ex0618prob_files/figure-html/kern-dens-plot-1.png)<!-- -->
 
 ### Plot empirical cumulative distribution
 
@@ -259,7 +259,7 @@ plot(ecdf(daily.dose))
 add_lines_and_legend(meas, 0.139, 0.8)
 ```
 
-![](ex0618prob_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+![](ex0618prob_files/figure-html/ecdf-plot-1.png)<!-- -->
 
 ## License
 
