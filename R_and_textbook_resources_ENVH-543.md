@@ -145,3 +145,4 @@ Robert A. Muenchen, Joseph M. Hilbe. 2010 New York : Springer.
 - [Cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
 - [Swirl](http://swirlstats.com/students.html)
 - [R Markdown](http://rmarkdown.rstudio.com/)
+- [GitHub Desktop](https://desktop.github.com)
