@@ -111,8 +111,8 @@ Define a function to calculate microbial exposure risk.
 ```{r}
 Risk.fcn <- function(sf.vl, sf.cons.g, dw.cons.L, dw.vl, sw.vl, 
                      sw.daily.IR, sw.duration, sw.frequency) {
-    ((sf.vl * sf.cons.g) + (dw.cons.L * dw.vl) + 
-         ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000))
+    return(((sf.vl * sf.cons.g) + (dw.cons.L * dw.vl) + 
+         ((sw.vl * (sw.daily.IR * sw.duration * sw.frequency)) / 365 / 1000)))
 }
 ```
 
@@ -121,6 +121,7 @@ Risk.fcn <- function(sf.vl, sf.cons.g, dw.cons.L, dw.vl, sw.vl,
 Compute 5000 simulated daily dose results and store as a vector.
 
 ```{r}
+# First compute the simulation using sapply().
 daily.dose <- sapply(1:5000, 
                      function(i) Risk.fcn(dw.cons.L = dw.cons.L[i], 
                                           sw.duration = swim.duration[i], 
@@ -130,6 +131,22 @@ daily.dose <- sapply(1:5000,
                                           sw.vl = sw.viral.load, 
                                           sw.daily.IR = sw.daily.IR, 
                                           sw.frequency = sw.frequency))
+
+# Second, just for comparison, compute the simulation using a for loop.
+daily.dose2 <- as.vector(NULL)
+for (i in 1:5000) {
+        daily.dose2[i] <- Risk.fcn(dw.cons.L = dw.cons.L[i], 
+            sw.duration = swim.duration[i], 
+            sf.vl = sf.viral.load, 
+            dw.vl = dw.viral.load, 
+            sf.cons.g = sf.cons.g, 
+            sw.vl = sw.viral.load, 
+            sw.daily.IR = sw.daily.IR, 
+            sw.frequency = sw.frequency)
+}
+
+# Are the results the same?
+identical(daily.dose, daily.dose2)
 ```
 
 ## Summarize results
