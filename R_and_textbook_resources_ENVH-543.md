@@ -1,6 +1,6 @@
 # R and textbook resources for ENV H 543
 Brian High  
-4/07/2016  
+4/06/2018  
 
 ## RStudio Server: "Phage"
 

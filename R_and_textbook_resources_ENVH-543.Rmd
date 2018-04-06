@@ -1,7 +1,7 @@
 ---
 title: "R and textbook resources for ENV H 543"
 author: "Brian High"
-date: "4/07/2016"
+date: "4/06/2018"
 output:
   html_document:
     toc: true
@@ -153,3 +153,4 @@ Robert A. Muenchen, Joseph M. Hilbe. 2010 New York : Springer.
 - [Cheatsheets](https://www.rstudio.com/resources/cheatsheets/)
 - [Swirl](http://swirlstats.com/students.html)
 - [R Markdown](http://rmarkdown.rstudio.com/)
+- [GitHub Desktop](https://desktop.github.com)
